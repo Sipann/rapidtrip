@@ -1,0 +1,25 @@
+
+ADMIN => trip destination
+ADMIN => trip dates
+ADMIN => invited people
+
+(USER => trip date of departure)
+x USER => trip time of departure
+x USER => trip place of departure
+x USER => constraints (within list of possible contraints)
+x USER => general info to be confirmed for each trip []
+
+USER => general info: do I have a car? (yes, no, no but I can get one)
+USER => general info: do I want a backup driver?
+
+USER => general info: do I have my driving license?
+USER => general info: how many spots are they willing to occupy?
+USER (with a car) => route (distance, time) constraints && OCD constraints
+
+
+User inputs
+userid
+trip time of departure
+trip place of departure => enter an address / geoloc (lng, lat)
+Is he/she a driver?
+If not => constraints (I want to be in this car)
