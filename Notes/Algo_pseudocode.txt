@@ -1,0 +1,58 @@
+1. GO GET YOUR DRIVERS
+
+// step 1
+const arrayAllCommutes  = for each passenger :
+  if (passenger.departureTime <= driver.departureTime) {
+    calculate commute time to each driver place of departure
+  }
+  else ==> nothing
+
+const arrayAllCommutesForDriver = [
+  {
+    driver: driver1,
+    seatsAvailable: 3,
+    passengers: [
+      { time: 2mn, priority: 1 },
+    ]
+    OR
+    passengersTimes: [
+      passenger1: 2mn,
+      passenger2: 10mn,
+      passenger3: null (<=> not applicable)
+    ]
+  },
+  {...}
+];
+
+const arrayAllCommutesForPassenger = [
+  {
+    passenger: passenger1,
+    commuteTimeToDriver : [
+      driver1: 2mn,
+      driver2: 5mn,
+
+    ]
+  }
+]
+
+// step 2
+For each passenger, allocate to closest driver => every passenger is assigned to a driver.
+
+// step 3
+for each overloaded car {
+  for each passenger of this car, (favorites ones and "H") EXCEPT IF "priority passenger" ("boyfriend" edge case):
+    - check cost of being moved to next closest car
+  }
+  for cheapest moved passenger:
+      => if (next car is available) total cost to compare H's cost to => moving cost for this passenger
+      => if (next car is not available) "move it" and run the cost calculation on this new car again.
+        => if (recommended change is reverse of currently checked) forget about it, go to next closest car)
+      => comparison based on: % change in commute time, log - the one with smallest cost is assigned to the new car
+    cost of being assigned to this new car => lowest cost goes to that car
+    }
+  }
+}
+
+
+
+2. GO GET YOUR PASSENGERS
