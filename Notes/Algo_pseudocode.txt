@@ -38,7 +38,20 @@ const arrayAllCommutesForPassenger = [
 // step 2
 For each passenger, allocate to closest driver => every passenger is assigned to a driver.
 
-// step 3
+// step 3-a
+for each overloaded car {
+  for each passenger of this car, (favorites ones and "H") EXCEPT IF "priority passenger" ("boyfriend" edge case):
+    - check cost of being moved to next closest available car
+  }
+  for cheapest moved passenger:
+      => total cost to compare H's cost to => moving cost for this passenger
+      => comparison based on: % change in commute time, log - the one with smallest cost is assigned to the new car
+    cost of being assigned to this new car => lowest cost goes to that car
+    }
+  }
+}
+
+// step 3-b
 for each overloaded car {
   for each passenger of this car, (favorites ones and "H") EXCEPT IF "priority passenger" ("boyfriend" edge case):
     - check cost of being moved to next closest car
