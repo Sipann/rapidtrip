@@ -2,6 +2,6 @@ node_modules
 web-build
 .expo
 .expo-shared
-babel-config.js
+babel.config.js
 package-lock.json
 packege.json
