@@ -1,0 +1,15 @@
+node_modules
+package-lock.json
+package.json
+
+server/node_modules
+server/package-lock.json
+server/packege.json
+
+client/node_modules
+client/web-build
+client/.expo
+client/.expo-shared
+client/babel.config.js
+client/package-lock.json
+client/package.json
