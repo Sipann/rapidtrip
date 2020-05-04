@@ -1,0 +1,37 @@
+{
+  "name": "rapidtrip",
+  "version": "1.0.0",
+  "description": "CodeWorks Group Project",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-plugin-react": "^7.19.0",
+    "husky": "^4.2.5",
+    "lint-staged": "^10.2.2"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sipann/rapidtrip.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sipann/rapidtrip/issues"
+  },
+  "homepage": "https://github.com/Sipann/rapidtrip#readme",
+  "lint-staged": {
+    "./**/*.{js,jsx}": [
+      "eslint"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  }
+}

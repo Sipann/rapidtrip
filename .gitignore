@@ -1,0 +1,17 @@
+# ignore node modules in all folders
+**/node_modules/**/*
+
+# client folder ignore
+client/.expo/*
+client/npm-debug.*
+client/*.jks
+client/*.p8
+client/*.p12
+client/*.key
+client/*.mobileprovision
+client/*.orig.*
+client/web-build/
+client/web-report/
+
+# macOS
+**/.DS_Store
