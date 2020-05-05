@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import colorScheme from '../constants/colors';
 
-export default function Homepage () {
+export default function Homepage ({ navigation }) {
 
-  function Item (name, icon) {
+  function Item (name, icon, route) {
     return (
-      <TouchableOpacity style={styles.item} onPress={() => Alert.alert('Button pressed')}>
+      <TouchableOpacity style={styles.item} onPress={() => navigation.navigate(route)}>
         <FontAwesome5 name={icon} size={32} color='black' solid/>
         <Text style={styles.textItem}>{name}</Text>
       </TouchableOpacity>
@@ -18,10 +18,10 @@ export default function Homepage () {
     <View style={styles.container}>
       <Text style={styles.textHeader}>Welcome to RapidTrip</Text>
       <View style={styles.menu}>
-        { Item('My trips', 'road') }
-        { Item('Profile', 'user') }
-        { Item('Friends', 'user-friends') }
-        { Item('Settings', 'cog') }
+        { Item('My trips', 'road', 'My trips') }
+        { Item('Profile', 'user', 'Profile') }
+        { Item('Friends', 'user-friends', 'Friends') }
+        { Item('Settings', 'cog', 'Settings') }
       </View>
     </View>
   );
