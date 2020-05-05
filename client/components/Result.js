@@ -3,7 +3,19 @@ import { View, Text, SectionList, SafeAreaView, StyleSheet } from 'react-native'
 import Constants from 'expo-constants';
 import colorScheme from '../constants/colors';
 
-export default function Result ({ result }) {
+export default function Result () {
+
+  //TODO use context or redux
+  const result = [
+    {
+      driver: { id: 1, name: 'Virginie' },
+      passengers: [{ id: 2, name: 'Brendan' }, { id: 3, name: 'Anthony' }]
+    },
+    {
+      driver: { id: 4, name: 'John' },
+      passengers: [{ id: 5, name: 'Jane' }, { id: 6, name: 'Jake' }, { id: 7, name: 'Joseph' }]
+    }
+  ];
 
   function parseResultToList (result) {
     return result.map(({driver, passengers}) => ({
