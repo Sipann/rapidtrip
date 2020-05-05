@@ -4,14 +4,16 @@ import {
   Alert,
   Button,
   Text,
-  TextInput,
   View,
   StyleSheet,
 } from 'react-native';
 
+import env from '../config/env.config';
+
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
-import { geocodeAddress } from '../services/GoogleAPI';
+
+import PlacesInput from 'react-native-places-input';
 
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
@@ -25,33 +27,13 @@ const InputDepartureLocation = ({
 }) => {
 
   const [location, setLocation] = useState(false);
-  const [address, setAddress] = useState('');
   const [isFetching, setIsFetching] = useState(false);
-
-  const getCoords = async () => {
-    try {
-      const res = await geocodeAddress(address);
-      if (res.status === 'OK') {
-        setLocation(res.coords);
-      }
-      else throw new Error('no geocoding');
-    } catch (error) {
-      if (error.message === 'no geocoding') {
-        Alert.alert(
-          'Oops',
-          'Unable to locate this address',
-          [{ text: 'OK' }]
-        );
-      }
-      console.error(error);
-    }
-  };
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
     if (result.status !== 'granted') {
       Alert.alert(
-        'Insufficient permissions!',
+        'Insufficient permissions.',
         'You need to grant geolocation permissions to be geolocated.',
         [{ text: 'OK' }]
       );
@@ -65,14 +47,15 @@ const InputDepartureLocation = ({
     if (!hasPermission) return;
     try {
       setIsFetching(true);
-      const location = await Location.getCurrentPositionAsync({ timeout: 5000 });
-      setDepartureLocation({ lat: location.coords.latitude, lng: location.coords.longitude });
-      setLocation(location);
+      const locationResponse = await Location.getCurrentPositionAsync({ timeout: 5000 });
+      const newLocation = { lat: locationResponse.coords.latitude, lng: locationResponse.coords.longitude };
+      setDepartureLocation(newLocation);
+      setLocation(newLocation);
     } catch (error) {
       setLocation(null);
       Alert.alert(
-        'Could not fetch location',
-        'Please try again later or pick a location on the map',
+        'Could not fetch location.',
+        'Please try again later or enter an address into the field.',
         [{ text: 'OK' }]
       );
     } finally {
@@ -87,15 +70,15 @@ const InputDepartureLocation = ({
       <Text style={styles.header}>What is you starting point?</Text>
 
       <View style={styles.content}>
-        <Text>Enter an address</Text>
-        <TextInput
-          onChangeText={text => setAddress(text)}
-          placeholder="e.g. 27 carrer d'Avila, Barcelona"
-          style={styles.textInput}
-          value={address} />
-        <Button
-          onPress={getCoords}
-          title="Look" />
+
+        <PlacesInput
+          googleApiKey={env.GOOGLE_API_KEY}
+          placeHolder={'e.g. 27 carrer d\'Avila, Barcelona'}
+          language={'en-US'}
+          onSelect={place => {
+            setLocation(place.result.geometry.location);
+            setDepartureLocation(place.result.geometry.location);
+          }} />
 
         {isFetching
           ? <ActivityIndicator size="large" color={Colors.primary} />
@@ -104,9 +87,10 @@ const InputDepartureLocation = ({
         <Text>OR</Text>
 
         <Button
-          title="Geolocate me"
+          title="GEOLOCATE ME"
           color={Colors.primary}
           onPress={geolocateUser} />
+
       </View>
 
       <View style={styles.buttonsContainer}>
@@ -135,11 +119,12 @@ const styles = StyleSheet.create({
   },
   container: {
     ...StyleRefs.container,
+    paddingTop: 35,
   },
   content: {
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    paddingVertical: 15,
     width: '100%',
   },
   header: {
@@ -154,6 +139,7 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     width: '90%',
   },
+
 });
 
 export default InputDepartureLocation;
