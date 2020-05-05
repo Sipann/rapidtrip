@@ -45,7 +45,7 @@ const InputIsAdmin = ({
             ? <InputDepartureDate
               departureDate={date}
               setTripDate={(selectedDate) => {
-                setDate(selectedDate)
+                setDate(selectedDate);
               }} />
             : null
         }

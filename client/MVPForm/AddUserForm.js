@@ -48,11 +48,12 @@ const AddUserForm = ({ addUser, dismissModal }) => {
       <View style={styles.carousel}>
 
         <ScrollView
+          keyboardShouldPersistTaps="always"
           horizontal={true}
           pagingEnabled={true}
           scrollEnabled={false}
           ref={scroll}
-          contentContainerStyle={{ width: `500%` }}>
+          contentContainerStyle={{ width: '500%' }}>
 
           <InputUserName
             username={user.name}
@@ -65,7 +66,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
             isAdmin={user.isAdmin}
             scrollToNext={(selectedDate) => {
               if (selectedDate) setUser({ ...user, departureDate: selectedDate });
-              scroll.current.scrollTo({ x: 2 * screenWidth, y: 0, animated: true })
+              scroll.current.scrollTo({ x: 2 * screenWidth, y: 0, animated: true });
             }}
             scrollToPrev={() => { }}
             setIsAdminHandler={() => setUser({ ...user, isAdmin: !user.isAdmin })}
@@ -77,7 +78,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
             isDriver={user.isDriver}
             scrollToNext={(seats) => {
               if (seats) setUser({ ...user, seats: seats });
-              scroll.current.scrollTo({ x: 3 * screenWidth, animated: true })
+              scroll.current.scrollTo({ x: 3 * screenWidth, animated: true });
             }}
             scrollToPrev={() => { }}
             style={{ width: screenWidth }}
@@ -87,8 +88,8 @@ const AddUserForm = ({ addUser, dismissModal }) => {
           <InputDepartureTime
             time={user.departureTime}
             scrollToNext={selectedTime => {
-              setUser({ ...user, departureTime: selectedTime })
-              scroll.current.scrollTo({ x: 4 * screenWidth, animated: true })
+              setUser({ ...user, departureTime: selectedTime });
+              scroll.current.scrollTo({ x: 4 * screenWidth, animated: true });
             }}
             scrollToPrev={() => { }}
             setDepartureTime={(evt, selectedTime) => setUser({ ...user, departureTime: selectedTime })}

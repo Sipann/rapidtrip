@@ -22,10 +22,6 @@ const InputIsDriver = ({
 
   const [seats, setSeats] = useState('');
 
-  const setDriverHandler = val => {
-    toggleDriverHandler();
-  };
-
   const seatsInputHandler = (seats) => {
     let formattedSeats = seats.replace(/[^0-9]/g, '');
     setSeats(formattedSeats);
@@ -38,10 +34,10 @@ const InputIsDriver = ({
       <Text style={styles.header}>Driver?</Text>
 
       <View style={styles.switchContainer}>
-        <Text>{isDriver ? "Yes" : "No"}</Text>
+        <Text>{isDriver ? 'Yes' : 'No'}</Text>
         <Switch
           ios_backgroundColor={Colors.bgDark}
-          onValueChange={val => setDriverHandler(val)}
+          onValueChange={toggleDriverHandler}
           style={styles.switchButton}
           thumbColor={isDriver ? Colors.primary : Colors.secondary}
           trackColor={{ false: Colors.primary, true: Colors.secondary }}
@@ -61,17 +57,17 @@ const InputIsDriver = ({
       <View style={styles.buttonsContainer}>
         <Button
           onPress={scrollToPrev}
-          title="PREVIOUS"
+          title='PREVIOUS'
           color={Colors.secondary}
-          accessibilityLabel="Previous" />
+          accessibilityLabel='Previous' />
         <Button
           onPress={() => {
             if (isDriver) scrollToNext(seats);
             else scrollToNext();
           }}
-          title="NEXT"
+          title='NEXT'
           color={Colors.primary}
-          accessibilityLabel="Next" />
+          accessibilityLabel='Next' />
       </View>
 
     </View>
