@@ -1,0 +1,25 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "A trip sharing app bundling trips for individuals traveling in similar directions.",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sipann/rapidtrip.git"
+  },
+  "author": "Lello De Luca, Nicole Cogo, Virginie Auguste, Brendan Garvey, Anthony Candaele",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sipann/rapidtrip/issues"
+  },
+  "homepage": "https://github.com/Sipann/rapidtrip#readme",
+  "dependencies": {
+    "dotenv": "^8.2.0",
+    "koa": "^2.11.0",
+    "koa-router": "^8.0.8"
+  }
+}
