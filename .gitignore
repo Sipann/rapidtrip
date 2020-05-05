@@ -16,4 +16,4 @@ client/web-report/
 # macOS
 **/.DS_Store
 
-/config/env.config.jk
+client/config/env.config.js
