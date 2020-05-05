@@ -22,7 +22,7 @@ app
   })
 
 //======== ROUTES =========
-  .use(router.routes())
+  .use(router.routes());
 
 app.listen(PORT, () => {
   console.log(`Server running on localhost:${PORT}`);
