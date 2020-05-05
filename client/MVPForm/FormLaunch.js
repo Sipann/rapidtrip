@@ -13,7 +13,7 @@ import AddUserForm from './AddUserForm';
 import Header from './Header';
 
 
-const FormLanding = () => {
+const FormLaunch = () => {
 
   const [isAddingUser, setIsAddingUser] = useState(false);
   const [users, setUsers] = useState([]);
@@ -28,7 +28,7 @@ const FormLanding = () => {
     user.departureTime = user.departureTime.toLocaleTimeString();
     setUsers(currentUsers => [...currentUsers, user]);
     setIsAddingUser(false);
-  }
+  };
 
   return (
     <View style={styles.screen}>
@@ -63,7 +63,7 @@ const FormLanding = () => {
 
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   addUserForm: {
@@ -92,4 +92,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FormLanding;
+export default FormLaunch;
