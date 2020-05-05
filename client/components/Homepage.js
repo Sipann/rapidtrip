@@ -18,9 +18,9 @@ export default function Homepage ({ navigation }) {
     <View style={styles.container}>
       <Text style={styles.textHeader}>Welcome to RapidTrip</Text>
       <View style={styles.menu}>
-        { Item('My trips', 'road', 'My trips') }
+        { Item('My Trips', 'road', 'TripList') }
         { Item('Profile', 'user', 'Profile') }
-        { Item('Friends', 'user-friends', 'Friends') }
+        { Item('My Friends', 'user-friends', 'FriendList') }
         { Item('Settings', 'cog', 'Settings') }
       </View>
     </View>

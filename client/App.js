@@ -4,7 +4,10 @@ import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import Homepage from './components/Homepage';
-import Result from './components/Result';
+import TripList from './components/TripList';
+import FriendList from './components/FriendList';
+import Settings from './components/Settings';
+import Profile from './components/Profile';
 
 const Stack = createStackNavigator();
 
@@ -19,9 +22,24 @@ export default function App () {
             options={{title: 'RapidTrip'}}
           />
           <Stack.Screen
-            name='Result'
-            component={Result}
-            options={{title: 'Car distribution'}}
+            name='TripList'
+            component={TripList}
+            options={{title: 'My Trips'}}
+          />
+          <Stack.Screen
+            name='FriendList'
+            component={FriendList}
+            options={{title: 'My Friends'}}
+          />
+          <Stack.Screen
+            name='Settings'
+            component={Settings}
+            options={{title: 'Settings'}}
+          />
+          <Stack.Screen
+            name='Profile'
+            component={Profile}
+            options={{title: 'My profile'}}
           />
         </Stack.Navigator>
       </NavigationContainer>
