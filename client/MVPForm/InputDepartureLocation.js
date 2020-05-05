@@ -11,6 +11,7 @@ import {
 
 import * as Location from 'expo-location';
 import * as Permissions from 'expo-permissions';
+import { geocodeAddress } from '../services/GoogleAPI';
 
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
@@ -23,9 +24,28 @@ const InputDepartureLocation = ({
   style,
 }) => {
 
-  //! location => useState(false) when geocode activated
-  const [location, setLocation] = useState(true);
+  const [location, setLocation] = useState(false);
+  const [address, setAddress] = useState('');
   const [isFetching, setIsFetching] = useState(false);
+
+  const getCoords = async () => {
+    try {
+      const res = await geocodeAddress(address);
+      if (res.status === 'OK') {
+        setLocation(res.coords);
+      }
+      else throw new Error('no geocoding');
+    } catch (error) {
+      if (error.message === 'no geocoding') {
+        Alert.alert(
+          'Oops',
+          'Unable to locate this address',
+          [{ text: 'OK' }]
+        );
+      }
+      console.error(error);
+    }
+  };
 
   const verifyPermissions = async () => {
     const result = await Permissions.askAsync(Permissions.LOCATION);
@@ -38,7 +58,7 @@ const InputDepartureLocation = ({
       return false;
     }
     return true;
-  }
+  };
 
   const geolocateUser = async () => {
     const hasPermission = await verifyPermissions();
@@ -69,9 +89,13 @@ const InputDepartureLocation = ({
       <View style={styles.content}>
         <Text>Enter an address</Text>
         <TextInput
+          onChangeText={text => setAddress(text)}
           placeholder="e.g. 27 carrer d'Avila, Barcelona"
-          style={styles.textInput} />
-
+          style={styles.textInput}
+          value={address} />
+        <Button
+          onPress={getCoords}
+          title="Look" />
 
         {isFetching
           ? <ActivityIndicator size="large" color={Colors.primary} />
