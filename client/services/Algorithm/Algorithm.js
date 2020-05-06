@@ -112,7 +112,6 @@ function Algorithm (input) {
   let [carObj, sortedList] = makeInitialCars(input);
   let finalCarObj = checkPossibleChanges(carObj, sortedList, input);
   finalCarObj = addPriority(finalCarObj, input);
-  console.log(finalCarObj);
   return finalCarObj;
 }
 
