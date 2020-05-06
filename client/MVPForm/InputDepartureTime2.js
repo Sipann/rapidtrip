@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Button,
   Text,
@@ -15,16 +15,21 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 const InputDepartureTime = ({
   scrollToNext,
   scrollToPrev,
+  showTime,
   style,
 }) => {
 
   const [time, setTime] = useState(new Date());
-  const [show, setShow] = useState(true);
+  const [show, setShow] = useState(false);
 
   const onChange = (_, selectedTime) => {
     setShow(Platform.OS === 'ios');
     setTime(selectedTime);
   };
+
+  useEffect(() => {
+    setShow(showTime);
+  }, [showTime]);
 
   return (
 

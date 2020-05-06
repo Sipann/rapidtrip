@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import InputDepartureLocation from './InputDepartureLocation';
-import InputDepartureTime from './InputDepartureTime';
+import InputDepartureTime from './InputDepartureTime2';
 import InputIsAdmin from './InputIsAdmin';
 import InputIsDriver from './InputIsDriver';
 import InputUserName from './InputUserName';
@@ -28,7 +28,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
     seats: '0',
   });
 
-
+  const [showTime, setShowTime] = useState(false);
 
   const cancelHandler = () => {
     setUser({
@@ -84,6 +84,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
               scrollToNext={(seats) => {
                 if (seats) setUser({ ...user, seats: seats });
                 scroll.current.scrollTo({ x: 3 * screenWidth, animated: true });
+                setShowTime(true);
               }}
               scrollToPrev={() => { }}
               style={{ width: screenWidth }}
@@ -98,6 +99,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
               }}
               scrollToPrev={() => { }}
               setDepartureTime={(evt, selectedTime) => setUser({ ...user, departureTime: selectedTime })}
+              showTime={showTime}
               style={{ width: screenWidth }}
             />
 
