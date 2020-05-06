@@ -28,6 +28,7 @@ const InputDepartureTime = ({
 
       <View style={styles.picker}>
         <DateTimePicker
+          animation={false}
           mode="time"
           onChange={(evt, selectedTime) => setTime(selectedTime)}
           value={time} />

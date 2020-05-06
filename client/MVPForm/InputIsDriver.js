@@ -30,7 +30,6 @@ const InputIsDriver = ({
   return (
 
     <View style={{ ...style, ...styles.isDriverContainer }}>
-
       <Text style={styles.header}>Driver?</Text>
 
       <View style={styles.switchContainer}>
@@ -69,7 +68,6 @@ const InputIsDriver = ({
           color={Colors.primary}
           accessibilityLabel='Next' />
       </View>
-
     </View>
   );
 };

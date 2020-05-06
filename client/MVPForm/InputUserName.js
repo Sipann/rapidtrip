@@ -1,11 +1,9 @@
 import React, { useState } from 'react';
 import {
   Button,
-  Keyboard,
   StyleSheet,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
@@ -28,32 +26,30 @@ const InputUserName = ({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
 
-      <View style={{ ...style, ...styles.usernameContainer }}>
+    <View style={{ ...style, ...styles.usernameContainer }}>
 
-        <View style={styles.usernameInputContainer}>
-          <Text>User Name</Text>
-          <TextInput
-            placeholder="e.g. John Doe"
-            onChangeText={text => onInputHandler(text)}
-            style={styles.usernameTextInput}
-            value={username}
-          />
-        </View>
-
-        <View>
-          <Button
-            accessibilityLabel="Next"
-            color={Colors.primary}
-            disabled={!enableNext}
-            onPress={scrollToNext}
-            title="NEXT" />
-        </View>
-
+      <View style={styles.usernameInputContainer}>
+        <Text>User Name</Text>
+        <TextInput
+          placeholder="e.g. John Doe"
+          onChangeText={text => onInputHandler(text)}
+          style={styles.usernameTextInput}
+          value={username}
+        />
       </View>
 
-    </TouchableWithoutFeedback>
+      <View>
+        <Button
+          accessibilityLabel="Next"
+          color={Colors.primary}
+          disabled={!enableNext}
+          onPress={scrollToNext}
+          title="NEXT" />
+      </View>
+
+    </View>
+
   );
 
 };

@@ -5,6 +5,7 @@ import {
   View,
 } from 'react-native';
 
+
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const InputDepartureDate = ({ setTripDate }) => {
@@ -20,6 +21,7 @@ const InputDepartureDate = ({ setTripDate }) => {
     <View style={styles.container}>
       <Text style={styles.header}>Trip Departure Date</Text>
       <DateTimePicker
+        animation={false}
         mode="date"
         onChange={(evt, selectedDate) => tripDateHandler(selectedDate)}
         value={date} />

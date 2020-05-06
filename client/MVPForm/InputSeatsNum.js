@@ -1,10 +1,8 @@
 import React from 'react';
 import {
-  Keyboard,
   StyleSheet,
   Text,
   TextInput,
-  TouchableWithoutFeedback,
   View,
 } from 'react-native';
 
@@ -12,17 +10,15 @@ import {
 const InputSeatsNum = ({ seats, setSeatsNumHandler }) => {
 
   return (
-    <TouchableWithoutFeedback onPress={() => { Keyboard.dismiss() }}>
-      <View>
-        <Text># of seats</Text>
-        <TextInput
-          keyboardType="number-pad"
-          onChangeText={input => setSeatsNumHandler(input)}
-          style={styles.seatsInput}
-          value={seats}
-        />
-      </View>
-    </TouchableWithoutFeedback>
+    <View>
+      <Text># of seats</Text>
+      <TextInput
+        keyboardType="number-pad"
+        onChangeText={input => setSeatsNumHandler(input)}
+        style={styles.seatsInput}
+        value={seats}
+      />
+    </View>
   );
 };
 
