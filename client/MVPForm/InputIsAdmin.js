@@ -51,6 +51,7 @@ const InputIsAdmin = ({
         }
       </View>
 
+
       <View style={styles.buttonsContainer}>
         <Button
           onPress={scrollToPrev}
