@@ -17,7 +17,7 @@ export default function App() {
   const [userData, setUserData] = useState(null);
   const [isImageLoading, setImageLoadStatus] = useState(false);
 
-  facebookLogIn = async () => {
+  const facebookLogIn = async () => {
     Facebook.initializeAsync(env.FACEBOOK_APP_ID, 'rapidtrip');
     try {
       const {
@@ -48,7 +48,7 @@ export default function App() {
     }
   };
 
-  logout = () => {
+  const logout = () => {
     setLoggedinStatus(false);
     setUserData(null);
     setImageLoadStatus(false);
@@ -87,7 +87,7 @@ export default function App() {
         }}
         source={require('./assets/splash.png')}
       />
-      <TouchableOpacity style={styles.loginBtn} onPress={this.facebookLogIn}>
+      <TouchableOpacity style={styles.loginBtn} onPress={facebookLogIn}>
         <Text style={{ color: '#fff' }}>Login with Facebook</Text>
       </TouchableOpacity>
     </View>
