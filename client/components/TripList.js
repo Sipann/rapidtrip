@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Button, StyleSheet } from 'react-native';
 
 // TODO remove mock data and fetch from database and add to Redux store
 const mockedTrips = [
@@ -27,7 +27,7 @@ export default function TripList () {
     return (
       <View style={styles.item}>
         <Text>{trip.title}</Text>
-        <Text>{trip.date}</Text>
+        <Text>{trip.date.toUTCString()}</Text>
       </View>
     );
   }
