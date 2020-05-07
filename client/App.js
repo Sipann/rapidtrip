@@ -21,6 +21,7 @@ export default function App () {
               backgroundColor: Colors.primary,
             },
             headerTintColor: 'black',
+            headerTitleAlign: 'center',
             headerTitleStyle: {
               fontWeight: 'bold',
               fontSize: 18
