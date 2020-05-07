@@ -15,7 +15,7 @@ import AddUserForm from './AddUserForm2';
 import Header from './Header';
 
 
-const FormLaunch = () => {
+const FormLaunch = ({ navigation }) => {
 
   const [isAddingUser, setIsAddingUser] = useState(false);
   const [users, setUsers] = useState([]);
@@ -55,8 +55,8 @@ const FormLaunch = () => {
       <View style={styles.resultsContainer}>
         <Button
           color={Colors.secondary}
-          onPress={() => console.log('all users', users)}
-          title="Get All Users" />
+          onPress={() => navigation.navigate('CarAllocation')}
+          title="Car allocation" />
       </View>
 
     </View>
