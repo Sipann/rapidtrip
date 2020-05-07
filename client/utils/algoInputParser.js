@@ -1,74 +1,74 @@
 //TODO : change this
-let formOutput = [
-  {
-    departureLocation: {
-      lat: 41.388516,
-      lng: 2.179014,
-    },
-    departureTimestamp: 1588932000000,
-    isAdmin: true,
-    isDriver: true,
-    name: 'Brendan-MyPlace',
-    seats: 2,
-  },
-  {
-    departureLocation: {
-      lat: 41.387012,
-      lng: 2.170479,
-    },
-    departureTimestamp: 15889248000000,
-    isAdmin: false,
-    isDriver: false,
-    name: 'Nicole-placaCAT',
-    seats: 0,
-  },
-  {
-    departureLocation: {
-      lat: 41.394909,
-      lng: 2.197982,
-    },
-    departureTimestamp: 15889392000000,
-    isAdmin: false,
-    isDriver: true,
-    name: 'Virginie-Codeworks',
-    seats: 3,
-  },
-  {
-    departureLocation: {
-      lat: 41.403107,
-      lng: 2.173681,
-    },
-    departureTimestamp: 15889356000000,
-    isAdmin: false,
-    isDriver: false,
-    name: 'Anthony-SegrataFamilia',
-    seats: 0,
-  },
-  {
-    departureLocation: {
-      lat: 41.379794,
-      lng: 2.124108,
-    },
-    departureTimestamp: 15889248000000,
-    isAdmin: false,
-    isDriver: false,
-    name: 'Lello-CampNou',
-    seats: 0,
-  },
-];
+// let formOutput = [
+//   {
+//     departureLocation: {
+//       lat: 41.388516,
+//       lng: 2.179014,
+//     },
+//     departureTimestamp: 1588932000000,
+//     isAdmin: true,
+//     isDriver: true,
+//     name: 'Brendan-MyPlace',
+//     seats: 2,
+//   },
+//   {
+//     departureLocation: {
+//       lat: 41.387012,
+//       lng: 2.170479,
+//     },
+//     departureTimestamp: 15889248000000,
+//     isAdmin: false,
+//     isDriver: false,
+//     name: 'Nicole-placaCAT',
+//     seats: 0,
+//   },
+//   {
+//     departureLocation: {
+//       lat: 41.394909,
+//       lng: 2.197982,
+//     },
+//     departureTimestamp: 15889392000000,
+//     isAdmin: false,
+//     isDriver: true,
+//     name: 'Virginie-Codeworks',
+//     seats: 3,
+//   },
+//   {
+//     departureLocation: {
+//       lat: 41.403107,
+//       lng: 2.173681,
+//     },
+//     departureTimestamp: 15889356000000,
+//     isAdmin: false,
+//     isDriver: false,
+//     name: 'Anthony-SegrataFamilia',
+//     seats: 0,
+//   },
+//   {
+//     departureLocation: {
+//       lat: 41.379794,
+//       lng: 2.124108,
+//     },
+//     departureTimestamp: 15889248000000,
+//     isAdmin: false,
+//     isDriver: false,
+//     name: 'Lello-CampNou',
+//     seats: 0,
+//   },
+// ];
 
+import { getCommuteTime } from '../services/GoogleAPI';
 
-import {getCommuteTime} from '../services/GoogleAPI';
-
-function formToAlgo() {
-  let input = formOutput;
+function formToAlgo (input) {
+  // let input = formOutput;   To test uncomment this line and the mockdata above. and remove input as an parameter of the function
   let intoAlgo = {};
   let intoAlgoWithDrivers = addDriver(input, intoAlgo);
   let intoAlgoWithPassengers = addPassengers(input, intoAlgoWithDrivers);
-  console.log(intoAlgoWithPassengers);
+  let finalIntoAlog = addPriority(intoAlgoWithPassengers);
+  return finalIntoAlog;
 }
 
-function addDriver(input, intoAlgo) {
+function addDriver (input, intoAlgo) {
   intoAlgo.drivers = {};
   input.map((tripMember) => {
     if (tripMember.isDriver) {
@@ -81,22 +81,31 @@ function addDriver(input, intoAlgo) {
   return intoAlgo;
 }
 
-function addPassengers(input, intoAlgo) {
+function addPassengers (input, intoAlgo) {
   intoAlgo.passengers = {};
   input.map((passenger) => {
     if (!passenger.isDriver) {
       intoAlgo.passengers[passenger.name] = {};
       intoAlgo.passengers[passenger.name].drivers = {};
-      intoAlgo.passengers[passenger.name].departureTime = passenger.departureTimestamp;
+      intoAlgo.passengers[passenger.name].departureTime =
+        passenger.departureTimestamp;
       input.map((driver) => {
         if (driver.isDriver) {
           let passengerLocation = `${passenger.departureLocation.lat},${passenger.departureLocation.lng}|`;
           let driverLocation = `${driver.departureLocation.lat},${driver.departureLocation.lng}`;
-          intoAlgo.passengers[passenger.name].drivers[driver.name] = getCommuteTime(passengerLocation, driverLocation);
+          intoAlgo.passengers[passenger.name].drivers[
+            driver.name
+          ] = getCommuteTime(passengerLocation, driverLocation);
         }
       });
     }
   });
+  return intoAlgo;
+}
+
+//FOR NOW WE DO NOT DEAL WITH PRIORITY BUT THERE SHOULD STILL BE AN EMPTY OBJECT
+function addPriority (intoAlgo) {
+  intoAlgo.priority = {};
   return intoAlgo;
 }
 
