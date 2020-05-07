@@ -14,9 +14,11 @@ export default function Result () {
   function parseResultToList (result) {
     return result.map(({driver, passengers}) => ({
       title: driver.name,
-      data: passengers.map(({id, name}) => ({
+      data: passengers.map(({id, name, departureLocation, departureTime}) => ({
         key: id,
-        name
+        name,
+        departureLocation,
+        departureTime
       }))
     }));
   }
@@ -24,9 +26,9 @@ export default function Result () {
   function Item (item) {
     return (
       <View style={styles.item}>
-        <Text style={styles.title}>
-          { item.name }
-        </Text>
+        <Text style={styles.title}>{ item.name }</Text>
+        <Text style={styles.title}>{ 'Departure location ' + item.departureLocation.lat + ' ' + item.departureLocation.lng }</Text>
+        <Text style={styles.title}>{ 'Departure time ' + item.departureTime }</Text>
       </View>
     );
   }
@@ -86,19 +88,16 @@ const mockResult = [
     passengers: [
       {
         id: 2, name: 'Brendan',
-        departureDate: 1588774296658,
         departureLocation: { lat: 41.4019693, lng: -2.1860034 },
         departureTime: '15:45:00'
       },
       {
         id: 3, name: 'Anthony',
-        departureDate: 1588774296658,
         departureLocation: { lat: 41.4019695, lng: -2.1862589 },
         departureTime: '16:15:00'
       },
       {
         id: 4, name: 'Lello',
-        departureDate: 1588774296658,
         departureLocation: { lat: 41.4019542, lng: -2.1862875 },
         departureTime: '16:05:00'
       }
@@ -114,13 +113,11 @@ const mockResult = [
     passengers: [
       {
         id: 6, name: 'Jane',
-        departureDate: 1588774443514,
         departureLocation: { lat: 41.473568, lng: 2.081234 },
         departureTime: '19:45:00'
       },
       {
         id: 7, name: 'Jake',
-        departureDate: 1588774443514,
         departureLocation: { lat: 41.475789, lng: 2.085781 },
         departureTime: '19:30:00'
       }
