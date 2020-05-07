@@ -53,7 +53,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
         <View style={styles.carousel}>
 
           <ScrollView
-            keyboardShouldPersistTaps="always"
+            keyboardShouldPersistTaps='handled'
             horizontal={true}
             pagingEnabled={true}
             scrollEnabled={false}
@@ -61,7 +61,10 @@ const AddUserForm = ({ addUser, dismissModal }) => {
             contentContainerStyle={{ width: '500%' }}>
 
             <InputUserName
-              scrollToNext={() => scroll.current.scrollTo({ x: 1 * screenWidth, y: 0, animated: true })}
+              scrollToNext={() => {
+                scroll.current.scrollTo({ x: 1 * screenWidth, y: 0, animated: true });
+                Keyboard.dismiss();}
+              }
               setUsernameHandler={(input) => setUser({ ...user, name: input })}
               style={{ width: screenWidth }}
               username={user.name}
@@ -83,6 +86,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
                 if (seats) setUser({ ...user, seats: seats });
                 scroll.current.scrollTo({ x: 3 * screenWidth, animated: true });
                 setShowTime(true);
+                Keyboard.dismiss();
               }}
               style={{ width: screenWidth }}
               toggleDriverHandler={() => setUser({ ...user, isDriver: !user.isDriver })}
