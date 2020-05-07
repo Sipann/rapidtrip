@@ -10,7 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
 import userFormOutput from './formOutput';
-import AddUserForm from './AddUserForm2';
+import AddUserForm from './AddUserForm';
 
 const FormLaunch = () => {
 
