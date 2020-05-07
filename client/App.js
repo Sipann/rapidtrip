@@ -1,10 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Result from './components/Result';
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
+      <Result />
     </View>
   );
 }
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent: 'center',
   },
 });
