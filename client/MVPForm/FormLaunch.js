@@ -8,6 +8,7 @@ import {
 
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
+import userFormOutput from './formOutput';
 
 // import AddUserForm from './AddUserForm';
 import AddUserForm from './AddUserForm2';
@@ -20,15 +21,10 @@ const FormLaunch = () => {
   const [users, setUsers] = useState([]);
 
   const addNewUser = user => {
-    console.log('user', user);
-    if (user.departureDate) {
-      user.departureDate = user.departureDate.getTime();
-    }
-    if (user.seats) {
-      user.seats = parseInt(user.seats);
-    }
-    user.departureTime = user.departureTime.toLocaleTimeString();
-    setUsers(currentUsers => [...currentUsers, user]);
+    const newUser = userFormOutput(user);
+    console.log('newUser', newUser);
+
+    setUsers(currentUsers => [...currentUsers, newUser]);
     setIsAddingUser(false);
   };
 
