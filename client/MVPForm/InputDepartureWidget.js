@@ -35,6 +35,7 @@ const InputDepartureTime = ({
             animation={false}
             mode="time"
             onChange={onChange}
+            display='spinner'
             value={time} />
         </View>
       )}
