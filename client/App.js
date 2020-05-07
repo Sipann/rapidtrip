@@ -6,13 +6,27 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Form from './MVPForm/FormLaunch';
 import CarAllocation from './components/CarAllocation';
 
+import Colors from './constants/colors';
+
 const Stack = createStackNavigator();
 
 export default function App () {
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName='MVPForm'>
+        <Stack.Navigator
+          initialRouteName='MVPForm'
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: Colors.primary,
+            },
+            headerTintColor: 'black',
+            headerTitleStyle: {
+              fontWeight: 'bold',
+              fontSize: 18
+            }
+          }}
+        >
           <Stack.Screen
             name='MVPForm'
             component={Form}

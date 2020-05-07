@@ -9,10 +9,7 @@ import {
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
 import userFormOutput from './formOutput';
-
-// import AddUserForm from './AddUserForm';
 import AddUserForm from './AddUserForm2';
-import Header from './Header';
 
 
 const FormLaunch = ({ navigation }) => {
@@ -30,10 +27,6 @@ const FormLaunch = ({ navigation }) => {
 
   return (
     <View style={styles.screen}>
-
-      <Header
-        title="MVP Form"
-        style={styles.pageHeader} />
 
       <View style={styles.formContainer}>
         <Button
