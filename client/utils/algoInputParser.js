@@ -1,40 +1,106 @@
 //TODO : change this
-// Array [
-//   Object {
-//   "departureDate": 1588774296658,
-//   "departureLocation": Object {
-//   "lat": 37.4219693,
-//   "lng": -122.0840034,
-//   },
-//   "isAdmin": true,
-//   "isDriver": true,
-//   "name": "ww",
-//   "seats": 3,
-//   },
-//   Object {
-//   "departureLocation": Object {
-//   "lat": 40.656685,
-//   "lng": -4.6812086,
-//   },
-//   "departureTimeStamp": 1588774443514,
-//   "isAdmin": false,
-//   "isDriver": false,
-//   "name": "ii",
-//   "seats": 0,
-//   },
-//   Object {
-//   "departureLocation": Object {
-//   "lat": 37.4219693,
-//   "lng": -122.0840034,
-//   },
-//   "departureTimestamp": 1588861330923,
-//   "isAdmin": true,
-//   "isDriver": true,
-//   "name": "fg",
-//   "seats": 5,
-//   },
-//   ]
+let formOutput = [
+  {
+    departureLocation: {
+      lat: 41.388516,
+      lng: 2.179014,
+    },
+    departureTimestamp: 1588932000000,
+    isAdmin: true,
+    isDriver: true,
+    name: 'Brendan-MyPlace',
+    seats: 2,
+  },
+  {
+    departureLocation: {
+      lat: 41.387012,
+      lng: 2.170479,
+    },
+    departureTimestamp: 15889248000000,
+    isAdmin: false,
+    isDriver: false,
+    name: 'Nicole-placaCAT',
+    seats: 0,
+  },
+  {
+    departureLocation: {
+      lat: 41.394909,
+      lng: 2.197982,
+    },
+    departureTimestamp: 15889392000000,
+    isAdmin: false,
+    isDriver: true,
+    name: 'Virginie-Codeworks',
+    seats: 3,
+  },
+  {
+    departureLocation: {
+      lat: 41.403107,
+      lng: 2.173681,
+    },
+    departureTimestamp: 15889356000000,
+    isAdmin: false,
+    isDriver: false,
+    name: 'Anthony-SegrataFamilia',
+    seats: 0,
+  },
+  {
+    departureLocation: {
+      lat: 41.379794,
+      lng: 2.124108,
+    },
+    departureTimestamp: 15889248000000,
+    isAdmin: false,
+    isDriver: false,
+    name: 'Lello-CampNou',
+    seats: 0,
+  },
+];
 
+
+import {getCommuteTime} from '../services/GoogleAPI';
+
+function formToAlgo() {
+  let input = formOutput;
+  let intoAlgo = {};
+  let intoAlgoWithDrivers = addDriver(input, intoAlgo);
+  let intoAlgoWithPassengers = addPassengers(input, intoAlgoWithDrivers);
+  console.log(intoAlgoWithPassengers);
+}
+
+function addDriver(input, intoAlgo) {
+  intoAlgo.drivers = {};
+  input.map((tripMember) => {
+    if (tripMember.isDriver) {
+      intoAlgo.drivers[tripMember.name] = {
+        spots: tripMember.seats,
+        departureTime: tripMember.departureTimestamp / 1000,
+      };
+    }
+  });
+  return intoAlgo;
+}
+
+function addPassengers(input, intoAlgo) {
+  intoAlgo.passengers = {};
+  input.map((passenger) => {
+    if (!passenger.isDriver) {
+      intoAlgo.passengers[passenger.name] = {};
+      intoAlgo.passengers[passenger.name].drivers = {};
+      intoAlgo.passengers[passenger.name].departureTime = passenger.departureTimestamp;
+      input.map((driver) => {
+        if (driver.isDriver) {
+          let passengerLocation = `${passenger.departureLocation.lat},${passenger.departureLocation.lng}|`;
+          let driverLocation = `${driver.departureLocation.lat},${driver.departureLocation.lng}`;
+          intoAlgo.passengers[passenger.name].drivers[driver.name] = getCommuteTime(passengerLocation, driverLocation);
+        }
+      });
+    }
+  });
+  return intoAlgo;
+}
+
+export default formToAlgo;
 
 //TODO: to this  Using the GOOGLE API
 // {
@@ -103,13 +169,3 @@
 //   },
 //   },
 //   };
-
-
-
-// function toAlgoParser () {
-//   console.log('calling me yes!')
-// }
-
-
-
-// export default toAlgoParser;
