@@ -15,7 +15,6 @@ import InputSeatsNum from './InputSeatsNum';
 const InputIsDriver = ({
   isDriver,
   scrollToNext,
-  scrollToPrev,
   style,
   toggleDriverHandler,
 }) => {
@@ -54,11 +53,6 @@ const InputIsDriver = ({
       </View>
 
       <View style={styles.buttonsContainer}>
-        <Button
-          onPress={scrollToPrev}
-          title='PREVIOUS'
-          color={Colors.secondary}
-          accessibilityLabel='Previous' />
         <Button
           onPress={() => {
             if (isDriver) scrollToNext(seats);

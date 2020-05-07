@@ -9,8 +9,8 @@ import {
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
 
-import AddUserForm from './AddUserForm';
-// import AddUserForm from './AddUserForm2';
+// import AddUserForm from './AddUserForm';
+import AddUserForm from './AddUserForm2';
 import Header from './Header';
 
 
@@ -20,6 +20,7 @@ const FormLaunch = () => {
   const [users, setUsers] = useState([]);
 
   const addNewUser = user => {
+    console.log('user', user);
     if (user.departureDate) {
       user.departureDate = user.departureDate.getTime();
     }

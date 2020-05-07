@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import {
   Button,
-  Text,
   View,
   StyleSheet,
 } from 'react-native';
@@ -9,55 +8,36 @@ import {
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
 
-import DateTimePicker from '@react-native-community/datetimepicker';
+import InputDepartureWidget from './InputDepartureWidget';
 
 
 const InputDepartureTime = ({
   scrollToNext,
-  scrollToPrev,
   showTime,
   style,
 }) => {
 
-  const [time, setTime] = useState(new Date());
-  const [show, setShow] = useState(false);
-
-  const onChange = (_, selectedTime) => {
-    setShow(Platform.OS === 'ios');
-    setTime(selectedTime);
-  };
-
-  useEffect(() => {
-    setShow(showTime);
-  }, [showTime]);
+  const [selectedTime, setSelectedTime] = useState(new Date());
 
   return (
 
     <View style={{ ...style, ...styles.container }}>
 
-      <Text style={styles.header}>Departure Time</Text>
-
-      <View style={styles.picker}>
-        {show && (
-          <DateTimePicker
-            animation={false}
-            mode="time"
-            onChange={onChange}
-            value={time} />
-        )}
-      </View>
+      {
+        showTime
+          ? <InputDepartureWidget
+            setUserDepartureTime={selectedTime => {
+              setSelectedTime(selectedTime);
+            }} />
+          : null
+      }
 
       <View style={styles.buttonsContainer}>
         <Button
-          onPress={scrollToPrev}
-          title="PREVIOUS"
-          color={Colors.secondary}
-          accessibilityLabel="Previous" />
-        <Button
-          onPress={() => scrollToNext(time)}
-          title="NEXT"
+          accessibilityLabel="Next"
           color={Colors.primary}
-          accessibilityLabel="Next" />
+          onPress={() => scrollToNext(selectedTime)}
+          title="NEXT" />
       </View>
     </View>
   );
@@ -67,15 +47,15 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
   },
+  clock: {
+    width: '100%',
+  },
   container: {
     ...StyleRefs.container,
   },
   header: {
     ...StyleRefs.header,
   },
-  picker: {
-    width: '100%',
-  }
 });
 
 export default InputDepartureTime;

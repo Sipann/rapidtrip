@@ -5,6 +5,7 @@ import {
   View,
 } from 'react-native';
 
+import StyleRefs from '../constants/styles';
 
 import DateTimePicker from '@react-native-community/datetimepicker';
 
@@ -15,7 +16,7 @@ const InputDepartureDate = ({ setTripDate }) => {
 
   const onChange = (_, selectedDate) => {
     setShow(Platform.OS === 'ios');
-    setDate((selectedDate));
+    setDate(selectedDate);
     setTripDate(selectedDate);
   };
 
@@ -41,8 +42,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   header: {
-    fontSize: 22,
-    fontWeight: 'bold',
+    ...StyleRefs.header,
     textAlign: 'center',
   },
 });
