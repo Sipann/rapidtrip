@@ -1,4 +1,5 @@
 import React from 'react';
+import getCommuteTime from '../services/GoogleAPI';
 import {
   View,
   Text,
