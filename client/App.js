@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import Result from './components/Result';
+import { StyleSheet, View } from 'react-native';
+// import Result from './components/Result';
+import Result from './components/Result2';
 
-export default function App() {
+export default function App () {
   return (
     <View style={styles.container}>
       <Result />
