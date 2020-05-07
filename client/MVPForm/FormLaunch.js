@@ -5,17 +5,18 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
 import userFormOutput from './formOutput';
 import AddUserForm from './AddUserForm2';
 
-
-const FormLaunch = ({ navigation }) => {
+const FormLaunch = () => {
 
   const [isAddingUser, setIsAddingUser] = useState(false);
   const [users, setUsers] = useState([]);
+  const navigation = useNavigation();
 
   const addNewUser = user => {
     const newUser = userFormOutput(user);
