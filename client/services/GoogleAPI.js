@@ -1,6 +1,6 @@
 import env from '../config/env.config';
 
-export async function getCommuteTime(origin, destination) {
+export default async function getCommuteTime(origin, destination) {
   const base = origin;
   const target = destination;
 
