@@ -5,20 +5,18 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
 import userFormOutput from './formOutput';
-
-// import AddUserForm from './AddUserForm';
-import AddUserForm from './AddUserForm2';
-import Header from './Header';
-
+import AddUserForm from './AddUserForm';
 
 const FormLaunch = () => {
 
   const [isAddingUser, setIsAddingUser] = useState(false);
   const [users, setUsers] = useState([]);
+  const navigation = useNavigation();
 
   const addNewUser = user => {
     const newUser = userFormOutput(user);
@@ -30,11 +28,6 @@ const FormLaunch = () => {
 
   return (
     <View style={styles.screen}>
-
-      <Header
-        title="MVP Form"
-        style={styles.pageHeader} />
-
       <View style={styles.formContainer}>
         <Button
           accessibilityLabel="Add New User Form"
@@ -55,8 +48,8 @@ const FormLaunch = () => {
       <View style={styles.resultsContainer}>
         <Button
           color={Colors.secondary}
-          onPress={() => console.log('all users', users)}
-          title="Get All Users" />
+          onPress={() => navigation.navigate('CarAllocation')}
+          title="Car allocation" />
       </View>
 
     </View>

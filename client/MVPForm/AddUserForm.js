@@ -28,7 +28,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
     seats: '0',
   });
 
-
+  const [showTime, setShowTime] = useState(false);
 
   const cancelHandler = () => {
     setUser({
@@ -53,7 +53,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
         <View style={styles.carousel}>
 
           <ScrollView
-            keyboardShouldPersistTaps="always"
+            keyboardShouldPersistTaps='handled'
             horizontal={true}
             pagingEnabled={true}
             scrollEnabled={false}
@@ -61,50 +61,49 @@ const AddUserForm = ({ addUser, dismissModal }) => {
             contentContainerStyle={{ width: '500%' }}>
 
             <InputUserName
-              username={user.name}
-              scrollToNext={() => scroll.current.scrollTo({ x: 1 * screenWidth, y: 0, animated: true })}
+              scrollToNext={() => {
+                scroll.current.scrollTo({ x: 1 * screenWidth, y: 0, animated: true });
+                Keyboard.dismiss();}
+              }
               setUsernameHandler={(input) => setUser({ ...user, name: input })}
               style={{ width: screenWidth }}
+              username={user.name}
             />
 
             <InputIsAdmin
               isAdmin={user.isAdmin}
-              scrollToNext={(selectedDate) => {
+              scrollToNext={selectedDate => {
                 if (selectedDate) setUser({ ...user, departureDate: selectedDate });
                 scroll.current.scrollTo({ x: 2 * screenWidth, y: 0, animated: true });
               }}
-              scrollToPrev={() => { }}
               setIsAdminHandler={() => setUser({ ...user, isAdmin: !user.isAdmin })}
-              setTripDate={(selectedDate) => setUser({ ...user, departureDate: selectedDate })}
               style={{ width: screenWidth }}
             />
 
             <InputIsDriver
               isDriver={user.isDriver}
-              scrollToNext={(seats) => {
+              scrollToNext={seats => {
                 if (seats) setUser({ ...user, seats: seats });
                 scroll.current.scrollTo({ x: 3 * screenWidth, animated: true });
+                setShowTime(true);
+                Keyboard.dismiss();
               }}
-              scrollToPrev={() => { }}
               style={{ width: screenWidth }}
               toggleDriverHandler={() => setUser({ ...user, isDriver: !user.isDriver })}
             />
 
             <InputDepartureTime
-              time={user.departureTime}
               scrollToNext={selectedTime => {
                 setUser({ ...user, departureTime: selectedTime });
                 scroll.current.scrollTo({ x: 4 * screenWidth, animated: true });
               }}
-              scrollToPrev={() => { }}
-              setDepartureTime={(evt, selectedTime) => setUser({ ...user, departureTime: selectedTime })}
+              showTime={showTime}
               style={{ width: screenWidth }}
             />
 
             <InputDepartureLocation
               addUser={() => addUser(user)}
-              scrollToPrev={() => { }}
-              setDepartureLocation={(loc) => setUser({ ...user, departureLocation: loc })}
+              setDepartureLocation={loc => setUser({ ...user, departureLocation: loc })}
               style={{ width: screenWidth }}
             />
 
