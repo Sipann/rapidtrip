@@ -1,6 +1,6 @@
 export default function parseAlgoOutput (algoOutput, formOutput) {
-  algoOutput = mockAlgoOutput;
-  formOutput = mockFormOutput;
+  // algoOutput = mockAlgoOutput;
+  // formOutput = mockFormOutput;
   // parses algo output
   const parsedOutput = Object.keys(algoOutput).map(key => ({
     driver: { name: key },
@@ -28,94 +28,96 @@ export default function parseAlgoOutput (algoOutput, formOutput) {
   return result;
 }
 
-//TODO parse this
-const mockAlgoOutput = {
-  'Virginie': {
-    spots: 2,
-    current: [
-      { Passenger: 'Nicole', Time: 1 },
-      { Passenger: 'Anthony', Time: 6 },
-    ],
-  },
-  'Brendan': {
-    spots: 2,
-    current: [
-      { Passenger: 'Lello', Time: 10 },
-      { Passenger: 'Andre', Time: 5 },
-    ],
-  }
-};
+// mocked inputs
 
-const mockFormOutput = [
-  {
-    "departureTimestamp": 1588774296658,
-    "departureLocation": {
-      "lat": 37.4219693,
-      "lng": -122.0840034,
-    },
-    "isAdmin": true,
-    "isDriver": true,
-    "name": "Virginie",
-    "seats": 3,
-  },
-  {
-    "departureLocation": {
-      "lat": 37.4219693,
-      "lng": -122.0840034,
-    },
-    "departureTimestamp": 1588861330923,
-    "isAdmin": true,
-    "isDriver": true,
-    "name": "Brendan",
-    "seats": 5,
-  },
-  {
-    "departureLocation": {
-      "lat": 40.656685,
-      "lng": -4.6812086,
-    },
-    "departureTimeStamp": 1588774443514,
-    "isAdmin": false,
-    "isDriver": false,
-    "name": "Anthony",
-    "seats": 0,
-  },
-  {
-    "departureLocation": {
-      "lat": 40.656685,
-      "lng": -4.6812086,
-    },
-    "departureTimeStamp": 1588774443514,
-    "isAdmin": false,
-    "isDriver": false,
-    "name": "Lello",
-    "seats": 0,
-  },
-  {
-    "departureLocation": {
-      "lat": 40.656685,
-      "lng": -4.6812086,
-    },
-    "departureTimeStamp": 1588774443514,
-    "isAdmin": false,
-    "isDriver": false,
-    "name": "Andre",
-    "seats": 0,
-  },
-  {
-    "departureLocation": {
-      "lat": 40.656685,
-      "lng": -4.6812086,
-    },
-    "departureTimeStamp": 1588774443514,
-    "isAdmin": false,
-    "isDriver": false,
-    "name": "Nicole",
-    "seats": 0,
-  }
-];
+// const mockAlgoOutput = {
+//   'Virginie': {
+//     spots: 2,
+//     current: [
+//       { Passenger: 'Nicole', Time: 1 },
+//       { Passenger: 'Anthony', Time: 6 },
+//     ],
+//   },
+//   'Brendan': {
+//     spots: 2,
+//     current: [
+//       { Passenger: 'Lello', Time: 10 },
+//       { Passenger: 'Andre', Time: 5 },
+//     ],
+//   }
+// };
 
-//TODO to this (getting some extra data and merging)
+// const mockFormOutput = [
+//   {
+//     'departureTimestamp': 1588774296658,
+//     'departureLocation': {
+//       'lat': 37.4219693,
+//       'lng': -122.0840034,
+//     },
+//     'isAdmin': true,
+//     'isDriver': true,
+//     'name': 'Virginie',
+//     'seats': 3,
+//   },
+//   {
+//     'departureLocation': {
+//       'lat': 37.4219693,
+//       'lng': -122.0840034,
+//     },
+//     'departureTimestamp': 1588861330923,
+//     'isAdmin': true,
+//     'isDriver': true,
+//     'name': 'Brendan',
+//     'seats': 5,
+//   },
+//   {
+//     'departureLocation': {
+//       'lat': 40.656685,
+//       'lng': -4.6812086,
+//     },
+//     'departureTimeStamp': 1588774443514,
+//     'isAdmin': false,
+//     'isDriver': false,
+//     'name': 'Anthony',
+//     'seats': 0,
+//   },
+//   {
+//     'departureLocation': {
+//       'lat': 40.656685,
+//       'lng': -4.6812086,
+//     },
+//     'departureTimeStamp': 1588774443514,
+//     'isAdmin': false,
+//     'isDriver': false,
+//     'name': 'Lello',
+//     'seats': 0,
+//   },
+//   {
+//     'departureLocation': {
+//       'lat': 40.656685,
+//       'lng': -4.6812086,
+//     },
+//     'departureTimeStamp': 1588774443514,
+//     'isAdmin': false,
+//     'isDriver': false,
+//     'name': 'Andre',
+//     'seats': 0,
+//   },
+//   {
+//     'departureLocation': {
+//       'lat': 40.656685,
+//       'lng': -4.6812086,
+//     },
+//     'departureTimeStamp': 1588774443514,
+//     'isAdmin': false,
+//     'isDriver': false,
+//     'name': 'Nicole',
+//     'seats': 0,
+//   }
+// ];
+
+// expected result
+
 // const mockResult = [
 //   {
 //     driver: {
