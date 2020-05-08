@@ -85,7 +85,7 @@ const Result = () => {
               <Text style={styles.driverName}>{currentCar.driver.name}</Text>
             </Text>
             <Text style={styles.pickupTime}>{currentCar.driver.departureTime.slice(0, -3)}</Text>
-            <Text style={styles.pickupAddress}>Somewhere practical</Text>
+            <Text style={styles.pickupAddress}>Place de L'Etoile - Paris</Text>
           </View>
         )
         }

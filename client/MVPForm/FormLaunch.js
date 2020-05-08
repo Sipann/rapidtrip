@@ -11,11 +11,14 @@ import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
 import userFormOutput from './formOutput';
 import AddUserForm from './AddUserForm';
+import formToAlgo from '../utils/algoInputParser';
+import parseAlgoOutput from '../utils/algoOutputParser';
+import Algorithm from '../services/Algorithm/Algorithm';
 
 const FormLaunch = () => {
 
   const [isAddingUser, setIsAddingUser] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(formOutput);
   const navigation = useNavigation();
 
   const addNewUser = user => {
@@ -48,7 +51,15 @@ const FormLaunch = () => {
       <View style={styles.resultsContainer}>
         <Button
           color={Colors.secondary}
-          onPress={() => navigation.navigate('CarAllocation')}
+          onPress={async () => {
+            // const parsedResult = await formToAlgo(users);
+            // console.log('parsedResult', parsedResult);
+            // const result = Algorithm(parsedResult);
+            // console.log('algoResult', result);
+            // const inputResultPage = parseAlgoOutput(result, users);
+            // console.log('inputResultPage', inputResultPage);
+            navigation.navigate('Result');
+          }}
           title="Car allocation" />
       </View>
 
@@ -84,3 +95,61 @@ const styles = StyleSheet.create({
 });
 
 export default FormLaunch;
+
+let formOutput = [
+  {
+    departureLocation: {
+      lat: 41.388516,
+      lng: 2.179014,
+    },
+    departureTimestamp: 1588932000000,
+    isAdmin: true,
+    isDriver: true,
+    name: 'Brendan-MyPlace',
+    seats: 2,
+  },
+  {
+    departureLocation: {
+      lat: 41.387012,
+      lng: 2.170479,
+    },
+    departureTimestamp: 1588924800000,
+    isAdmin: false,
+    isDriver: false,
+    name: 'Nicole-placaCAT',
+    seats: 0,
+  },
+  {
+    departureLocation: {
+      lat: 41.394909,
+      lng: 2.197982,
+    },
+    departureTimestamp: 1588939200000,
+    isAdmin: false,
+    isDriver: true,
+    name: 'Virginie-Codeworks',
+    seats: 3,
+  },
+  {
+    departureLocation: {
+      lat: 41.403107,
+      lng: 2.173681,
+    },
+    departureTimestamp: 1588935600000,
+    isAdmin: false,
+    isDriver: false,
+    name: 'Anthony-SegrataFamilia',
+    seats: 0,
+  },
+  {
+    departureLocation: {
+      lat: 41.379794,
+      lng: 2.124108,
+    },
+    departureTimestamp: 1588924800000,
+    isAdmin: false,
+    isDriver: false,
+    name: 'Lello-CampNou',
+    seats: 0,
+  },
+];

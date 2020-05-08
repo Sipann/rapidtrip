@@ -16,12 +16,12 @@ export default function parseAlgoOutput (algoOutput, formOutput) {
   const result = parsedOutput.map(({driver, passengers}) => ({
     driver: {
       name: driver.name,
-      departureTimeStamp: parsedState[driver.name].departureTimeStamp,
+      departureTimeStamp: parsedState[driver.name].departureTimestamp,
       departureLocation: parsedState[driver.name].departureLocation
     },
     passengers: passengers.map(pass => ({
       name: pass.name,
-      departureTimeStamp: parsedState[pass.name].departureTimeStamp,
+      departureTimeStamp: parsedState[pass.name].departureTimestamp,
       departureLocation: parsedState[pass.name].departureLocation
     }))
   }));

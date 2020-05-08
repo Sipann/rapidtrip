@@ -1,11 +1,10 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import Result from './components/Result2';
-import { StyleSheet, Text, View } from 'react-native';
+import Result from './components/Result';
+import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import Form from './MVPForm/FormLaunch';
-import CarAllocation from './components/CarAllocation';
 
 import Colors from './constants/colors';
 
@@ -32,11 +31,11 @@ export default function App () {
           <Stack.Screen
             name='MVPForm'
             component={Form}
-            options={{title: 'MVP Form'}}
+            options={{title: 'Trippy'}}
           />
           <Stack.Screen
-            name='CarAllocation'
-            component={CarAllocation}
+            name='Result'
+            component={Result}
             options={{title: 'Car Allocation'}}
           />
         </Stack.Navigator>
