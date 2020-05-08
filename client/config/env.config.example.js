@@ -1,4 +1,10 @@
 export default {
-  GOOGLE_API_KEY: 'google api key',
-  FACEBOOK_APP_ID: 'facebook app id',
+  GOOGLE_API_KEY: '',
+  FIREBASE_API_KEY: '',
+  AUTH_DOMAIN: '',
+  DATABASE_URL: '',
+  PROJECT_ID: '',
+  STORAGE_BUCKET: '',
+  MESSAGING_SENDER_ID: '',
+  APP_ID: '',
 };
