@@ -9,6 +9,8 @@ import FriendList from './components/FriendList';
 import Settings from './components/Settings';
 import Profile from './components/Profile';
 
+import Colors from './constants/colors';
+
 const Stack = createStackNavigator();
 
 export default function App () {

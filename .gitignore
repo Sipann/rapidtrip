@@ -15,3 +15,7 @@ client/web-report/
 
 # macOS
 **/.DS_Store
+
+env.config.js
+node_modules
+.expo
