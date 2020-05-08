@@ -59,12 +59,13 @@
 
 import { getCommuteTime } from '../services/GoogleAPI';
 
-function formToAlgo (input) {
-  // let input = formOutput;   To test uncomment this line and the mockdata above. and remove input as an parameter of the function
+async function formToAlgo (input) {
+  //let input = formOutput;   //To test uncomment this line and the mockdata above. and remove input as an parameter of the function
   let intoAlgo = {};
   let intoAlgoWithDrivers = addDriver(input, intoAlgo);
-  let intoAlgoWithPassengers = addPassengers(input, intoAlgoWithDrivers);
+  let intoAlgoWithPassengers = await addPassengers(input, intoAlgoWithDrivers);
   let finalIntoAlog = addPriority(intoAlgoWithPassengers);
+  console.log(finalIntoAlog);
   return finalIntoAlog;
 }
 
@@ -81,25 +82,27 @@ function addDriver (input, intoAlgo) {
   return intoAlgo;
 }
 
-function addPassengers (input, intoAlgo) {
+async function addPassengers (input, intoAlgo) {
   intoAlgo.passengers = {};
-  input.map((passenger) => {
+  for (let i = 0; i < input.length; i++) {
+    let passenger = input[i];
     if (!passenger.isDriver) {
       intoAlgo.passengers[passenger.name] = {};
       intoAlgo.passengers[passenger.name].drivers = {};
       intoAlgo.passengers[passenger.name].departureTime =
-        passenger.departureTimestamp;
-      input.map((driver) => {
+        passenger.departureTimestamp / 1000;
+      for (let j = 0; j < input.length; j++) {
+        let driver = input[j];
         if (driver.isDriver) {
           let passengerLocation = `${passenger.departureLocation.lat},${passenger.departureLocation.lng}|`;
           let driverLocation = `${driver.departureLocation.lat},${driver.departureLocation.lng}`;
           intoAlgo.passengers[passenger.name].drivers[
             driver.name
-          ] = getCommuteTime(passengerLocation, driverLocation);
+          ] = await getCommuteTime(passengerLocation, driverLocation);
         }
-      });
+      }
     }
-  });
+  }
   return intoAlgo;
 }
 
