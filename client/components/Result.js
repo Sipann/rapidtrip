@@ -1,126 +1,195 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, SectionList, SafeAreaView, StyleSheet } from 'react-native';
-import Constants from 'expo-constants';
-import colorScheme from '../constants/colors';
+import React, { useEffect, useState, useRef } from 'react';
+import {
+  Button,
+  Dimensions,
+  Image,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
+import MapView, { Callout, Marker } from 'react-native-maps';
 
-export default function Result () {
+import { mockResult } from './mockResults';
 
-  const [result, setResult] = useState([]);
+const Result = () => {
 
-  useEffect(() => {
-    setResult(parseResultToList(mockResult));
-  }, [mockResult]);
+  const [cars, setCars] = useState([]);
+  const [currentCar, setCurrentCar] = useState({});
+  const itemsRef = useRef([]);
 
-  function parseResultToList (result) {
-    return result.map(({driver, passengers}) => ({
-      title: driver.name,
-      data: passengers.map(({id, name, departureLocation, departureTime}) => ({
-        key: id,
-        name,
-        departureLocation,
-        departureTime
-      }))
-    }));
-  }
+  //! currentUser id currently hardcoded
+  const currentUserCar = (allCars) => {
+    const currentCar = allCars.find(car => {
+      return car.passengers.find(passenger => passenger.id === 2);
+    });
+    setCurrentCar(currentCar);
+  };
 
-  function Item (item) {
+  const hideCallout = (index) => {
+    itemsRef.current[index].hideCallout();
+  };
+
+  const renderMarkers = () => {
     return (
-      <View style={styles.item}>
-        <Text style={styles.title}>{ item.name }</Text>
-        <Text style={styles.title}>{ 'Departure location ' + item.departureLocation.lat + ' ' + item.departureLocation.lng }</Text>
-        <Text style={styles.title}>{ 'Departure time ' + item.departureTime }</Text>
+      <View>
+        {cars.map((car, index) => {
+          return (
+            <Marker
+              key={index}
+              coordinate={{ latitude: car.driver.departureLocation.lat, longitude: car.driver.departureLocation.lng }}
+              pinColor={car.driver.id === currentCar.driver.id ? 'rgba(102, 204, 204, 1)' : 'rgba(255, 0, 0, 0.4)'}
+              ref={el => itemsRef.current[index] = el}>
+              <Callout style={car.driver.id === currentCar.driver.id ? styles.currentCarCallout : styles.otherCallout}
+                onPress={() => hideCallout(index)}>
+                <View>
+                  <Text>{car.driver.name} (driver)</Text>
+                  {car.passengers.map(p => {
+                    return (
+                      <Text key={p.id}>{p.name}</Text>
+                    );
+                  })}
+                </View>
+              </Callout>
+            </Marker>
+          );
+        })}
       </View>
     );
-  }
+  };
 
-  function Header (title) {
-    return (
-      <Text style={styles.header}>
-        { `${title}'s car` }
-      </Text>
-    );
-  }
+  const showDirections = () => {
+    console.log('TODO, show directions');
+  };
+
+  useEffect(() => {
+    setCars(mockResult);
+    currentUserCar(mockResult);
+    itemsRef.current = itemsRef.current.slice(0, mockResult.length);
+  }, [mockResult]);
 
   return (
-    <SafeAreaView style={styles.container}>
-      <SectionList
-        sections={ result }
-        renderItem={ ({item}) => Item(item) }
-        renderSectionHeader={ ({ section: { title } }) => Header(title) }
-      />
+    <SafeAreaView>
+      <ScrollView contentContainerStyle={{ alignItems: 'center', backgroundColor: '#fff' }}>
+
+        <View style={styles.imgCntr}>
+          <Image
+            source={require('../assets/cartoonCar.png')}
+            style={styles.img} />
+        </View>
+
+        {currentCar.driver && (
+          <View style={styles.infos}>
+            <Text style={styles.driverTitle}>Driver:
+              <Text style={styles.driverName}>{currentCar.driver.name}</Text>
+            </Text>
+            <Text style={styles.pickupTime}>{currentCar.driver.departureTime.slice(0, -3)}</Text>
+            <Text style={styles.pickupAddress}>Somewhere practical</Text>
+          </View>
+        )
+        }
+
+        <View style={styles.actions}>
+          <Text>How do I get there?</Text>
+          <Button
+            onPress={showDirections}
+            title="Navigate Me" />
+        </View>
+
+        <View style={styles.mapCntr}>
+          {currentCar.driver && (
+            <MapView
+              initialRegion={{
+                latitude: currentCar.driver.departureLocation.lat,
+                longitude: currentCar.driver.departureLocation.lng,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}
+              style={styles.map}>
+              {renderMarkers()}
+            </MapView>)}
+        </View>
+
+      </ScrollView>
     </SafeAreaView>
   );
-}
+};
+
+const screenWidth = Dimensions.get('window').width;
+const imgWidth = screenWidth * 0.5;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    marginTop: Constants.statusBarHeight,
-    marginHorizontal: 16
+  actions: {
+    width: '80%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
-  item: {
-    backgroundColor: colorScheme.primary,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingHorizontal: 10,
-    paddingVertical: 5
+  currentCarCallout: {
+    backgroundColor: '#66cccc',
+    width: 150,
+    padding: 15,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
-  header: {
-    backgroundColor: colorScheme.accent,
+  calloutText: {
+    textAlign: 'right',
+  },
+  driverName: {
+    fontSize: 16,
+  },
+  driverTitle: {
+    fontSize: 18,
+  },
+  img: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'contain',
+  },
+  imgCntr: {
+    width: imgWidth,
+    height: imgWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 5,
+  },
+  infos: {
+    width: '80%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 20,
+    borderWidth: 2,
+    borderColor: 'black',
+    borderRadius: 10,
     padding: 10,
-    marginTop: 16,
-    fontSize: 26,
-    fontWeight: 'bold'
   },
-  title: {
-    fontSize: 24
-  }
+  map: {
+    width: '90%',
+    height: '90%',
+  },
+  mapCntr: {
+    flex: 1,
+    width: screenWidth,
+    height: screenWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  otherCallout: {
+    backgroundColor: 'rgba(255, 0, 0, 0.4)',
+    width: 150,
+    padding: 15,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  pickupAddress: {
+    fontSize: 16,
+  },
+  pickupTime: {
+    fontSize: 16,
+  },
 });
 
-//TODO use context or redux
-const mockResult = [
-  {
-    driver: {
-      id: 1, name: 'Virginie',
-      departureDate: 1588774296658,
-      departureLocation: { lat: 41.401648, lng: -2.186230 },
-      departureTime: '16:30:00'
-    },
-    passengers: [
-      {
-        id: 2, name: 'Brendan',
-        departureLocation: { lat: 41.4019693, lng: -2.1860034 },
-        departureTime: '15:45:00'
-      },
-      {
-        id: 3, name: 'Anthony',
-        departureLocation: { lat: 41.4019695, lng: -2.1862589 },
-        departureTime: '16:15:00'
-      },
-      {
-        id: 4, name: 'Lello',
-        departureLocation: { lat: 41.4019542, lng: -2.1862875 },
-        departureTime: '16:05:00'
-      }
-    ]
-  },
-  {
-    driver: {
-      id: 5, name: 'John',
-      departureDate: 1588774443514,
-      departureLocation: { lat: 41.478622, lng: 2.085599 },
-      departureTime: '20:45:00'
-    },
-    passengers: [
-      {
-        id: 6, name: 'Jane',
-        departureLocation: { lat: 41.473568, lng: 2.081234 },
-        departureTime: '19:45:00'
-      },
-      {
-        id: 7, name: 'Jake',
-        departureLocation: { lat: 41.475789, lng: 2.085781 },
-        departureTime: '19:30:00'
-      }
-    ]
-  }
-];
+export default Result;
