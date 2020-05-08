@@ -13,6 +13,7 @@
     "@react-navigation/native": "^5.2.4",
     "@react-navigation/stack": "^5.2.19",
     "expo": "~37.0.3",
+    "expo-linear-gradient": "~8.1.0",
     "expo-location": "~8.1.0",
     "react": "~16.9.0",
     "react-dom": "~16.9.0",
