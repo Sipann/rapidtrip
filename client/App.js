@@ -1,10 +1,13 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import Result from './components/Result';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-import Form from './MVPForm/FormLaunch';
+import {createStackNavigator} from '@react-navigation/stack';
+import Homepage from './components/Homepage';
+import TripList from './components/TripList';
+import FriendList from './components/FriendList';
+import Settings from './components/Settings';
+import Profile from './components/Profile';
 
 import Colors from './constants/colors';
 
@@ -14,29 +17,31 @@ export default function App () {
   return (
     <View style={styles.container}>
       <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName='MVPForm'
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: Colors.primary,
-            },
-            headerTintColor: 'black',
-            headerTitleAlign: 'center',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 18
-            }
-          }}
-        >
+        <Stack.Navigator initialRouteName='Home'>
           <Stack.Screen
-            name='MVPForm'
-            component={Form}
-            options={{title: 'Trippy'}}
+            name='Home'
+            component={Homepage}
+            options={{title: 'RapidTrip'}}
           />
           <Stack.Screen
-            name='Result'
-            component={Result}
-            options={{title: 'Car Allocation'}}
+            name='TripList'
+            component={TripList}
+            options={{title: 'My Trips'}}
+          />
+          <Stack.Screen
+            name='FriendList'
+            component={FriendList}
+            options={{title: 'My Friends'}}
+          />
+          <Stack.Screen
+            name='Settings'
+            component={Settings}
+            options={{title: 'Settings'}}
+          />
+          <Stack.Screen
+            name='Profile'
+            component={Profile}
+            options={{title: 'My profile'}}
           />
         </Stack.Navigator>
       </NavigationContainer>
@@ -47,8 +52,7 @@ export default function App () {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
     alignItems: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'center'
   },
 });
