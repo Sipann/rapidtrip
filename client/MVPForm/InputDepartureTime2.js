@@ -22,6 +22,7 @@ const InputDepartureTime = ({
   return (
 
     <View style={{ ...style, ...styles.container }}>
+
       {
         showTime
           ? <InputDepartureWidget
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
   },
   header: {
     ...StyleRefs.header,
-  }
+  },
 });
 
 export default InputDepartureTime;

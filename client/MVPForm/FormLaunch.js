@@ -28,7 +28,6 @@ const FormLaunch = () => {
 
   return (
     <View style={styles.screen}>
-
       <View style={styles.formContainer}>
         <Button
           accessibilityLabel="Add New User Form"
