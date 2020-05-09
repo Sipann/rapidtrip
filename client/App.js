@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import HomeScreen from './screens/HomeScreen';
+import TripDetails from './screens/TripDetails';
 
 import Form from './MVPForm/FormLaunch';
 
@@ -21,7 +21,7 @@ export default function App() {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="MVPForm"
+          initialRouteName="TripDetails"
           screenOptions={{
             headerStyle: {
               backgroundColor: Colors.primary,
@@ -35,6 +35,11 @@ export default function App() {
           }}
         >
           <Stack.Screen
+            name="TripDetails"
+            component={TripDetails}
+            options={{ title: 'Trip Details' }}
+          />
+          <Stack.Screen
             name="MVPForm"
             component={Form}
             options={{ title: 'Trippy' }}
@@ -45,34 +50,6 @@ export default function App() {
             options={{ title: 'Car Allocation' }}
           />
         </Stack.Navigator>
-      </NavigationContainer>
-      <NavigationContainer>
-        <Tab.Navigator
-          initialRouteName="Feed"
-          activeColor="#fff"
-          barStyle={{ backgroundColor: Colors.secondary }}
-        >
-          <Tab.Screen
-            name="Home"
-            component={HomeScreen}
-            options={{
-              tabBarLabel: 'Home',
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="home" color={color} size={26} />
-              ),
-            }}
-          />
-          <Tab.Screen
-            name="Notifications"
-            component={HomeScreen}
-            options={{
-              tabBarLabel: 'Settings',
-              tabBarIcon: ({ color }) => (
-                <MaterialCommunityIcons name="cogs" color={color} size={26} />
-              ),
-            }}
-          />
-        </Tab.Navigator>
       </NavigationContainer>
     </View>
   );
