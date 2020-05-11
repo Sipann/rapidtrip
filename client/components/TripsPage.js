@@ -1,99 +1,114 @@
-import React, {useState} from 'react';
-import { View, Text, StyleSheet, Button, Image } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 
-export default function TripsPage ({navigation}) {
-
+export default function TripsPage ({ navigation }) {
   const tripList = mockedTrips;
-  const upcomingTrips = tripList.filter(trip => trip.date >= Date.now()).sort((a,b) => a.date - b.date);
-  const pastTrips = tripList.filter(trip => trip.date < Date.now()).sort((a,b) => b.date - a.date);
+  const upcomingTrips = tripList
+    .filter((trip) => trip.date >= Date.now())
+    .sort((a, b) => a.date - b.date);
+  const pastTrips = tripList
+    .filter((trip) => trip.date < Date.now())
+    .sort((a, b) => b.date - a.date);
 
   const [currentList, setCurrentList] = useState(upcomingTrips);
 
-
   function Item ({ trip }) {
     return (
-      <TouchableOpacity style={styles.item} >
+      <TouchableOpacity onPress={() => {
+        navigation.navigate('TripPage', {
+          trip
+        });
+      }} style={styles.item}>
         <Text style={styles.tripname}>{trip.title}</Text>
-        <Image style={styles.photo} source={require('../assets/carClipArt.jpg')}/>
+        <Image
+          style={styles.photo}
+          source={require('../assets/carClipArt.jpg')}
+        />
         <Text style={styles.tripdate}>{trip.date.toUTCString()}</Text>
       </TouchableOpacity>
     );
   }
 
-
   return (
     <View style={styles.container}>
       <Text style={styles.welcome}>Welcome USERNAME!</Text>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('AddTrip');
+        }}
+      >
+        <View style={styles.button}>
+          <Text style={styles.buttonText}>Creat New Trip</Text>
+        </View>
+      </TouchableOpacity>
       <View style={styles.buttonGroup}>
-        <TouchableOpacity onPress={() => { setCurrentList(upcomingTrips); }} >
+        <TouchableOpacity
+          onPress={() => {
+            setCurrentList(upcomingTrips);
+          }}
+        >
           <View style={styles.button}>
-            <Text style={styles.buttonText}>
-            UPCOMING
-            </Text>
+            <Text style={styles.buttonText}>UPCOMING</Text>
           </View>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => { setCurrentList(pastTrips); }} >
+        <TouchableOpacity
+          onPress={() => {
+            setCurrentList(pastTrips);
+          }}
+        >
           <View style={styles.button}>
-            <Text style={styles.buttonText}>
-            PAST TRIPS
-            </Text>
+            <Text style={styles.buttonText}>PAST TRIPS</Text>
           </View>
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.list}>
-        {
-          currentList.map(trip =>
-            <Item
-              key={trip.id}
-              trip={trip}
-            />)
-        }
+        {currentList.map((trip) => (
+          <Item key={trip.id} trip={trip} />
+        ))}
       </ScrollView>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-  },
+  container: {},
   buttonGroup: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    margin: 20
+    margin: 20,
   },
   button: {
     backgroundColor: 'blue',
     margin: 5,
-    borderRadius: 10
+    borderRadius: 10,
   },
   buttonText: {
     margin: 10,
-    color: 'white'
+    color: 'white',
+    textAlign: 'center'
   },
   list: {
-    height: '80%'
+    height: '80%',
   },
   item: {
     margin: 20,
     backgroundColor: 'lightgray',
-    padding: 10
+    padding: 10,
   },
   tripname: {
-    fontSize: 30
+    fontSize: 30,
   },
   photo: {
     height: 100,
     width: '100%',
-    marginTop:5
+    marginTop: 5,
   },
   welcome: {
-    margin:'auto',
-    textAlign: 'center'
-  }
+    margin: 'auto',
+    textAlign: 'center',
+  },
 });
-
-
 
 const mockedTrips = [
   {
