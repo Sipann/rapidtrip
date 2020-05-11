@@ -41,7 +41,44 @@ module.exports.getUser = async ctx => {
 };
 
 module.exports.createUser = async ctx => {
-  ctx.body = {};
+  // create response object
+  let res = {};
+  // store user object passed in body
+  const newUser = ctx.request.body;
+
+  try {
+    // add user to databse and get the User instance created
+    // if id alreay exists in database, get the existing User instance
+    const [user, created] = await User.findOrCreate({
+      where: { id: newUser.id },
+      defaults: newUser
+    });
+    if (!user) throw {
+      status: 500,
+      message: 'Not possible to create user.'
+    };
+
+    // populate response object
+    res.ok = true;
+    res.body = {};
+    res.body.user = user.toJSON();
+    res.body.trips = [];
+    // set response status
+    if (created) ctx.status = 201;
+    else ctx.status = 200;
+    
+    // TODO if user was not created, update its info
+    // TODO check if user email is present in any trip and fetch info
+  } catch (error) {
+    // populate response object
+    res.ok = false;
+    res.error = error.message;
+    // set response status
+    ctx.status = error.status || 400;
+  } finally {
+    // send response
+    ctx.body = res;
+  }
 };
 
 module.exports.removeUser = async ctx => {
