@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
 import MapView from 'react-native-maps';
+import { Marker } from 'react-native-maps';
 
 const mockedTrip = {
   id: 1,
@@ -12,6 +13,14 @@ const mockedTrip = {
 };
 
 export default function App() {
+  const markers = [
+    {
+      latitude: 37.78825,
+      longitude: -122.4324,
+      title: 'Foo Place',
+      subtitle: '1234 Foo Drive',
+    },
+  ];
   return (
     <View style={styles.container}>
       <MapView
@@ -22,6 +31,7 @@ export default function App() {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}
+        annotations={markers}
       />
       <Text style={styles.title}>{mockedTrip.title}</Text>
       <Text style={styles.text}>
