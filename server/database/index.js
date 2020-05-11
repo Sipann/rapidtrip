@@ -43,6 +43,6 @@ Person.belongsToMany(Trip, { through: Participant, foreignKey: 'person_id', as: 
 Location.hasOne(Participant, { as: 'departureLocation', foreignKey: 'departure_location_id' });
 Car.hasOne(Participant, { as: 'car', foreignKey: 'car_id' });
 
-db.sync({force: true});
+db.sync({ alter: true });
 
 module.exports = db;
