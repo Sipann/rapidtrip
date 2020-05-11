@@ -4,6 +4,11 @@ const db = require('./db');
 class Person extends Sequelize.Model {}
 
 Person.init({
+  id: {
+    type: Sequelize.STRING,
+    primaryKey: true,
+    allowNull: false
+  },
   name: {
     type: Sequelize.STRING,
     allowNull: false
