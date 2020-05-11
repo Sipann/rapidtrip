@@ -4,8 +4,7 @@ import Result from './components/Result';
 import { StyleSheet, View } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TripDetails from './screens/TripDetails';
 
 import Form from './MVPForm/FormLaunch';
@@ -14,7 +13,7 @@ import Colors from './constants/colors';
 
 const Stack = createStackNavigator();
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 export default function App() {
   return (
