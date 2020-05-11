@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+const moment = require('moment');
 
 export default function TripsPage ({ navigation }) {
+  //TODO: Here is where we want to access all trips (Get all trip objects)
   const tripList = mockedTrips;
   const upcomingTrips = tripList
     .filter((trip) => trip.date >= Date.now())
@@ -25,7 +27,7 @@ export default function TripsPage ({ navigation }) {
           style={styles.photo}
           source={require('../assets/carClipArt.jpg')}
         />
-        <Text style={styles.tripdate}>{trip.date.toUTCString()}</Text>
+        <Text style={styles.tripdate}>{moment(trip.date.toUTCString()).format('MMM Do, YYYY')}</Text>
       </TouchableOpacity>
     );
   }
@@ -39,7 +41,7 @@ export default function TripsPage ({ navigation }) {
         }}
       >
         <View style={styles.button}>
-          <Text style={styles.buttonText}>Creat New Trip</Text>
+          <Text style={styles.buttonText}>Create New Trip</Text>
         </View>
       </TouchableOpacity>
       <View style={styles.buttonGroup}>
@@ -123,7 +125,7 @@ const mockedTrips = [
   },
   {
     id: 11,
-    title: 'Amsterdam Weekend',
+    title: 'Amsterdam Weekend Pt2',
     date: new Date(2013, 12, 7),
   },
   {
