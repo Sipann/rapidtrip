@@ -3,7 +3,7 @@ const Person = require('./Person');
 const Location = require('./Location');
 const Car = require('./Car');
 const Participant = require('./Participant');
-const Trip = require('./Person');
+const Trip = require('./Trip');
 
 // Add columns to Trip table
 //   destination_id: foreign key of Location table
@@ -11,8 +11,8 @@ const Trip = require('./Person');
 // Enable accessors in Trip table
 //   setDestination and getDestination
 //   setAdmin and getAdmin
-Trip.hasOne(Location, { as: 'destination', foreignKey: 'destination_id' });
-Trip.hasOne(Participant, { as: 'admin', foreignKey: 'admin_id' });
+Location.hasOne(Trip, { as: 'destination', foreignKey: 'destination_id' });
+Participant.hasOne(Trip, { as: 'admin', foreignKey: 'admin_id', constraints: false });
 
 // Enable the accessors in Trip Table
 //   setCar and getCar
@@ -22,7 +22,7 @@ Trip.hasMany(Car, { as: 'car', foreignKey: 'trip_id' });
 
 // Add column to Car table
 //   driver_id: foreign key of Participant table
-Car.hasOne(Participant, { as: 'driver', foreignKey: 'driver_id' });
+Participant.hasOne(Car, { as: 'driver', foreignKey: 'driver_id', constraints: false });
 
 // Add columns to Participant table
 //   trip_id: foreign key of Trip table
@@ -31,8 +31,8 @@ Car.hasOne(Participant, { as: 'driver', foreignKey: 'driver_id' });
 //   setTrips getTrips addTrip addTrips
 // Enable accessors in Trip table
 //   setParticipants getParticipants addParticipant addParticipants
-Trip.belongsToMany(Person, { through: Participant, foreignKey: 'trip_id' });
-Person.belongsToMany(Trip, { through: Participant, foreignKey: 'person_id', as: 'participant' });
+Trip.belongsToMany(Person, { through: Participant, foreignKey: 'trip_id', as: 'participants' });
+Person.belongsToMany(Trip, { through: Participant, foreignKey: 'person_id', as: 'trips' });
 
 // Add columns to Participant table
 //   departure_location_id: foreign key of Location table
@@ -40,7 +40,9 @@ Person.belongsToMany(Trip, { through: Participant, foreignKey: 'person_id', as: 
 // Enable accessors in Participant table
 //   setDepartureLocation and getDepartureLocation
 //   setCar and getCar
-Participant.hasOne(Location, { as: 'departureLocation', foreignKey: 'departure_location_id' });
-Participant.hasOne(Car, { as: 'car', foreignKey: 'car_id' });
+Location.hasOne(Participant, { as: 'departureLocation', foreignKey: 'departure_location_id' });
+Car.hasOne(Participant, { as: 'car', foreignKey: 'car_id' });
 
-db.sync();
+db.sync({force: true});
+
+module.exports = db;
