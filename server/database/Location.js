@@ -3,17 +3,24 @@ const db = require('./db');
 
 class Location extends Sequelize.Model {}
 
-module.exports = Location.init({
+Location.init({
   address: {
     type: Sequelize.STRING,
     allowNull: false
   },
-  coordinates: {
-    type: Sequelize.GEOMETRY('POINT'),
+  latitude: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
+  },
+  longitude: {
+    type: Sequelize.BOOLEAN,
     allowNull: false
   }
 }, {
   sequelize: db,
   modelName: 'Location',
-  underscored: true
+  underscored: true,
+  timestamps: false
 });
+
+module.exports = Location;

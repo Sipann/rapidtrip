@@ -7,8 +7,7 @@ const DB_HOST = process.env.DB_HOST;
 
 const sequelize = new Sequelize(DB_DBNAME, DB_USERNAME, DB_PASSWORD, {
   host: DB_HOST,
-  dialect: 'postgres',
-  timestamps: 'false'
+  dialect: 'postgres'
 });
 
 sequelize

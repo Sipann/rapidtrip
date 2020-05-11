@@ -3,7 +3,7 @@ const db = require('./db');
 
 class Person extends Sequelize.Model {}
 
-module.exports = Person.init({
+Person.init({
   name: {
     type: Sequelize.STRING,
     allowNull: false
@@ -18,5 +18,8 @@ module.exports = Person.init({
 }, {
   sequelize: db,
   modelName: 'Person',
-  underscored: true
+  underscored: true,
+  timestamps: false
 });
+
+module.exports = Person;

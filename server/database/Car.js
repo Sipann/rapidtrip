@@ -3,7 +3,7 @@ const db = require('./db');
 
 class Car extends Sequelize.Model {}
 
-module.exports = Car.init({
+Car.init({
   seats: {
     type: Sequelize.INTEGER,
     allowNull: false
@@ -11,5 +11,8 @@ module.exports = Car.init({
 }, {
   sequelize: db,
   modelName: 'Car',
-  underscored: true
+  underscored: true,
+  timestamps: false
 });
+
+module.exports = Car;

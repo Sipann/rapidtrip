@@ -3,7 +3,7 @@ const db = require('./db');
 
 class Trip extends Sequelize.Model {}
 
-module.exports = Trip.init({
+Trip.init({
   title: {
     type: Sequelize.STRING,
     allowNull: false
@@ -21,5 +21,8 @@ module.exports = Trip.init({
 }, {
   sequelize: db,
   modelName: 'Trip',
-  underscored: true
+  underscored: true,
+  timestamps: false
 });
+
+module.exports = Trip;
