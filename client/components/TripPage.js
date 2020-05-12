@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
+import { ScrollView } from 'react-native-gesture-handler';
 // import colorScheme from '../constants/colors';
 const moment = require('moment');
 
@@ -20,20 +21,26 @@ export default function TripPage ({ route, navigation }) {
     );
   }
   return (
-    <View style={styles.container}>
-      <Text style={styles.textTripName}>{trip.title}</Text>
-      <Text style={styles.textTripDate}>{dateToShow}</Text>
-      <View style={styles.menu}>
-        <View style={styles.menuRow}>
-          {Item('Trip Details', 'road', 'TripList')}
-          {Item('Participants', 'address-book', 'Profile')}
-        </View>
-        <View style={styles.menuRow}>
-          {Item('Car Allocation', 'user-friends', 'CarAllo')}
-          {Item('Delete Trip', 'frown-open', 'DeleteTrip')}
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.textTripName}>{trip.title}</Text>
+        <Image
+          style={styles.photo}
+          source={require('../assets/carClipArt.jpg')}
+        />
+        <Text style={styles.textTripDate}>{dateToShow}</Text>
+        <View style={styles.menu}>
+          <View style={styles.menuRow}>
+            {Item('Trip Details', 'road', 'TripList')}
+            {Item('Participants', 'address-book', 'Profile')}
+          </View>
+          <View style={styles.menuRow}>
+            {Item('Car Allocation', 'user-friends', 'CarAllo')}
+            {Item('Delete Trip', 'frown-open', 'DeleteTrip')}
+          </View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 }
 
@@ -71,4 +78,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
   },
+  photo: {
+    height:300
+  }
 });

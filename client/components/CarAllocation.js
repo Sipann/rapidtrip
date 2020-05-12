@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import {
   Button,
   Dimensions,
-  Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
@@ -10,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import MapView, { Callout, Marker } from 'react-native-maps';
-
+import CarSvg from './CarSvg';
 import { mockResult } from './mockResults';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
@@ -24,26 +23,26 @@ const Result = () => {
 
   const algoHasRun = false; //! Here we need to actually check if the algo has run
   const adminId = 2;
-  const readyToRun = true;
+  const readyToRun = false;
 
   if (algoHasRun === false) {
     if (adminId === userId) {
-      //!THIS IS A GUESS AS TO TEH SHAPE
+      //!THIS IS A GUESS AS TO THE SHAPE
       if (readyToRun) {
         return (
           <View>
-            <Text>Ready to run the Algorithm!</Text>
+            <Text style={styles.message}>Ready to determine!</Text>
             <TouchableOpacity>
-              <Text>RUN THE ALGORITHM</Text>
+              <Text style={styles.runbutton}>Who is Going Where?</Text>
             </TouchableOpacity>
           </View>
         );
       }
       return (
-        <Text>The Algorithm is not yet ready, Waiting for more answers</Text>
+        <Text style={styles.message}>Waiting for more answers</Text>
       );
     }
-    return <Text>Algorithm has not been run. Check back later!</Text>;
+    return <Text style={styles.message}>Check back later!</Text>;
   }
 
   const currentUserCar = (allCars) => {
@@ -120,10 +119,7 @@ const Result = () => {
         }}
       >
         <View style={styles.imgCntr}>
-          <Image
-            source={require('../assets/cartoonCar.png')}
-            style={styles.img}
-          />
+          <CarSvg />
         </View>
 
         {currentCar.driver && (
@@ -254,6 +250,18 @@ const styles = StyleSheet.create({
   pickupTime: {
     fontSize: 16,
   },
+  message: {
+    textAlign: 'center',
+    fontSize: 30,
+    marginTop: '50%'
+  },
+  runbutton: {
+    fontSize:20,
+    margin: 40,
+    textAlign: 'center',
+    backgroundColor: 'blue',
+    borderRadius: 20
+  }
 });
 
 export default Result;
