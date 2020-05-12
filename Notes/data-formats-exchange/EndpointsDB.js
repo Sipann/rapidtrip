@@ -16,11 +16,30 @@ const mockInput = {
 const mockOutput = {
   "ok": true,
   "body": {
-      "id": 4,
-      "title": "Trip to Paris",
-      "description": "Lets go to Paris to visit Virginie",
-      "date": "1988-06-05T22:00:00.000Z",
-      "picture": ""
+    "id": 4,
+    "title": "Trip to Paris",
+    "description": "Lets go to Paris to visit Virginie",
+    "date": "1988-06-05T22:00:00.000Z",
+    "picture": "",
+    "destination": {
+      "id": 3,
+      "address": "Chez Virginie",
+      "latitude": 41.388516,
+      "longitude": 2.179014
+    },
+    "participants": [
+      {
+        "id": "OnOb52EqwifDj5mr528HagLdvD13",
+        "name": "Jane Doe",
+        "email": "jane@example.com",
+        "picture": "",
+        "departure_time": null,
+        "is_admin": true,
+        "departure_location_id": null,
+        "car_id": null
+      }
+    ],
+    "cars": []
   }
 }
 
@@ -107,6 +126,12 @@ const mockOutput = {
         "description": "Lets go to Paris to visit Virginie",
         "date": "1988-06-05T22:00:00.000Z",
         "picture": "",
+        "destination": {
+          "id": 3,
+          "address": "Chez Virginie",
+          "latitude": 41.388516,
+          "longitude": 2.179014
+        },
         "participants": [
           {
             "id": "OnOb52EqwifDj5mr528HagLdvD13",
@@ -128,26 +153,34 @@ const mockOutput = {
             "departure_location_id": null,
             "car_id": null
           }
-        ]
+        ],
+        "cars": []
       },
       {
-        "id": 3,
+        "id": 4,
         "title": "Trip to Milan",
-        "description": "",
+        "description": "Lets go to Paris to visit Virginie",
         "date": "2020-06-05T22:00:00.000Z",
         "picture": "",
+        "destination": {
+          "id": 3,
+          "address": "Duomo",
+          "latitude": 41.388516,
+          "longitude": 2.179014
+        },
         "participants": [
           {
             "id": "OnOb52EqwifDj5mr528HagLdvD13",
-            "name": "Jane Doeee",
-            "email": "jane@example.com(opens in new tab)",
-            "picture": "new picture",
+            "name": "Jane Doe",
+            "email": "jane@example.com",
+            "picture": "",
             "departure_time": null,
             "is_admin": true,
             "departure_location_id": null,
             "car_id": null
           }
-        ]
+        ],
+        "cars": []
       }
     ]
   }
@@ -174,10 +207,47 @@ const mockOutput = {
 }
 
 // TODO
-//! updateTripInfo (info and/or car allocation)
-PUT '/trip/:trip_id'
+//! updateTripInfo
+PUT '/trip/:trip_id/info'
 // INPUT DATA
-const mockInput = {}
+const mockInput = {
+  "title": "Trip to Paris!!!",
+  "description": "Lets go to Paris to visit Virginie",
+  "date": "581551200000",
+  "destination": {
+    "address": "Chez Virginie",
+    "latitude": "41.388516",
+    "longitude": "2.179014"
+  },
+  "picture": ""
+}
+// OUTPUT DATA
+const mockOutput = {
+  "ok": true,
+  "body": {
+      "id": 4,
+      "title": "Trip to Paris!!!",
+      "description": "Lets go to Paris to visit Virginie",
+      "date": "1988-06-05T22:00:00.000Z",
+      "picture": ""
+  }
+}
+
+// TODO
+//! updateTripCarAllocation
+PUT '/trip/:trip_id/cars'
+// INPUT DATA
+const mockInput = {
+  "cars": [
+    {
+      "driver_id": "john@example.com",
+      "passengers": [
+        "jane@example.com",
+        "jarvis@example.com"
+      ]
+    }
+  ]
+}
 // OUTPUT DATA
 const mockOutput = {}
 
