@@ -6,8 +6,7 @@ class Person extends Sequelize.Model {}
 Person.init({
   id: {
     type: Sequelize.STRING,
-    primaryKey: true,
-    allowNull: false
+    allowNull: true
   },
   name: {
     type: Sequelize.STRING,
@@ -15,6 +14,8 @@ Person.init({
   },
   email: {
     type: Sequelize.STRING,
+    unique: true,
+    primaryKey: true,
     allowNull: false
   },
   picture: {
