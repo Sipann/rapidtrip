@@ -4,7 +4,10 @@ module.exports.parseParticipants = function (participants) {
     delete user.Participant;
     return {
       ...user,
-      ...participant_info
+      departure_time: participant_info.departure_time,
+      is_admin: participant_info.is_admin,
+      departure_location_id: participant_info.departure_location_id,
+      car_id: participant_info.car_id
     };
   });
 };

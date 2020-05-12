@@ -1,6 +1,7 @@
 const db = require('../database');
 const Trip = db.models.Trip;
 const User = db.models.Person;
+const { parseParticipants } = require('./utils');
 
 module.exports.createTrip = async ctx => {
   ctx.body = {};
@@ -39,7 +40,7 @@ module.exports.includeUser = async ctx => {
 
     // add user to trip as a participant
     await trip.addParticipant(user);
-    
+
     // retrieve updated list of participants for response
     const participants = await trip.getParticipants();
     if (participants.length < 0) throw {
@@ -49,7 +50,7 @@ module.exports.includeUser = async ctx => {
 
     // populate response object
     res.ok = true;
-    res.body = participants.map(participant => participant.toJSON());
+    res.body = parseParticipants(participants.map(participant => participant.toJSON()));
     // set response status
     ctx.status = 200;
   } catch (error) {
