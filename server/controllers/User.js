@@ -44,6 +44,7 @@ module.exports.getUser = async ctx => {
     if (trips.length > 0) {
       res.body.trips = await trips.map(trip => {
         const formattedTrip = trip.toJSON();
+        delete formattedTrip.Participant;
         formattedTrip.participants = parseParticipants(formattedTrip.participants);
         return formattedTrip;
       });
