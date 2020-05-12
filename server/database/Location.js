@@ -9,11 +9,11 @@ Location.init({
     allowNull: false
   },
   latitude: {
-    type: Sequelize.BOOLEAN,
+    type: Sequelize.DOUBLE,
     allowNull: false
   },
   longitude: {
-    type: Sequelize.BOOLEAN,
+    type: Sequelize.DOUBLE,
     allowNull: false
   }
 }, {

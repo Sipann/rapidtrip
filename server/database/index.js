@@ -7,12 +7,9 @@ const Trip = require('./Trip');
 
 // Add columns to Trip table
 //   destination_id: foreign key of Location table
-//   admin_id columns: foreign key of Participant table
 // Enable accessors in Trip table
 //   setDestination and getDestination
-//   setAdmin and getAdmin
-Location.hasOne(Trip, { as: 'destination', foreignKey: 'destination_id' });
-Participant.hasOne(Trip, { as: 'admin', foreignKey: 'admin_id', constraints: false });
+Trip.hasOne(Location, { as: 'destination', foreignKey: 'trip_id' });
 
 // Enable the accessors in Trip Table
 //   setCar and getCar
