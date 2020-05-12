@@ -206,12 +206,11 @@ const mockOutput = {
   }
 }
 
-// TODO
 //! updateTripInfo
 PUT '/trip/:trip_id/info'
 // INPUT DATA
 const mockInput = {
-  "title": "Trip to Paris!!!",
+  "title": "Trip to Milan",
   "description": "Lets go to Paris to visit Virginie",
   "date": "581551200000",
   "destination": {
@@ -226,14 +225,19 @@ const mockOutput = {
   "ok": true,
   "body": {
       "id": 4,
-      "title": "Trip to Paris!!!",
+      "title": "Trip to Milan",
       "description": "Lets go to Paris to visit Virginie",
       "date": "1988-06-05T22:00:00.000Z",
-      "picture": ""
+      "picture": "",
+      "destination": {
+          "id": 47,
+          "address": "Duomo",
+          "latitude": 41.388516,
+          "longitude": 2.179014
+      }
   }
 }
 
-// TODO
 //! updateTripCarAllocation
 PUT '/trip/:trip_id/cars'
 // INPUT DATA
@@ -241,18 +245,58 @@ const mockInput = {
   "cars": [
     {
       "driver_id": "john@example.com",
+      "seats": 2,
       "passengers": [
         "jane@example.com",
-        "jarvis@example.com"
+        "jarvis@example.com",
+        "john@example.com"
       ]
     }
   ]
 }
 // OUTPUT DATA
-const mockOutput = {}
+const mockOutput = {
+  "ok": true,
+  "body": [
+    {
+      "id": 45,
+      "seats": 2,
+      "trip_id": 26,
+      "passengers": [
+        {
+          "departure_time": null,
+          "is_admin": true,
+          "is_driver": false,
+          "trip_id": 26,
+          "person_id": "jane@example.com",
+          "departure_location_id": null,
+          "car_id": 45
+        },
+        {
+          "departure_time": null,
+          "is_admin": false,
+          "is_driver": false,
+          "trip_id": 26,
+          "person_id": "jarvis@example.com",
+          "departure_location_id": null,
+          "car_id": 45
+        },
+        {
+          "departure_time": null,
+          "is_admin": false,
+          "is_driver": true,
+          "trip_id": 26,
+          "person_id": "john@example.com",
+          "departure_location_id": null,
+          "car_id": 45
+        }
+      ]
+    }
+  ]
+}
 
 //! includeUserInTrip
-PUT '/trip/:trip_id/:user_email'
+POST '/trip/:trip_id/:user_email'
 // INPUT DATA
 const mockInput = {} // BODY NOT REQUIRED
 // OUTPUT DATA
@@ -272,6 +316,36 @@ const mockOutput = { // UPDATED PARTICIPANTS LIST
   ]
 }
 
+//! updateParticipantInfo
+PUT '/trip/:trip_id/:user_email'
+// INPUT DATA
+const mockInput = {
+  "departure_time": "581551200000",
+  "departure_location": {
+    "address": "My place",
+    "latitude": "41.388516",
+    "longitude": "2.179014"
+  },
+  "is_driver": true
+}
+// OUTPUT DATA
+const mockOutput = {
+  "ok": true,
+  "body": {
+      "departure_time": "1988-06-05T22:00:00.000Z",
+      "is_admin": false,
+      "is_driver": true,
+      "trip_id": 26,
+      "person_id": "john@example.com",
+      "car_id": 45,
+      "departure_location": {
+          "id": 55,
+          "address": "My place",
+          "latitude": 41.388516,
+          "longitude": 2.179014
+      }
+  }
+}
 
 
 
