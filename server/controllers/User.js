@@ -2,6 +2,7 @@ const db = require('../database');
 const User = db.models.Person;
 const Location = db.models.Location;
 const Trip = db.models.Trip;
+const Car = db.models.Car;
 const { parseParticipants } = require('./utils');
 
 module.exports.getUser = async ctx => {
@@ -210,8 +211,7 @@ module.exports.createTrip = async ctx => {
       status: 400,
       message: 'Not possible to create trip: invalid fields'
     };
-    await trip.setDestination(destinationInstance);
-    // await user.setAdmin(trip, { transaction: t });
+    await trip.setDestination(destinationInstance, { transaction: t });
 
     // add trip to databse and get the Trip instance created
     const participant = await user.addTrip(trip, { through: { is_admin: true }, transaction: t });
@@ -220,14 +220,26 @@ module.exports.createTrip = async ctx => {
       message: 'Not possible to create trip.'
     };
 
-    // populate response object
-    res.ok = true;
-    res.body = trip;
-    // set response status
-    ctx.status = 200;
-
     // commit the transaction
     await t.commit();
+    
+    // retrieve recently added trip with more information
+    let newTrip = await Trip.findByPk(trip.get('id'),
+      {include: [
+        { model: Location, as: 'destination' },
+        { model: User, as: 'participants' },
+        { model: Car, as: 'cars' }
+      ]}
+    );
+    newTrip = newTrip.toJSON();
+    newTrip.participants = parseParticipants(newTrip.participants);
+    delete newTrip.destination_id;
+
+    // populate response object
+    res.ok = true;
+    res.body = newTrip;
+    // set response status
+    ctx.status = 200;
   } catch (error) {
     // populate response object
     res.ok = false;
