@@ -52,7 +52,7 @@ module.exports.createUser = async ctx => {
     // add user to databse and get the User instance created
     // if id alreay exists in database, get the existing User instance
     const [user, created] = await User.findOrCreate({
-      where: { id: newUser.id },
+      where: { email: newUser.email },
       defaults: newUser
     });
     if (!user) throw {
@@ -84,7 +84,34 @@ module.exports.createUser = async ctx => {
 };
 
 module.exports.removeUser = async ctx => {
-  ctx.body = {};
+  // create response object
+  let res = {};
+  // store user_id passed as parameter
+  const userId = ctx.params.user_id;
+
+  try {
+    // delete User instance associated to the provided id
+    const number = await User.destroy({ where: { email: userId } });
+    if (number <= 0) throw {
+      status: 404,
+      message: 'No user found with provided id'
+    };
+
+    // populate response object
+    res.ok = true;
+    res.body = user.toJSON();
+    // set response status
+    ctx.status = 200;
+  } catch (error) {
+    // populate response object
+    res.ok = false;
+    res.error = error.message;
+    // set response status
+    ctx.status = error.status || 400;
+  } finally {
+    // send response
+    ctx.body = res;
+  }
 };
 
 module.exports.updateInfo = async ctx => {
