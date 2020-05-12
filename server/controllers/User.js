@@ -27,19 +27,15 @@ module.exports.getUser = async ctx => {
     // set response status
     ctx.status = 200;
     
-    // get all trips associated to the user (if any) and its participants
-    const trips = await user.getTrips({
-      include: [{
-        model: User,
-        as: 'participants',
-        through: {attributes: [
-          'departure_time',
-          'is_admin',
-          'departure_location_id',
-          'car_id'
-        ]}
-      }]
-    });
+    // get all trips associated to the user (if any)
+    // along with its destination, participants and cars
+    const trips = await user.getTrips(
+      {include: [
+        { model: Location, as: 'destination' },
+        { model: User, as: 'participants' },
+        { model: Car, as: 'cars' }
+      ]}
+    );
 
     // parse response object
     if (trips.length > 0) {
