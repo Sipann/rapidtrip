@@ -290,3 +290,7 @@ module.exports.updateCars = async ctx => {
     ctx.body = res;
   }
 };
+
+module.exports.updateParticipantInfo = async ctx => {
+  ctx.body = {};
+}
