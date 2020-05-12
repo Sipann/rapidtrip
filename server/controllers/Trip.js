@@ -292,5 +292,65 @@ module.exports.updateCars = async ctx => {
 };
 
 module.exports.updateParticipantInfo = async ctx => {
-  ctx.body = {};
-}
+  // create response object
+  let res = {};
+  // store trip_id passed as parameter
+  const tripId = ctx.params.trip_id;
+  // store trip_id passed as parameter
+  const userId = ctx.params.user_email;
+  // store trip object passed in body
+  const {
+    departure_time,
+    departure_location,
+    is_driver
+  } = ctx.request.body;
+
+  try {
+    
+    // get Participant instance associated to the provided ids
+    const participants = await Participant.findAll(
+      { where: { person_id: userId, trip_id: tripId } }
+    );
+    if (participants.length <= 0) throw {
+      status: 404,
+      message: 'No user/trip found with provided ids'
+    };
+    const oldParticipant = participants[0];
+
+    // update participant info
+    const participant = await oldParticipant.update({
+      departure_time: (new Date(+departure_time)).toISOString(),
+      is_driver
+    });
+
+    // check if there is new departure_location
+    if (departure_location) {
+      const destination = await Location.create(departure_location);
+      if (!destination) throw {
+        status: 400,
+        message: 'Not possible to update participant info: invalid location'
+      };
+      await participant.setDepartureLocation(destination);
+    }
+    
+    // format Participant data for response
+    const formattedParticipant = participant.toJSON();
+    formattedParticipant.departure_location = await participant.getDepartureLocation();
+    delete formattedParticipant.departure_location_id;
+
+    // populate response object
+    res.ok = true;
+    res.body = formattedParticipant;
+    // set response status
+    ctx.status = 200;
+  } catch (error) {
+    // populate response object
+    res.ok = false;
+    res.error = error.message;
+    // set response status
+    ctx.status = error.status || 400;
+  } finally {
+    // send response
+    ctx.body = res;
+  }
+};
