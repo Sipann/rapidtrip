@@ -99,7 +99,6 @@ module.exports.removeUser = async ctx => {
 
     // populate response object
     res.ok = true;
-    res.body = user.toJSON();
     // set response status
     ctx.status = 200;
   } catch (error) {
@@ -115,7 +114,6 @@ module.exports.removeUser = async ctx => {
 };
 
 module.exports.updateInfo = async ctx => {
-  ctx.body = {};
 };
 
 module.exports.createTrip = async ctx => {
