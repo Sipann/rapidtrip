@@ -1,6 +1,7 @@
 const db = require('../database');
 const Trip = db.models.Trip;
 const User = db.models.Person;
+const Location = db.models.Location;
 const { parseParticipants } = require('./utils');
 
 module.exports.deleteTrip = async ctx => {
@@ -147,7 +148,62 @@ module.exports.includeUser = async ctx => {
 };
 
 module.exports.updateInfo = async ctx => {
-  ctx.body = {};
+  // create response object
+  let res = {};
+  // store trip_id passed as parameter
+  const tripId = ctx.params.trip_id;
+  // store trip object passed in body
+  const tripInfo = ctx.request.body;
+
+  try {
+    // get Trip instance associated to the provided id
+    const oldTrip = await Trip.findByPk(tripId);
+    if (!oldTrip) throw {
+      status: 404,
+      message: 'No trip found with provided id'
+    };
+
+    const trip = await oldTrip.update({
+      ...tripInfo,
+      date: (new Date(+tripInfo.date)).toISOString()
+    }, {
+      fields: ['title', 'description', 'date', 'picture']
+    });
+
+    // check if there is new destination information
+    if (tripInfo.destination) {
+      const destination = await Location.create(tripInfo.destination);
+      if (!destination) throw {
+        status: 400,
+        message: 'Not possible to create trip: invalid location'
+      };
+      await trip.setDestination(destination);
+    }
+    
+    // retrieve recently added trip with more information
+    let newTrip = await Trip.findByPk(trip.get('id'),
+      {include: [
+        { model: Location, as: 'destination' }
+      ]}
+    );
+    newTrip = newTrip.toJSON();
+    delete newTrip.destination_id;
+
+    // populate response object
+    res.ok = true;
+    res.body = newTrip;
+    // set response status
+    ctx.status = 200;
+  } catch (error) {
+    // populate response object
+    res.ok = false;
+    res.error = error.message;
+    // set response status
+    ctx.status = error.status || 400;
+  } finally {
+    // send response
+    ctx.body = res;
+  }
 };
 
 module.exports.updateCars = async ctx => {
