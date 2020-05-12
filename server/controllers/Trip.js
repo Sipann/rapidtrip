@@ -20,8 +20,8 @@ module.exports.includeUser = async ctx => {
   let res = {};
   // store trip_id passed as parameter
   const tripId = ctx.params.trip_id;
-  // store user_id passed as parameter
-  const userId = ctx.params.user_id;  
+  // store user_email passed as parameter
+  const userId = ctx.params.user_email;  
 
   try {
     // get Trip instance associated to the provided id

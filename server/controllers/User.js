@@ -7,8 +7,8 @@ const { parseParticipants } = require('./utils');
 module.exports.getUser = async ctx => {
   // create response object
   let res = {};
-  // store user_id passed as parameter
-  const userId = ctx.params.user_id;
+  // store user_email passed as parameter
+  const userId = ctx.params.user_email;
 
   try {
     // get User instance associated to the provided id
@@ -105,8 +105,8 @@ module.exports.createUser = async ctx => {
 module.exports.removeUser = async ctx => {
   // create response object
   let res = {};
-  // store user_id passed as parameter
-  const userId = ctx.params.user_id;
+  // store user_email passed as parameter
+  const userId = ctx.params.user_email;
 
   try {
     // delete User instance associated to the provided id
@@ -135,8 +135,8 @@ module.exports.removeUser = async ctx => {
 module.exports.updateInfo = async ctx => {
   // create response object
   let res = {};
-  // store user_id passed as parameter
-  const userId = ctx.params.user_id;
+  // store user_email passed as parameter
+  const userId = ctx.params.user_email;
   // store user object passed in body
   const userInfo = ctx.request.body;
 
@@ -170,8 +170,8 @@ module.exports.updateInfo = async ctx => {
 module.exports.createTrip = async ctx => {
   // create response object
   let res = {};
-  // store user_id passed as parameter
-  const userId = ctx.params.user_id;
+  // store user_email passed as parameter
+  const userId = ctx.params.user_email;
   // store trip object passed in body
   const {
     title,
