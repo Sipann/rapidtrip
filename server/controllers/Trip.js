@@ -8,7 +8,36 @@ module.exports.createTrip = async ctx => {
 };
 
 module.exports.deleteTrip = async ctx => {
-  ctx.body = {};
+  // create response object
+  let res = {};
+  // store trip_id passed as parameter
+  const tripId = ctx.params.trip_id;
+
+  try {
+    // get Trip instance associated to the provided id
+    const trip = await Trip.findByPk(tripId);
+    if (!trip) throw {
+      status: 404,
+      message: 'No trip found with provided id'
+    };
+
+    // delete trip
+    await trip.destroy();
+
+    // populate response object
+    res.ok = true;
+    // set response status
+    ctx.status = 200;
+  } catch (error) {
+    // populate response object
+    res.ok = false;
+    res.error = error.message;
+    // set response status
+    ctx.status = error.status || 400;
+  } finally {
+    // send response
+    ctx.body = res;
+  }
 };
 
 module.exports.removeUser = async ctx => {
@@ -77,7 +106,7 @@ module.exports.includeUser = async ctx => {
   // store trip_id passed as parameter
   const tripId = ctx.params.trip_id;
   // store user_email passed as parameter
-  const userId = ctx.params.user_email;  
+  const userId = ctx.params.user_email;
 
   try {
     // get Trip instance associated to the provided id
