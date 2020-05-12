@@ -149,3 +149,7 @@ module.exports.includeUser = async ctx => {
 module.exports.updateInfo = async ctx => {
   ctx.body = {};
 };
+
+module.exports.updateCars = async ctx => {
+  ctx.body = {};
+};

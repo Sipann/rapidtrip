@@ -12,7 +12,8 @@ router.delete('/user/:user_email', User.removeUser);
 router.delete('/trip/:trip_id/:user_email', Trip.removeUser);
 
 router.put('/user/:user_email', User.updateInfo);
-router.put('/trip/:trip_id', Trip.updateInfo);
+router.put('/trip/:trip_id/info', Trip.updateInfo);
+router.put('/trip/:trip_id/cars', Trip.updateCars);
 router.put('/trip/:trip_id/:user_email', Trip.includeUser);
 
 module.exports = router;
