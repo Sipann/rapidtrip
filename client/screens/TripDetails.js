@@ -12,7 +12,7 @@ const mockedTrip = {
     'Lisbon is the capital and the largest city of Portugal, with an estimated population of 505,526 within its administrative limits in an area of 100.05 km2.',
 };
 
-export default function App() {
+const TripDetails = () => {
   const markers = [
     {
       latitude: 37.78825,
@@ -44,7 +44,7 @@ export default function App() {
       <Button title="Edit Trip" />
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
   title: {
@@ -73,3 +73,5 @@ const styles = StyleSheet.create({
     bottom: -600,
   },
 });
+
+export default TripDetails;
