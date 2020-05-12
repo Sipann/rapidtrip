@@ -3,10 +3,6 @@ const Trip = db.models.Trip;
 const User = db.models.Person;
 const { parseParticipants } = require('./utils');
 
-module.exports.createTrip = async ctx => {
-  ctx.body = {};
-};
-
 module.exports.deleteTrip = async ctx => {
   // create response object
   let res = {};
@@ -151,9 +147,5 @@ module.exports.includeUser = async ctx => {
 };
 
 module.exports.updateInfo = async ctx => {
-  ctx.body = {};
-};
-
-module.exports.updateCarAllocation = async ctx => {
   ctx.body = {};
 };

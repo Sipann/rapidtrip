@@ -13,7 +13,6 @@ router.delete('/trip/:trip_id/:user_email', Trip.removeUser);
 
 router.put('/user/:user_email', User.updateInfo);
 router.put('/trip/:trip_id', Trip.updateInfo);
-router.put('/trip/:trip_id', Trip.updateCarAllocation);
 router.put('/trip/:trip_id/:user_email', Trip.includeUser);
 
 module.exports = router;
