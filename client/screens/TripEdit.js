@@ -57,6 +57,7 @@ const TripEdit = () => {
           style={styles.textArea}
           defaultValue={mockedTrip.description}
           onChangeText={(description) => setDescription(description)}
+          multiline={true}
         />
       </View>
       <TouchableOpacity style={styles.button}>
