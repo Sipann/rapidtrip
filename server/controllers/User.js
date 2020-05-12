@@ -2,6 +2,7 @@ const db = require('../database');
 const User = db.models.Person;
 const Location = db.models.Location;
 const Trip = db.models.Trip;
+const { parseParticipants } = require('./utils');
 
 module.exports.getUser = async ctx => {
   // create response object
@@ -38,7 +39,7 @@ module.exports.getUser = async ctx => {
         ]}
       }]
     });
-    
+
     // parse response object
     if (trips.length > 0) {
       res.body.trips = await trips.map(trip => {
@@ -239,14 +240,3 @@ module.exports.createTrip = async ctx => {
     ctx.body = res;
   }
 };
-
-function parseParticipants (participants) {
-  return participants.map(user => {
-    const participant_info = user.Participant;
-    delete user.Participant;
-    return {
-      ...user,
-      ...participant_info
-    };
-  });
-}
