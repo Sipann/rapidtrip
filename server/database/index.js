@@ -9,17 +9,19 @@ const Trip = require('./Trip');
 //   destination_id: foreign key of Location table
 // Enable accessors in Trip table
 //   setDestination and getDestination
-Trip.hasOne(Location, { as: 'destination', foreignKey: 'trip_id' });
+Trip.belongsTo(Location, { as: 'destination', foreignKey: 'destination_id' });
+// Trip.hasOne(Location, { as: 'destination', foreignKey: 'trip_id' });
 
 // Enable the accessors in Trip Table
 //   setCar and getCar
 // Add column to Car table
 //   trip_id: foreign key of Trip table
-Trip.hasMany(Car, { as: 'car', foreignKey: 'trip_id' });
+Trip.hasMany(Car, { as: 'cars', foreignKey: 'trip_id' });
+Car.belongsTo(Trip, { as: 'cars', foreignKey: 'trip_id' });
 
-// Add column to Car table
-//   driver_id: foreign key of Participant table
-Participant.hasOne(Car, { as: 'driver', foreignKey: 'driver_id', constraints: false });
+// // Add column to Car table
+// //   driver_id: foreign key of Participant table
+// Participant.hasOne(Car, { as: 'driver', foreignKey: 'driver_id', constraints: false });
 
 // Add columns to Participant table
 //   trip_id: foreign key of Trip table
@@ -37,8 +39,10 @@ Person.belongsToMany(Trip, { through: Participant, foreignKey: 'person_id', as: 
 // Enable accessors in Participant table
 //   setDepartureLocation and getDepartureLocation
 //   setCar and getCar
-Location.hasOne(Participant, { as: 'departureLocation', foreignKey: 'departure_location_id' });
-Car.hasOne(Participant, { as: 'car', foreignKey: 'car_id' });
+Participant.belongsTo(Location, { as: 'departureLocation', foreignKey: 'departure_location_id' });
+// Location.hasOne(Participant, { as: 'departureLocation', foreignKey: 'departure_location_id' });
+Participant.belongsTo(Car, { as: 'car', foreignKey: 'car_id' });
+// Car.hasOne(Participant, { as: 'car', foreignKey: 'car_id' });
 
 db.sync({ alter: true });
 

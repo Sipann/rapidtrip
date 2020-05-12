@@ -11,6 +11,11 @@ Participant.init({
     type: Sequelize.BOOLEAN,
     allowNull: false,
     defaultValue: false
+  },
+  is_driver: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false,
+    defaultValue: false
   }
 }, {
   sequelize: db,
