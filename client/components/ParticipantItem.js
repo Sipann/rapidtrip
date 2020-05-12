@@ -1,8 +1,10 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { Feather, AntDesign } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/colors';
 import { useNavigation } from '@react-navigation/native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 const ParticipantItem = (props) => {
   const navigation = useNavigation();
@@ -28,6 +30,11 @@ const ParticipantItem = (props) => {
       <View>
         <Text style={styles.icon}>{icon}</Text>
       </View>
+      <TouchableOpacity>
+        <View>
+          <Ionicons name="ios-trash" size={24} color="black" />
+        </View>
+      </TouchableOpacity>
     </View>
   );
 };
