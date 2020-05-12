@@ -6,7 +6,7 @@ router.get('/user/:user_email', User.getUser);
 
 router.post('/trip/:user_email', User.createTrip);
 router.post('/user', User.createUser);
-router.put('/trip/:trip_id/:user_email', Trip.includeUser);
+router.post('/trip/:trip_id/:user_email', Trip.includeUser);
 
 router.delete('/trip/:trip_id', Trip.deleteTrip);
 router.delete('/user/:user_email', User.removeUser);
