@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, SafeAreaView, View } from 'react-native';
+import { StyleSheet, Text, View, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import { Marker } from 'react-native-maps';
 
@@ -41,6 +41,7 @@ export default function App() {
         <Text style={styles.bold}>Location</Text>: {mockedTrip.location}
       </Text>
       <Text style={styles.text}>{mockedTrip.description}</Text>
+      <Button title="Edit Trip" />
     </View>
   );
 }
