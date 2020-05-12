@@ -4,7 +4,7 @@ const { User, Trip } = require('./controllers');
 
 router.get('/user/:user_id', User.getUser);
 
-router.post('/trip/:admin_id', Trip.createTrip);
+router.post('/trip/:user_id', User.createTrip);
 router.post('/user', User.createUser);
 
 router.delete('/trip/:trip_id', Trip.deleteTrip);
