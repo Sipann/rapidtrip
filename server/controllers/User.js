@@ -25,10 +25,27 @@ module.exports.getUser = async ctx => {
     // set response status
     ctx.status = 200;
     
-    // get all trips associated to the user (if any)
-    const trips = await user.getTrips();
+    // get all trips associated to the user (if any) and its participants
+    const trips = await user.getTrips({
+      include: [{
+        model: User,
+        as: 'participants',
+        through: {attributes: [
+          'departure_time',
+          'is_admin',
+          'departure_location_id',
+          'car_id'
+        ]}
+      }]
+    });
+    
+    // parse response object
     if (trips.length > 0) {
-      res.body.trips = trips.map(trip => trip.toJSON());
+      res.body.trips = await trips.map(trip => {
+        const formattedTrip = trip.toJSON();
+        formattedTrip.participants = parseParticipants(formattedTrip.participants);
+        return formattedTrip;
+      });
     }
   } catch (error) {
     // populate response object
@@ -222,3 +239,14 @@ module.exports.createTrip = async ctx => {
     ctx.body = res;
   }
 };
+
+function parseParticipants (participants) {
+  return participants.map(user => {
+    const participant_info = user.Participant;
+    delete user.Participant;
+    return {
+      ...user,
+      ...participant_info
+    };
+  });
+}
