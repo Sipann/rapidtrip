@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
   Button,
+  Text,
   View,
   StyleSheet,
 } from 'react-native';
@@ -8,35 +9,42 @@ import {
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
 
-import InputDepartureWidget from './InputDepartureWidget';
+import DateTimePicker from '@react-native-community/datetimepicker';
 
 
 const InputDepartureTime = ({
   scrollToNext,
-  showTime,
+  scrollToPrev,
   style,
 }) => {
 
-  const [selectedTime, setSelectedTime] = useState(new Date());
+  const [time, setTime] = useState(new Date());
 
   return (
 
     <View style={{ ...style, ...styles.container }}>
-      {
-        showTime
-          ? <InputDepartureWidget
-            setUserDepartureTime={selectedTime => {
-              setSelectedTime(selectedTime);
-            }} />
-          : null
-      }
+
+      <Text style={styles.header}>Departure Time</Text>
+
+      <View style={styles.picker}>
+        <DateTimePicker
+          animation={false}
+          mode="time"
+          onChange={(evt, selectedTime) => setTime(selectedTime)}
+          value={time} />
+      </View>
 
       <View style={styles.buttonsContainer}>
         <Button
-          accessibilityLabel="Next"
+          onPress={scrollToPrev}
+          title="PREVIOUS"
+          color={Colors.secondary}
+          accessibilityLabel="Previous" />
+        <Button
+          onPress={() => scrollToNext(time)}
+          title="NEXT"
           color={Colors.primary}
-          onPress={() => scrollToNext(selectedTime)}
-          title="NEXT" />
+          accessibilityLabel="Next" />
       </View>
     </View>
   );
@@ -46,14 +54,14 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     flexDirection: 'row',
   },
-  clock: {
-    width: '100%',
-  },
   container: {
     ...StyleRefs.container,
   },
   header: {
     ...StyleRefs.header,
+  },
+  picker: {
+    width: '100%',
   }
 });
 

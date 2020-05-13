@@ -1,6 +1,6 @@
 import env from '../config/env.config';
 
-export async function getCommuteTime (origin, destination) {
+export default async function getCommuteTime(origin, destination) {
   const base = origin;
   const target = destination;
 
@@ -9,7 +9,7 @@ export async function getCommuteTime (origin, destination) {
   let finalApiURL = `${ApiURL}${encodeURI(params)}`;
 
   try {
-    let response = await fetch(finalApiURL);
+    let response = await fetch(finalApiURL, {mode: 'no-cors'});
     let responseJson = await response.json();
     return responseJson.rows[0].elements[0].duration.value;
   } catch (error) {

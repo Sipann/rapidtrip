@@ -5,17 +5,13 @@ import {
   View,
 } from 'react-native';
 
-import StyleRefs from '../constants/styles';
-
 import DateTimePicker from '@react-native-community/datetimepicker';
 
 const InputDepartureDate = ({ setTripDate }) => {
 
   const [date, setDate] = useState(new Date());
-  const [show, setShow] = useState(true);
 
-  const onChange = (_, selectedDate) => {
-    setShow(Platform.OS === 'ios');
+  const tripDateHandler = (selectedDate) => {
     setDate(selectedDate);
     setTripDate(selectedDate);
   };
@@ -23,17 +19,12 @@ const InputDepartureDate = ({ setTripDate }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.header}>Trip Departure Date</Text>
-
-      {show && (
-        <DateTimePicker
-          animation={false}
-          mode="date"
-          onChange={onChange}
-          value={date} />
-      )}
-
+      <DateTimePicker
+        animation={false}
+        mode="date"
+        onChange={(evt, selectedDate) => tripDateHandler(selectedDate)}
+        value={date} />
     </View>
-
   );
 };
 
@@ -42,7 +33,8 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   header: {
-    ...StyleRefs.header,
+    fontSize: 22,
+    fontWeight: 'bold',
     textAlign: 'center',
   },
 });

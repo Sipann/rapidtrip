@@ -21,6 +21,7 @@ import StyleRefs from '../constants/styles';
 
 const InputDepartureLocation = ({
   addUser,
+  scrollToPrev,
   setDepartureLocation,
   style,
 }) => {
@@ -93,6 +94,11 @@ const InputDepartureLocation = ({
       </View>
 
       <View style={styles.buttonsContainer}>
+        <Button
+          onPress={scrollToPrev}
+          title="PREVIOUS"
+          color={Colors.secondary}
+          accessibilityLabel="Previous" />
         <Button
           accessibilityLabel="Add User"
           color={Colors.primary}
