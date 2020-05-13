@@ -1,14 +1,19 @@
-import { createAppContainer, createSwitchNavigator } from 'react-navigation';
-import { createStackNavigator } from 'react-navigation-stack';
-import LoadingScreen from './screens/LoadingScreen';
-import LoginScreen from './screens/LoginScreen';
-import RegisterScreen from './screens/RegisterScreen';
-import HomeScreen from './screens/HomeScreen';
-import env from './config/env.config';
+import 'react-native-gesture-handler';
+import React from 'react';
 
+import env from './config/env.config';
 import * as firebase from 'firebase';
 
-var firebaseConfig = {
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import reducers from './store/reducers';
+import { Provider } from 'react-redux';
+
+import RootNavigation from './navigation/RootNavigation';
+
+const store = createStore(reducers, applyMiddleware(thunk));
+
+const firebaseConfig = {
   apiKey: env.FIREBASE_API_KEY,
   authDomain: env.AUTH_DOMAIN,
   databaseURL: env.DATABASE_URL,
@@ -18,26 +23,21 @@ var firebaseConfig = {
   appId: env.APP_ID,
 };
 
-firebase.initializeApp(firebaseConfig);
+if (!firebase.apps.length) {
+  try {
+    firebase.initializeApp(firebaseConfig);
+  } catch (err) {
+    //TODO manage error
+    console.error('Firebase initialization error raised', err.stack); // eslint-disable-line no-console
+  }
+}
 
-const AppStack = createStackNavigator({
-  Home: HomeScreen,
-});
+const App = () => {
+  return (
+    <Provider store={store}>
+      <RootNavigation />
+    </Provider>
+  );
+};
 
-const AuthStack = createStackNavigator({
-  Login: LoginScreen,
-  Register: RegisterScreen,
-});
-
-export default createAppContainer(
-  createSwitchNavigator(
-    {
-      Loading: LoadingScreen,
-      App: AppStack,
-      Auth: AuthStack,
-    },
-    {
-      initialRouteName: 'Loading',
-    }
-  )
-);
+export default App;

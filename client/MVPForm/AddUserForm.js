@@ -28,6 +28,8 @@ const AddUserForm = ({ addUser, dismissModal }) => {
     seats: '0',
   });
 
+  const [showTime, setShowTime] = useState(false);
+
   const cancelHandler = () => {
     setUser({
       departureDate: new Date(),
@@ -51,7 +53,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
         <View style={styles.carousel}>
 
           <ScrollView
-            keyboardShouldPersistTaps="always"
+            keyboardShouldPersistTaps='handled'
             horizontal={true}
             pagingEnabled={true}
             scrollEnabled={false}
@@ -91,20 +93,17 @@ const AddUserForm = ({ addUser, dismissModal }) => {
             />
 
             <InputDepartureTime
-              time={user.departureTime}
               scrollToNext={selectedTime => {
                 setUser({ ...user, departureTime: selectedTime });
                 scroll.current.scrollTo({ x: 4 * screenWidth, animated: true });
               }}
-              scrollToPrev={() => { }}
-              setDepartureTime={(evt, selectedTime) => setUser({ ...user, departureTime: selectedTime })}
+              showTime={showTime}
               style={{ width: screenWidth }}
             />
 
             <InputDepartureLocation
               addUser={() => addUser(user)}
-              scrollToPrev={() => { }}
-              setDepartureLocation={(loc) => setUser({ ...user, departureLocation: loc })}
+              setDepartureLocation={loc => setUser({ ...user, departureLocation: loc })}
               style={{ width: screenWidth }}
             />
 

@@ -20,4 +20,5 @@ client/web-report/
 env.config.js
 node_modules
 .expo
+DB_Responses
 .env

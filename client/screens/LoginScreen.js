@@ -1,81 +1,83 @@
-import React from 'react';
-import getCommuteTime from '../services/GoogleAPI';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
-  View,
-  Text,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import * as firebase from 'firebase';
+import { useNavigation } from '@react-navigation/native';
 
-export default class LoginScreen extends React.Component {
-  state = {
-    email: '',
-    password: '',
-    errorMessage: null,
+import * as actions from '../store/actions';
+
+
+const Login = () => {
+
+  const [errorMessage] = useState(null);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const handleLogin = () => {
+    dispatch(actions.authenticateAsync('login', email, password));
   };
 
-  handleLogin = () => {
-    const { email, password } = this.state;
 
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .catch((error) => this.setState({ errorMessage: error.message }));
-  };
+  return (
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.greeting}>{`Hello again. \n Welcome back. `}</Text>
+    <View style={styles.container}>
+      <Text style={styles.greeting}>Welcome back!</Text>
 
-        <View style={styles.errorMessage}>
-          {this.state.errorMessage && (
-            <Text style={styles.error}>{this.state.errorMessage}</Text>
-          )}
-        </View>
-
-        <View style={styles.form}>
-          <View>
-            <Text style={styles.inputTitle}>Email Address</Text>
-            <TextInput
-              style={styles.input}
-              autoCapitalize="none"
-              onChangeText={(email) => this.setState({ email })}
-              value={this.state.email}
-            ></TextInput>
-          </View>
-
-          <View style={{ marginTop: 32 }}>
-            <Text style={styles.inputTitle}>Password</Text>
-            <TextInput
-              style={styles.input}
-              secureTextEntry
-              autoCapitalize="none"
-              onChangeText={(password) => this.setState({ password })}
-              value={this.state.password}
-            ></TextInput>
-          </View>
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={this.handleLogin}>
-          <Text style={{ color: '#fff', fontWeight: '500' }}>Sign in</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{ alignSelf: 'center', marginTop: 32 }}
-          onPress={() => this.props.navigation.navigate('Register')}
-        >
-          <Text style={{ color: '#414951', fontSize: 13 }}>
-            New to RapidTrip?{' '}
-            <Text style={{ fontWeight: '500', color: '#E9446A' }}>Sign Up</Text>
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.errorMessage}>
+        {errorMessage && (<Text style={styles.error}>{errorMessage}</Text>)}
       </View>
-    );
-  }
-}
+
+      <View style={styles.form}>
+        <View>
+          <Text style={styles.inputTitle}>Email Address</Text>
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            onChangeText={email => setEmail(email)}
+            value={email}
+          ></TextInput>
+        </View>
+
+        <View style={{ marginTop: 32 }}>
+          <Text style={styles.inputTitle}>Password</Text>
+          <TextInput
+            style={styles.input}
+            secureTextEntry
+            autoCapitalize="none"
+            onChangeText={password => setPassword(password)}
+            value={password}
+          ></TextInput>
+        </View>
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleLogin}>
+        <Text style={{ color: '#fff', fontWeight: '500' }}>Sign in</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{ alignSelf: 'center', marginTop: 32 }}
+        onPress={() => navigation.navigate('Register')}>
+        <Text style={{ color: '#414951', fontSize: 13 }}>
+          New to RapidTrip?{' '}
+          <Text style={{ fontWeight: '500', color: '#E9446A' }}>Sign Up</Text>
+        </Text>
+      </TouchableOpacity>
+    </View>
+
+  );
+};
+
+
+export default Login;
+
 
 const styles = StyleSheet.create({
   container: {

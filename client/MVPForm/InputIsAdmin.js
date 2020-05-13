@@ -15,7 +15,6 @@ import InputDepartureDate from './InputDepartureDate';
 const InputIsAdmin = ({
   isAdmin,
   scrollToNext,
-  scrollToPrev,
   setIsAdminHandler,
   style,
 }) => {
@@ -23,6 +22,7 @@ const InputIsAdmin = ({
   const [date, setDate] = useState(new Date());
 
   return (
+
     <View style={{ ...style, ...styles.isAdminContainer }}>
 
       <Text style={styles.header}>Trip Admin?</Text>
@@ -43,7 +43,6 @@ const InputIsAdmin = ({
         {
           isAdmin
             ? <InputDepartureDate
-              departureDate={date}
               setTripDate={(selectedDate) => {
                 setDate(selectedDate);
               }} />
@@ -51,12 +50,8 @@ const InputIsAdmin = ({
         }
       </View>
 
+
       <View style={styles.buttonsContainer}>
-        <Button
-          onPress={scrollToPrev}
-          title="PREVIOUS"
-          color={Colors.secondary}
-          accessibilityLabel="Previous" />
         <Button
           accessibilityLabel="Next"
           color={Colors.primary}

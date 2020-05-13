@@ -1,94 +1,89 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import {
-  View,
-  Text,
   StyleSheet,
+  Text,
   TextInput,
   TouchableOpacity,
+  View,
 } from 'react-native';
-import * as firebase from 'firebase';
+import { useNavigation } from '@react-navigation/native';
 
-export default class RegisterScreen extends React.Component {
-  state = {
-    name: '',
-    email: '',
-    password: '',
-    errorMessage: null,
+import * as actions from '../store/actions';
+
+
+const Register = () => {
+
+  const [errorMessage] = useState(null);
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+
+  const dispatch = useDispatch();
+  const navigation = useNavigation();
+
+  const handleSignUp = () => {
+    dispatch(actions.authenticateAsync('signup', email, password, name));
   };
 
-  handleSignUp = () => {
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(this.state.email, this.state.password)
-      .then((userCredentials) => {
-        return userCredentials.user.updateProfile({
-          displayName: this.state.name,
-        });
-      });
-  };
 
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text
-          style={styles.greeting}
-        >{`Hello!\n Signup to get started. `}</Text>
+  return (
 
-        <View style={styles.errorMessage}>
-          {this.state.errorMessage && (
-            <Text style={styles.error}>{this.state.errorMessage}</Text>
-          )}
-        </View>
+    <View style={styles.container}>
+      <Text style={styles.greeting}>Hello! Signup to get started.</Text>
 
-        <View style={styles.form}>
-          <View>
-            <Text style={styles.inputTitle}>Full Name</Text>
-            <TextInput
-              style={styles.input}
-              autoCapitalize="none"
-              onChangeText={(name) => this.setState({ name })}
-              value={this.state.name}
-            ></TextInput>
-          </View>
-          <View style={{ marginTop: 32 }}>
-            <Text style={styles.inputTitle}>Email Address</Text>
-            <TextInput
-              style={styles.input}
-              autoCapitalize="none"
-              onChangeText={(email) => this.setState({ email })}
-              value={this.state.email}
-            ></TextInput>
-          </View>
-
-          <View style={{ marginTop: 32 }}>
-            <Text style={styles.inputTitle}>Password</Text>
-            <TextInput
-              style={styles.input}
-              secureTextEntry
-              autoCapitalize="none"
-              onChangeText={(password) => this.setState({ password })}
-              value={this.state.password}
-            ></TextInput>
-          </View>
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={this.handleSignUp}>
-          <Text style={{ color: '#fff', fontWeight: '500' }}>Sign Up</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity
-          style={{ alignSelf: 'center', marginTop: 32 }}
-          onPress={() => this.props.navigation.navigate('Login')}
-        >
-          <Text style={{ color: '#414951', fontSize: 13 }}>
-            New to RapidTrip?{' '}
-            <Text style={{ fontWeight: '500', color: '#E9446A' }}>Login</Text>
-          </Text>
-        </TouchableOpacity>
+      <View style={styles.errorMessage}>
+        {errorMessage && (<Text style={styles.error}>{errorMessage}</Text>)}
       </View>
-    );
-  }
-}
+
+      <View style={styles.form}>
+        <View>
+          <Text style={styles.inputTitle}>Full Name</Text>
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            onChangeText={name => setName(name)}
+            value={name} />
+        </View>
+        <View style={{ marginTop: 32 }}>
+          <Text style={styles.inputTitle}>Email Address</Text>
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            onChangeText={email => setEmail(email)}
+            value={email} />
+        </View>
+
+        <View style={{ marginTop: 32 }}>
+          <Text style={styles.inputTitle}>Password</Text>
+          <TextInput
+            style={styles.input}
+            secureTextEntry
+            autoCapitalize="none"
+            onChangeText={password => setPassword(password)}
+            value={password} />
+        </View>
+      </View>
+
+      <TouchableOpacity style={styles.button} onPress={handleSignUp}>
+        <Text style={{ color: '#fff', fontWeight: '500' }}>Sign Up</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={{ alignSelf: 'center', marginTop: 32 }}
+        onPress={() => navigation.navigate('Login')}>
+        <Text style={{ color: '#414951', fontSize: 13 }}>
+          Already have an account?
+          <Text style={{ fontWeight: '500', color: '#E9446A' }}>  Login</Text>
+        </Text>
+      </TouchableOpacity>
+    </View>
+
+  );
+};
+
+export default Register;
+
 
 const styles = StyleSheet.create({
   container: {

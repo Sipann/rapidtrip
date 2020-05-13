@@ -5,33 +5,33 @@ import {
   StyleSheet,
   View,
 } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import Colors from '../constants/colors';
 import StyleRefs from '../constants/styles';
-
+import userFormOutput from './formOutput';
 import AddUserForm from './AddUserForm';
-import Header from './Header';
-
+import formToAlgo from '../utils/algoInputParser';
+import parseAlgoOutput from '../utils/algoOutputParser';
+import Algorithm from '../services/Algorithm/Algorithm';
 
 const FormLaunch = () => {
 
   const [isAddingUser, setIsAddingUser] = useState(false);
-  const [users, setUsers] = useState([]);
+  const [users, setUsers] = useState(formOutput);
+  const navigation = useNavigation();
 
   const addNewUser = user => {
-    if (user.departureDate) {
-      user.departureDate = user.departureDate.getTime();
-    }
-    if (user.seats) {
-      user.seats = parseInt(user.seats);
-    }
-    user.departureTime = user.departureTime.toLocaleTimeString();
-    setUsers(currentUsers => [...currentUsers, user]);
+    const newUser = userFormOutput(user);
+    console.log('newUser', newUser);
+
+    setUsers(currentUsers => [...currentUsers, newUser]);
     setIsAddingUser(false);
   };
 
   return (
     <View style={styles.screen}>
+
       <Header
         title="MVP Form"
         style={styles.pageHeader} />
@@ -56,8 +56,16 @@ const FormLaunch = () => {
       <View style={styles.resultsContainer}>
         <Button
           color={Colors.secondary}
-          onPress={() => console.log('all users', users)}
-          title="Get All Users" />
+          onPress={async () => {
+            // const parsedResult = await formToAlgo(users);
+            // console.log('parsedResult', parsedResult);
+            // const result = Algorithm(parsedResult);
+            // console.log('algoResult', result);
+            // const inputResultPage = parseAlgoOutput(result, users);
+            // console.log('inputResultPage', inputResultPage);
+            navigation.navigate('Result');
+          }}
+          title="Car allocation" />
       </View>
 
     </View>
@@ -92,3 +100,5 @@ const styles = StyleSheet.create({
 });
 
 export default FormLaunch;
+
+

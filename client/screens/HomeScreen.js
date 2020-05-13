@@ -1,23 +1,23 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 
 export default class HomeScreen extends React.Component {
-  state = {
-    email: '',
-    displayName: '',
-  };
+  // state = {
+  //   email: '',
+  //   displayName: '',
+  // };
 
-  componentDidMount() {
-    const { email, displayName } = firebase.auth().currentUser;
-    this.setState({ email, displayName });
-  }
+  // componentDidMount () {
+  //   const { email, displayName } = firebase.auth().currentUser;
+  //   this.setState({ email, displayName });
+  // }
 
-  signOutUser = () => {
-    firebase.auth().signOut();
-  };
+  // signOutUser = () => {
+  //   firebase.auth().signOut();
+  // };
 
-  render() {
+  render () {
     return (
       <View style={styles.container}>
         <Text>Hi {this.state.email}!</Text>
