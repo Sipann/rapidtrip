@@ -2,12 +2,21 @@ import env from '../config/env.config';
 
 const BASE_URL = env.API_BASE_URL;
 
+const fetchRequest = (url, fetchOptions = {}) => {  
+  return fetch(`${BASE_URL}/${url}`, fetchOptions)
+    .then(res => res.status <= 400 ? res : Promise.reject(res))
+    .then(res => res.json())
+    .catch((err) => {
+      console.log(`${err.message} while fetching /${url}`);  // eslint-disable-line no-console
+    });
+};
+
 export default {
 
   // POST '/trip/:user_email'
   createTripInDB: async (userEmail, trip) => {
     try {
-      const endpoint = `/trip/${userEmail}`;
+      const endpoint = `trip/${userEmail}`;
       const fetchOptions = {
         method: 'POST',
         body: JSON.stringify(trip),
@@ -23,13 +32,14 @@ export default {
   // POST '/user'
   createUserInDB: async newUser => {
     try {
-      const endpoint = '/user';
+      const endpoint = 'user';
       const fetchOptions = {
         method: 'POST',
         body: JSON.stringify(newUser),
         headers: { 'Content-Type': 'application/json' }
       };
-      return await fetchRequest(endpoint, fetchOptions);
+      const res = await fetchRequest(endpoint, fetchOptions);
+      return res;
     } catch (error) {
       return { ok: false, error: `[createUserInDB] error: ${error.message}` };
     }
@@ -105,7 +115,7 @@ export default {
   // DELETE '/trip/:trip_id/:user_email'
   removeUserFromTripInDB: async (tripId, userEmail) => {
     try {
-      const endpoint = `/trip/${tripId}/${userEmail}`;
+      const endpoint = `trip/${tripId}/${userEmail}`;
       const fetchOptions = {
         method: 'DELETE',
       };
@@ -162,12 +172,3 @@ export default {
 
 };
 
-
-const fetchRequest = (url, fetchOptions = {}) => {
-  return fetch(`${BASE_URL}/${url}`, fetchOptions)
-    .then(res => res.status <= 400 ? res : Promise.reject(res))
-    .then(res => res.json())
-    .catch((err) => {
-      console.log(`${err.message} while fetching /${url}`);  // eslint-disable-line no-console
-    });
-};
