@@ -1,13 +1,11 @@
-import 'react-native-gesture-handler';
 import React from 'react';
-
 import env from './config/env.config';
 import * as firebase from 'firebase';
-
 import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import reducers from './store/reducers';
 import { Provider } from 'react-redux';
+
 
 import RootNavigation from './navigation/RootNavigation';
 
@@ -41,3 +39,4 @@ const App = () => {
 };
 
 export default App;
+
