@@ -77,7 +77,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     backgroundColor: Colors.accent,
     padding: 20,
-    borderRadius: 10
+    borderRadius: 10,
   },
   item: {
     padding: 20,
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
   textItem: {
     fontSize: 16,
     textAlign: 'center',
-    color: 'white'
+    color: 'white',
   },
   photo: {
     height: 133,

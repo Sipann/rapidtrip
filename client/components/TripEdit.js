@@ -10,6 +10,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../store/actions';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import Colors from '../constants/colors';
 const moment = require('moment');
 
 const TripEdit = () => {
@@ -49,47 +50,48 @@ const TripEdit = () => {
   }
 
   const updateTripInfo = () => {
-    dispatch(actions.updateTripInfosAsync({
-      id: trip.id,
-      title,
-      description,
-      date: (new Date(date)).getTime()
-    }));
+    dispatch(
+      actions.updateTripInfosAsync({
+        id: trip.id,
+        title,
+        description,
+        date: new Date(date).getTime(),
+      })
+    );
     navigation.goBack();
   };
 
   return (
     <View style={styles.container}>
-      <View style={styles.formGroup}>
-        <Text style={styles.label}>Title</Text>
+      <View style={styles.card}>
+        <Text style={styles.header}>Title</Text>
         <TextInput
           value={title}
-          onChangeText={title => setTitle(title)}
-          style={styles.inputStyle}
+          onChangeText={(title) => setTitle(title)}
+          style={styles.textArea}
         />
       </View>
-      <View>
-        <Text style={styles.label}>Description</Text>
+      <View style={styles.card}>
+        <Text style={styles.header}>Description</Text>
         <TextInput
           style={styles.textArea}
           value={description}
-          onChangeText={description => setDescription(description)}
+          onChangeText={(description) => setDescription(description)}
           multiline={true}
         />
       </View>
-      <Text style={styles.header}>Trip Date</Text>
-      <Text style={styles.selectedShow}>{dateToshow}</Text>
+      <View style={styles.card}>
+        <Text style={styles.header}>Trip Date</Text>
+        <Text style={styles.textArea}>{dateToshow}</Text>
+      </View>
       <TouchableOpacity onPress={() => setDatePicker(true)}>
-        <Text style={styles.changeDate}>Choose Date</Text>
+        <Text style={styles.choosebutton}>Choose Date</Text>
       </TouchableOpacity>
       <DateChooser />
-      <TouchableOpacity style={styles.button}>
-        <View>
-          <Text
-            style={styles.buttonText}
-            onPress={updateTripInfo}
-          >Save Trip</Text>
-        </View>
+      <TouchableOpacity style={styles.create}>
+        <Text style={styles.createText} onPress={updateTripInfo}>
+          Save Trip
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -99,43 +101,48 @@ const styles = StyleSheet.create({
   container: {
     paddingLeft: 10,
     paddingRight: 10,
+    paddingTop: 20,
+    backgroundColor: Colors.background,
+    flexGrow: 1,
   },
-  formGroup: {
-    display: 'flex',
+  card: {
+    backgroundColor: Colors.primary,
+    borderRadius: 20,
+    margin: 10,
+    padding: 0,
   },
-  label: {
-    marginTop: 5,
-    fontWeight: '600',
-    alignItems: 'center',
-  },
-  inputStyle: {
-    fontSize: 18,
-    borderBottomWidth: 2,
-    borderBottomColor: '#ccc',
-    paddingVertical: 15,
-    paddingHorizontal: 15,
-    color: '#333',
+  header: {
+    fontSize: 15,
+    color: 'white',
+    marginLeft: 20,
   },
   textArea: {
-    height: 100,
-    borderBottomWidth: 2,
-    borderBottomColor: '#ccc',
-    paddingVertical: 25,
-    paddingHorizontal: 25,
+    margin: 10,
+    marginLeft: 5,
+    fontSize: 15,
   },
-  button: {
-    marginTop: 25,
-    borderRadius: 3,
-    width: '90%',
-    backgroundColor: '#ccc',
-    height: 50,
-    justifyContent: 'center',
+  choosebutton: {
+    textAlign: 'center',
+    fontSize: 20,
+    width: 100,
     alignSelf: 'center',
-    alignItems: 'center',
+    margin: 10,
+    borderRadius: 15,
+    backgroundColor: Colors.accent,
   },
-  buttonText: {
-    fontSize: 18,
-    color: '#333',
+  create: {
+    textAlign: 'center',
+    fontSize: 20,
+    width: 200,
+    alignSelf: 'center',
+    margin: 30,
+    backgroundColor: Colors.danger,
+    borderRadius: 20,
+  },
+  createText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 30,
   },
 });
 
