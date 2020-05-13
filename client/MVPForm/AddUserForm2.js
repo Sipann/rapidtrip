@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 
 import InputDepartureLocation from './InputDepartureLocation';
-import InputDepartureTime from './InputDepartureTime';
+import InputDepartureTime from './InputDepartureTime2';
 import InputIsAdmin from './InputIsAdmin';
 import InputIsDriver from './InputIsDriver';
 import InputUserName from './InputUserName';
@@ -27,6 +27,8 @@ const AddUserForm = ({ addUser, dismissModal }) => {
     name: '',
     seats: '0',
   });
+
+  const [showTime, setShowTime] = useState(false);
 
   const cancelHandler = () => {
     setUser({
@@ -59,10 +61,7 @@ const AddUserForm = ({ addUser, dismissModal }) => {
             contentContainerStyle={{ width: '500%' }}>
 
             <InputUserName
-              scrollToNext={() => {
-                scroll.current.scrollTo({ x: 1 * screenWidth, y: 0, animated: true });
-                Keyboard.dismiss();}
-              }
+              scrollToNext={() => scroll.current.scrollTo({ x: 1 * screenWidth, y: 0, animated: true })}
               setUsernameHandler={(input) => setUser({ ...user, name: input })}
               style={{ width: screenWidth }}
               username={user.name}
@@ -84,27 +83,23 @@ const AddUserForm = ({ addUser, dismissModal }) => {
                 if (seats) setUser({ ...user, seats: seats });
                 scroll.current.scrollTo({ x: 3 * screenWidth, animated: true });
                 setShowTime(true);
-                Keyboard.dismiss();
               }}
               style={{ width: screenWidth }}
               toggleDriverHandler={() => setUser({ ...user, isDriver: !user.isDriver })}
             />
 
             <InputDepartureTime
-              time={user.departureTime}
               scrollToNext={selectedTime => {
                 setUser({ ...user, departureTime: selectedTime });
                 scroll.current.scrollTo({ x: 4 * screenWidth, animated: true });
               }}
-              scrollToPrev={() => { }}
-              setDepartureTime={(evt, selectedTime) => setUser({ ...user, departureTime: selectedTime })}
+              showTime={showTime}
               style={{ width: screenWidth }}
             />
 
             <InputDepartureLocation
               addUser={() => addUser(user)}
-              scrollToPrev={() => { }}
-              setDepartureLocation={(loc) => setUser({ ...user, departureLocation: loc })}
+              setDepartureLocation={loc => setUser({ ...user, departureLocation: loc })}
               style={{ width: screenWidth }}
             />
 

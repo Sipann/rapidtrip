@@ -18,8 +18,6 @@ client/web-report/
 **/.DS_Store
 
 env.config.js
-<<<<<<< HEAD
 node_modules
-=======
-node_modules
->>>>>>> 3a101c9e498c04a7c08a55070389ee7fc60decd1
+.expo
+.env

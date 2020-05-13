@@ -32,7 +32,6 @@ const FormLaunch = () => {
 
   return (
     <View style={styles.screen}>
-
       <Header
         title="MVP Form"
         style={styles.pageHeader} />
