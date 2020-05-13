@@ -30,15 +30,18 @@ const ParticipantItem = (props) => {
       <View>
         <Text style={styles.icon}>{icon}</Text>
       </View>
-      <TouchableOpacity>
-        <View>
-          <Ionicons
-            name="ios-trash"
-            size={24} color="black"
-            onPress={props.removeParticipant}
-          />
-        </View>
-      </TouchableOpacity>
+      {props.isAdmin ? (
+        <TouchableOpacity>
+          <View>
+            <Ionicons
+              name="ios-trash"
+              size={24}
+              color="#333" 
+              onPress={props.removeParticipant}
+            />
+          </View>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };

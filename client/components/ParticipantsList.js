@@ -47,7 +47,7 @@ const ParticipantsScreen = () => {
               style={{ justifyContent: 'center' }}
               name="md-add"
               size={32}
-              color="black"
+              color="#333"
               onPress={addParticipant}
             />
           </TouchableOpacity>
@@ -59,6 +59,7 @@ const ParticipantsScreen = () => {
           return (
             <ParticipantItem
               isCurrentUser={item.id === currentUser.id}
+              isAdmin={currentUser.is_admin}
               name={item.name || item.email}
               coming={!!item.departure_time}
               hasAnswered={!!item.departure_time}
