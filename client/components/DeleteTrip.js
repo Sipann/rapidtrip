@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useRoute, useNavigation } from '@react-navigation/native';
+import Colors from '../constants/colors';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions';
 
@@ -10,7 +11,7 @@ export default function DeleteTrip () {
   const navigation = useNavigation();
   const { trip } = route.params;
   const tripAdmin = trip.participants.find(participant => participant.is_admin);
-  
+
   const isAdmin = useSelector(state => state.userid === tripAdmin.id);
   const dispatch = useDispatch();
 
@@ -21,10 +22,10 @@ export default function DeleteTrip () {
 
   if (isAdmin) {
     return (
-      <View>
+      <View style = {styles.container}>
         <Text style = {styles.message}>Are you sure you want to delete this Trip?</Text>
-        <View style = {styles.container}>
-          <TouchableOpacity onPress={deleteTrip}>
+        <View style = {styles.buttons}>
+          <TouchableOpacity onPress={() => deleteTrip()}>
             <Text style = {styles.runbuttonbad} >Yes</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={()=> navigation.goBack()}>
@@ -44,27 +45,34 @@ export default function DeleteTrip () {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundColor: Colors.background,
+    flexGrow: 1
+  },
+  buttons: {
     flexDirection: 'row',
     justifyContent: 'space-evenly'
   },
   message: {
     textAlign: 'center',
     fontSize: 30,
-    marginTop: '50%'
+    marginTop: '50%',
+    color: 'white'
   },
   runbuttongood: {
     fontSize:40,
     margin: 40,
     textAlign: 'center',
-    backgroundColor: 'blue',
-    borderRadius:5
+    backgroundColor: Colors.primary,
+    borderRadius:5,
+    width: 100
   },
   runbuttonbad: {
     fontSize:40,
     margin: 40,
     textAlign: 'center',
-    backgroundColor: 'red',
-    borderRadius:5
+    backgroundColor: Colors.danger,
+    borderRadius:5,
+    width: 100
   }
 
 });

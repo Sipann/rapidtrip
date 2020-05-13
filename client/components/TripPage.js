@@ -15,7 +15,7 @@ export default function TripPage ({ route, navigation }) {
         style={styles.item}
         onPress={() => navigation.navigate(route, { trip })}
       >
-        <FontAwesome5 name={icon} size={32} color="black" solid />
+        <FontAwesome5 name={icon} size={32} color="white" solid />
         <Text style={styles.textItem}>{name}</Text>
       </TouchableOpacity>
     );
@@ -67,6 +67,7 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     backgroundColor: Colors.accent,
     padding: 20,
+    borderRadius: 10
   },
   item: {
     padding: 20,
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
   textItem: {
     fontSize: 16,
     textAlign: 'center',
+    color: 'white'
   },
   photo: {
     height: 133,

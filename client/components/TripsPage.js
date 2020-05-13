@@ -55,15 +55,15 @@ export default function TripsPage () {
         <View style={styles.button}>
           <Text style={styles.buttonText}>Create New Trip</Text>
         </View>
-        <View
-          style={{
-            marginTop: 10,
-            borderBottomColor: 'white',
-            borderBottomWidth: 1,
-          }}
-        />
-        <Text style={styles.yourTrips}>Your Trips</Text>
       </TouchableOpacity>
+      <View
+        style={{
+          marginTop: 10,
+          borderBottomColor: 'white',
+          borderBottomWidth: 1,
+        }}
+      />
+      <Text style={styles.yourTrips}>Your Trips</Text>
       <View style={styles.buttonGroup}>
         <TouchableOpacity
           onPress={() => {
@@ -151,7 +151,6 @@ const styles = StyleSheet.create({
     color: 'white',
     textAlign: 'center',
     fontSize: 20,
-    marginTop: 5
-  }
+    marginTop: 5,
+  },
 });
-

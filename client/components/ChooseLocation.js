@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     width: 100,
+    height: 30,
     alignSelf: 'center',
     margin: 10,
     borderRadius: 15,
