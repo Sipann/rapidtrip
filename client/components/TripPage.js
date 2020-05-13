@@ -20,6 +20,8 @@ export default function TripPage ({ route, navigation }) {
       </TouchableOpacity>
     );
   }
+
+  const tripPicture = trip.picture ? { uri: trip.picture } : require('../assets/carClipArt.jpg');
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -27,7 +29,7 @@ export default function TripPage ({ route, navigation }) {
         <Text style={styles.textTripDate}>{dateToShow}</Text>
         <Image
           style={styles.photo}
-          source={require('../assets/carClipArt.jpg')}
+          source={tripPicture}
         />
         <View style={styles.menu}>
           <View style={styles.menuRow}>
