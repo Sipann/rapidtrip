@@ -8,40 +8,67 @@ import {
   TouchableOpacity,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import env from '../config/env.config';
+import PlacesInput from 'react-native-places-input';
 import Colors from '../constants/colors';
 
 const ParticipantResponse = () => {
-  const [time, setTime] = useState(Date.now);
-  const [location, setLocation] = useState('');
+  const [time, setTime] = useState(new Date());
+  const [dateOn, setDateOn] = useState(false);
+  const [posLocation, setPosLocation] = useState('');
+  const [locationName, setLocationName] = useState('');
   const [driver, setDriver] = useState(false);
   const [seats, setSeats] = useState('');
 
   const onChange = (event, selectedDate) => {
-    const currentDate = selectedDate || date;
-    setTime(currentDate);
+    setTime(selectedDate);
+    setDateOn(false);
   };
 
   return (
     <View style={styles.container}>
+      {dateOn ? (
+        <View style={styles.formGroup}>
+          <Text style={styles.label}>At what time are you going?</Text>
+          <DateTimePicker
+            testID="dateTimePicker"
+            timeZoneOffsetInMinutes={0}
+            value={time}
+            is24Hour={true}
+            display="default"
+            mode="time"
+            onChange={onChange}
+          />
+        </View>
+      ) : null}
       <View style={styles.formGroup}>
-        <Text style={styles.label}>At what time are you going?</Text>
-        <DateTimePicker
-          testID="dateTimePicker"
-          timeZoneOffsetInMinutes={0}
-          value={time}
-          is24Hour={true}
-          display="default"
-          mode="time"
-          onChange={onChange}
-        />
-      </View>
-      <View style={styles.formGroup}>
-        <Text style={styles.label}>Your Location</Text>
-        <TextInput
-          placeholder="Your location"
-          onchangeText={(location) => setLocation(location)}
-          style={styles.inputStyle}
-        />
+        <Text style={styles.label}>Choose Location</Text>
+
+        <View style={styles.content}>
+          <PlacesInput
+            googleApiKey={env.GOOGLE_API_KEY}
+            placeHolder={'e.g. 123 Main Street'}
+            language={'en-US'}
+            onSelect={(place) => {
+              console.log(place);
+              setPosLocation(place.result.geometry.location);
+              setLocationName(place.result.formatted_address);
+            }}
+            stylesContainer={{
+              position: 'relative',
+              alignSelf: 'stretch',
+              margin: 0,
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              shadowOpacity: 0,
+              borderColor: '#dedede',
+              borderWidth: 1,
+              marginBottom: 10,
+            }}
+          />
+        </View>
       </View>
       <View style={styles.formGroup}>
         <Text style={styles.label}>Are you a driver?</Text>

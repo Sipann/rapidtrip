@@ -6,6 +6,11 @@ import Colors from '../constants/colors';
 import { useNavigation } from '@react-navigation/native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 
+const currentUser = {
+  id: 'user8',
+  admin: true,
+};
+
 const ParticipantItem = (props) => {
   const navigation = useNavigation();
   const icon = props.coming ? (
@@ -16,7 +21,7 @@ const ParticipantItem = (props) => {
     <Feather
       name="chevron-right"
       size={24}
-      onPress={() => navigation.navigate('Details')}
+      onPress={() => navigation.navigate('ParticipantResponse')}
     />
   ) : (
     <AntDesign name="question" size={24} />
@@ -30,11 +35,13 @@ const ParticipantItem = (props) => {
       <View>
         <Text style={styles.icon}>{icon}</Text>
       </View>
-      <TouchableOpacity>
-        <View>
-          <Ionicons name="ios-trash" size={24} color="black" />
-        </View>
-      </TouchableOpacity>
+      {currentUser.admin ? (
+        <TouchableOpacity>
+          <View>
+            <Ionicons name="ios-trash" size={24} color="#333" />
+          </View>
+        </TouchableOpacity>
+      ) : null}
     </View>
   );
 };
