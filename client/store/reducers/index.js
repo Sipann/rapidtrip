@@ -154,14 +154,16 @@ const reducers = (state = initialState, action) => {
         if (trip.id === action.payload.tripId) {
           return {
             ...trip,
-            participants: action.payload.participantsList
+            participants: action.payload.participantsList,
+            cars: []
           };
         }
         else {
           const tripParticipants = deepCloneParticipants(trip);
           return {
             ...trip,
-            participants: tripParticipants
+            participants: tripParticipants,
+            cars: []
           };
         }
       });
@@ -173,14 +175,25 @@ const reducers = (state = initialState, action) => {
       };
     }
 
-    // const removeUserFromTripSync = tripId => ({ type: actionTypes.REMOVE_USER_FROM_TRIP_SYNC, tripId });
+    // const removeUserFromTripSync = (tripId, participantsList) => ({
+    //   type: actionTypes.REMOVE_USER_FROM_TRIP_SYNC,
+    //   payload: { tripId: tripId, participantsList: participantsList }
+    // });
     case actionTypes.REMOVE_USER_FROM_TRIP_SYNC: {
       const updatedTrips = state.trips.map(trip => {
-        if (trip.id !== action.payload.tripId) {
+        if (trip.id === action.payload.tripId) {
+          return {
+            ...trip,
+            participants: action.payload.participantsList,
+            cars: []
+          };
+        }
+        else {
           const tripParticipants = deepCloneParticipants(trip);
           return {
             ...trip,
-            participants: tripParticipants
+            participants: tripParticipants,
+            cars: []
           };
         }
       });

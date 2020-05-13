@@ -32,7 +32,11 @@ const ParticipantItem = (props) => {
       </View>
       <TouchableOpacity>
         <View>
-          <Ionicons name="ios-trash" size={24} color="black" />
+          <Ionicons
+            name="ios-trash"
+            size={24} color="black"
+            onPress={props.removeParticipant}
+          />
         </View>
       </TouchableOpacity>
     </View>

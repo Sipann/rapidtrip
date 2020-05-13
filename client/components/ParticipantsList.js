@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   View,
   TextInput,
@@ -6,18 +6,33 @@ import {
   FlatList,
   TouchableOpacity,
 } from 'react-native';
-import participants from '../assets/MockParticipants';
 import ParticipantItem from './ParticipantsItem';
 import { Ionicons } from '@expo/vector-icons';
-
-const currentUser = {
-  id: 'user8',
-  admin: true,
-};
+import { useSelector, useDispatch } from 'react-redux';
+import { useRoute } from '@react-navigation/native';
+import * as actions from '../store/actions';
 
 const ParticipantsScreen = () => {
-  const addParticipant = (participant) => {
-    participants.push(participant);
+  const route = useRoute();
+  const { trip } = route.params;
+  const participants = useSelector(state => state.trips.find(t => t.id === trip.id).participants);
+  const tripAdmin = trip.participants.find(participant => participant.is_admin);
+  const currentUser = useSelector(state => ({
+    id: state.userid,
+    admin: state.userid === tripAdmin.id
+  }));
+  const dispatch = useDispatch();
+
+  const [ newParticipant, setNewParticipant ] = useState('');
+
+  const addParticipant = () => {
+    // TODO check if input is valid email address format
+    dispatch(actions.includeUserInTripAsync(trip.id, newParticipant));
+    setNewParticipant('');
+  };
+
+  const removeParticipant = (participantEmail) => {
+    dispatch(actions.removeUserFromTripAsync(trip.id, participantEmail));
   };
 
   return (
@@ -29,7 +44,8 @@ const ParticipantsScreen = () => {
             placeholder="Add Participant"
             autoCapitalize="none"
             autoCorrect={false}
-            onEndEditing={addParticipant}
+            value={newParticipant}
+            onChangeText={ text => setNewParticipant(text) }
           />
           <TouchableOpacity style={styles.button}>
             <Ionicons
@@ -37,6 +53,7 @@ const ParticipantsScreen = () => {
               name="md-add"
               size={32}
               color="black"
+              onPress={addParticipant}
             />
           </TouchableOpacity>
         </View>
@@ -47,9 +64,10 @@ const ParticipantsScreen = () => {
           return (
             <ParticipantItem
               isCurrentUser={item.id === currentUser.id}
-              name={item.name}
-              coming={item.participant}
-              hasAnswered={item.hasAnswered}
+              name={item.name || item.email}
+              coming={!!item.departure_time}
+              hasAnswered={!!item.departure_time}
+              removeParticipant={() => removeParticipant(item.email)}
             />
           );
         }}

@@ -200,13 +200,16 @@ export const logoutUser = () => {
 };
 
 // REMOVE USER FROM TRIP
-const removeUserFromTripSync = tripId => ({ type: actionTypes.REMOVE_USER_FROM_TRIP_SYNC, tripId });
+const removeUserFromTripSync = (tripId, participantsList) => ({
+  type: actionTypes.REMOVE_USER_FROM_TRIP_SYNC,
+  payload: { tripId: tripId, participantsList: participantsList }
+});
 
 export const removeUserFromTripAsync = (tripId, userEmail) => {
   return async dispatch => {
     try {
       const response = await services.removeUserFromTripInDB(tripId, userEmail);
-      if (response && response.ok) dispatch(removeUserFromTripSync(tripId));
+      if (response && response.ok) dispatch(removeUserFromTripSync(tripId, response.body));
       else if (response && !response.ok) dispatch(actionFail(response.error));
       else throw new Error('removeUserFromTripAsync error');
     } catch (error) {
