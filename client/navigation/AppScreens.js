@@ -8,15 +8,16 @@ import DeleteTrip from '../components/DeleteTrip';
 import TripDetails from '../components/TripDetails';
 import TripEdit from '../components/TripEdit';
 import ParticipantsList from '../components/ParticipantsList';
+import ParticipantResponse from '../screens/ParticipantResponse';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
-export default function AppScreens () {
+export default function AppScreens() {
   return (
     <NavigationContainer independent={true}>
-      <Stack.Navigator initialRouteName="TripsPage">
+      <Stack.Navigator initialRouteName="ParticipantResponse">
         <Stack.Screen
           name="TripsPage"
           component={TripsPage}
@@ -59,6 +60,11 @@ export default function AppScreens () {
           name="ParticipantsList"
           component={ParticipantsList}
           options={{ title: 'List of Participants' }}
+        />
+        <Stack.Screen
+          name="ParticipantResponse"
+          component={ParticipantResponse}
+          options={{ title: 'Participant Response' }}
         />
       </Stack.Navigator>
     </NavigationContainer>
