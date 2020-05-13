@@ -1,45 +1,50 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import MapView from 'react-native-maps';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-const mockedTrip = {
-  id: 1,
-  title: 'Trip to Portugal',
-  date: new Date(2020, 6, 5),
-  location: 'Lisbon',
-  description:
-    'Lisbon is the capital and the largest city of Portugal, with an estimated population of 505,526 within its administrative limits in an area of 100.05 km2.',
-};
+// const trip = {
+//   id: 1,
+//   title: 'Trip to Portugal',
+//   date: new Date(2020, 6, 5),
+//   location: 'Lisbon',
+//   description:
+//     'Lisbon is the capital and the largest city of Portugal, with an estimated population of 505,526 within its administrative limits in an area of 100.05 km2.',
+// };
 
-const TripDetails = ({navigation}) => {
+const TripDetails = () => {
+  const navigation = useNavigation();
+  const route = useRoute();
+  const { trip } = route.params;
+  
   const markers = [
     {
-      latitude: 37.78825,
-      longitude: -122.4324,
-      title: 'Foo Place',
-      subtitle: '1234 Foo Drive',
-    },
+      latitude: trip.destination.latitude,
+      longitude: trip.destination.longitude,
+      title: trip.destination.address,
+      subtitle: trip.destination.address
+    }
   ];
   return (
     <View style={styles.container}>
       <MapView
         style={styles.map}
         initialRegion={{
-          latitude: 37.78825,
-          longitude: -122.4324,
-          latitudeDelta: 0.0922,
-          longitudeDelta: 0.0421,
+          latitude: trip.destination.latitude,
+          longitude: trip.destination.longitude,
+          latitudeDelta: 0.1,
+          longitudeDelta: 0.05,
         }}
         annotations={markers}
       />
-      <Text style={styles.title}>{mockedTrip.title}</Text>
+      <Text style={styles.title}>{trip.title}</Text>
       <Text style={styles.text}>
-        <Text style={styles.bold}>Date</Text>: {mockedTrip.date.toDateString()}
+        <Text style={styles.bold}>Date</Text>: {(new Date(trip.date)).toDateString()}
       </Text>
       <Text style={styles.text}>
-        <Text style={styles.bold}>Location</Text>: {mockedTrip.location}
+        <Text style={styles.bold}>Location</Text>: {trip.destination.address}
       </Text>
-      <Text style={styles.text}>{mockedTrip.description}</Text>
+      <Text style={styles.text}>{trip.description}</Text>
       <Button  onPress= { ()=> navigation.navigate('TripEdit')} title="Edit Trip" />
     </View>
   );
