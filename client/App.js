@@ -1,21 +1,19 @@
 import 'react-native-gesture-handler';
 import React from 'react';
-import Result from './components/Result';
-import { StyleSheet, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
-// import LoadingScreen from './screens/LoadingScreen';
-// import LoginScreen from './screens/LoginScreen';
-// import RegisterScreen from './screens/RegisterScreen';
-// import HomeScreen from './screens/HomeScreen';
+
 import env from './config/env.config';
-
 import * as firebase from 'firebase';
-import Form from './MVPForm/FormLaunch';
 
-import Colors from './constants/colors';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import reducers from './store/reducers';
+import { Provider } from 'react-redux';
 
-var firebaseConfig = {
+import RootNavigation from './navigation/RootNavigation';
+
+const store = createStore(reducers, applyMiddleware(thunk));
+
+const firebaseConfig = {
   apiKey: env.FIREBASE_API_KEY,
   authDomain: env.AUTH_DOMAIN,
   databaseURL: env.DATABASE_URL,
@@ -25,50 +23,21 @@ var firebaseConfig = {
   appId: env.APP_ID,
 };
 
-firebase.initializeApp(firebaseConfig);
-
-const Stack = createStackNavigator();
-
-export default function App () {
-  return (
-    <View style={styles.container}>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName='MVPForm'
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: Colors.primary,
-            },
-            headerTintColor: 'black',
-            headerTitleAlign: 'center',
-            headerTitleStyle: {
-              fontWeight: 'bold',
-              fontSize: 18
-            }
-          }}
-        >
-          <Stack.Screen
-            name='MVPForm'
-            component={Form}
-            options={{ title: 'Trippy' }}
-          />
-          <Stack.Screen
-            name='Result'
-            component={Result}
-            options={{ title: 'Car Allocation' }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
-  );
+if (!firebase.apps.length) {
+  try {
+    firebase.initializeApp(firebaseConfig);
+  } catch (err) {
+    //TODO manage error
+    console.error('Firebase initialization error raised', err.stack); // eslint-disable-line no-console
+  }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'stretch',
-    justifyContent: 'center',
-  },
+const App = () => {
+  return (
+    <Provider store={store}>
+      <RootNavigation />
+    </Provider>
+  );
+};
 
-});
+export default App;

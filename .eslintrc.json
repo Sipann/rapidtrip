@@ -1,44 +1,59 @@
 {
-    "env": {
-        "browser": true,
-        "es6": true,
-        "node": true
+  "env": {
+    "browser": true,
+    "es6": true,
+    "node": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:react/recommended"
+  ],
+  "globals": {
+    "Atomics": "readonly",
+    "SharedArrayBuffer": "readonly"
+  },
+  "parserOptions": {
+    "ecmaFeatures": {
+      "jsx": true
     },
-    "extends": [
-        "eslint:recommended",
-        "plugin:react/recommended"
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "plugins": [
+    "react"
+  ],
+  "rules": {
+    "indent": [
+      "error",
+      2,
+      {
+        "SwitchCase": 1
+      }
     ],
-    "globals": {
-        "Atomics": "readonly",
-        "SharedArrayBuffer": "readonly"
-    },
-    "parserOptions": {
-        "ecmaFeatures": {
-            "jsx": true
-        },
-        "ecmaVersion": 2018,
-        "sourceType": "module"
-    },
-    "plugins": [
-        "react"
+    "keyword-spacing": "error",
+    "linebreak-style": [
+      "error",
+      "unix"
     ],
-    "rules": {
-        "indent": ["error", 2],
-        "keyword-spacing": "error",
-        "linebreak-style": ["error", "unix"],
-        "no-undef": 0,
-        "no-unsued-vars": 0,
-        "quotes": ["error", "single"],
-        "react/prop-types": 0,
-        "react/display-name": 0,
-        "semi": ["error", "always"],
-        "space-before-blocks": "error",
-        "space-before-function-paren": "error",
-        "no-console": 1
-    },
-    "settings": {
-        "react": {
-            "version": "detect"
-        }
+    "no-undef": 0,
+    "no-unsued-vars": 0,
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "react/prop-types": 0,
+    "react/display-name": 0,
+    "semi": [
+      "error",
+      "always"
+    ],
+    "space-before-blocks": "error",
+    "space-before-function-paren": "error",
+    "no-console": 1
+  },
+  "settings": {
+    "react": {
+      "version": "detect"
     }
+  }
 }
