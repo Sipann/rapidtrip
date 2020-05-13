@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
-// import colorScheme from '../constants/colors';
+import Colors from '../constants/colors';
 const moment = require('moment');
 
 export default function TripPage ({ route, navigation }) {
@@ -21,16 +21,17 @@ export default function TripPage ({ route, navigation }) {
     );
   }
 
-  const tripPicture = trip.picture ? { uri: trip.picture } : require('../assets/carClipArt.jpg');
+  const tripPicture = trip.picture
+    ? { uri: trip.picture }
+    : require('../assets/carClipArt.jpg');
   return (
-    <ScrollView>
-      <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      <View style={styles.page}>
+        <View style={styles.card}>
+          <Image style={styles.photo} source={tripPicture} />
+        </View>
         <Text style={styles.textTripName}>{trip.title}</Text>
         <Text style={styles.textTripDate}>{dateToShow}</Text>
-        <Image
-          style={styles.photo}
-          source={tripPicture}
-        />
         <View style={styles.menu}>
           <View style={styles.menuRow}>
             {Item('Trip Details', 'road', 'TripDetails')}
@@ -50,13 +51,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 0,
+    backgroundColor: Colors.background,
+  },
+  page: {
     alignItems: 'center',
+  },
+  card: {
+    backgroundColor: Colors.secondary,
+    margin: 10,
   },
   menu: {
     flex: 2,
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
+    backgroundColor: Colors.accent,
+    padding: 20,
   },
   item: {
     padding: 20,
@@ -66,24 +76,26 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-evenly',
     borderRadius: 10,
-    backgroundColor: 'blue',
+    backgroundColor: Colors.primary,
   },
   textTripName: {
     flex: 1,
     fontSize: 30,
+    color: 'white',
   },
   textTripDate: {
+    color: 'white',
     flex: 1,
     fontSize: 20,
-    marginBottom: 30
+    marginBottom: 30,
   },
   textItem: {
     fontSize: 16,
     textAlign: 'center',
   },
   photo: {
-    height:133,
-    width: 400,
-    marginBottom: 50,
-  }
+    height: 133,
+    width: 350,
+    margin: 20,
+  },
 });
