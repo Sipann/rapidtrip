@@ -10,6 +10,7 @@ client/*.p12
 client/*.key
 client/*.mobileprovision
 client/*.orig.*
+client/config/env.config.js
 client/web-build/
 client/web-report/
 
@@ -19,3 +20,5 @@ client/web-report/
 env.config.js
 node_modules
 .expo
+DB_Responses
+.env

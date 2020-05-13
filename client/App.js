@@ -1,35 +1,42 @@
 import React from 'react';
-import AppStack from './components/AppStack';
-import Profile from './components/ProfilePage';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import { FontAwesome5 } from '@expo/vector-icons';
+import env from './config/env.config';
+import * as firebase from 'firebase';
+import { createStore, applyMiddleware } from 'redux';
+import thunk from 'redux-thunk';
+import reducers from './store/reducers';
+import { Provider } from 'react-redux';
 
-const Tab = createBottomTabNavigator();
 
-export default function App () {
-  return (
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen
-          name="Home"
-          component={AppStack}
-          options={{
-            tabBarIcon: () => (
-              <FontAwesome5 name={'home'} size={32} color="black" solid />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Profile"
-          component={Profile}
-          options={{
-            tabBarIcon: () => (
-              <FontAwesome5 name={'user-alt'} size={32} color="black" solid />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
+import RootNavigation from './navigation/RootNavigation';
+
+const store = createStore(reducers, applyMiddleware(thunk));
+
+const firebaseConfig = {
+  apiKey: env.FIREBASE_API_KEY,
+  authDomain: env.AUTH_DOMAIN,
+  databaseURL: env.DATABASE_URL,
+  projectId: env.PROJECT_ID,
+  storageBucket: env.STORAGE_BUCKET,
+  messagingSenderId: env.MESSAGING_SENDER_ID,
+  appId: env.APP_ID,
+};
+
+if (!firebase.apps.length) {
+  try {
+    firebase.initializeApp(firebaseConfig);
+  } catch (err) {
+    //TODO manage error
+    console.error('Firebase initialization error raised', err.stack); // eslint-disable-line no-console
+  }
 }
+
+const App = () => {
+  return (
+    <Provider store={store}>
+      <RootNavigation />
+    </Provider>
+  );
+};
+
+export default App;
+
