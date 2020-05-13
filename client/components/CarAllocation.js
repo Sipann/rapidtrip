@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import {
   Button,
   Dimensions,
@@ -12,21 +12,23 @@ import MapView, { Callout, Marker } from 'react-native-maps';
 import CarSvg from './CarSvg';
 import { mockResult } from './mockResults';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../store/actions';
+import { useRoute } from '@react-navigation/native';
 
 const Result = () => {
-  //! currentUser id currently hardcoded
-  const userId = 2;
-  const [cars, setCars] = useState([]);
-  const [currentCar, setCurrentCar] = useState({});
+  const route = useRoute();
+  const { trip, currentUser } = route.params;
+  const cars = useSelector(state => state.trips.find(t => t.id === trip.id).cars);
+  const currentUserCar = cars.length && cars.find(car => car.passengers.includes(currentUser.email));
+  const isDriver = cars.length ? currentUserCar.driver_id === currentUser.id : false;
   const itemsRef = useRef([]);
-  const [isDriver, setIsDriver] = useState(false);
 
-  const algoHasRun = false; //! Here we need to actually check if the algo has run
-  const adminId = 2;
-  const readyToRun = false;
+  const algoHasRun = !!cars.length;
+  const readyToRun = trip.participants.every(p => !!p.departure_time && !!p.departure_location_id);
 
   if (algoHasRun === false) {
-    if (adminId === userId) {
+    if (currentUser.is_admin) {
       //!THIS IS A GUESS AS TO THE SHAPE
       if (readyToRun) {
         return (
@@ -45,17 +47,6 @@ const Result = () => {
     return <Text style={styles.message}>Check back later!</Text>;
   }
 
-  const currentUserCar = (allCars) => {
-    const currentCar = allCars.find((car) => {
-      if (car.driver.id === userId) {
-        setIsDriver(true);
-        return car;
-      }
-      return car.passengers.find((passenger) => passenger.id === userId);
-    });
-    setCurrentCar(currentCar);
-  };
-
   const hideCallout = (index) => {
     itemsRef.current[index].hideCallout();
   };
@@ -72,7 +63,7 @@ const Result = () => {
                 longitude: car.driver.departureLocation.lng,
               }}
               pinColor={
-                car.driver.id === currentCar.driver.id
+                car.driver.id === currentUserCar.driver.id
                   ? 'rgba(102, 204, 204, 1)'
                   : 'rgba(255, 0, 0, 0.4)'
               }
@@ -80,8 +71,8 @@ const Result = () => {
             >
               <Callout
                 style={
-                  car.driver.id === currentCar.driver.id
-                    ? styles.currentCarCallout
+                  car.driver.id === currentUserCar.driver.id
+                    ? styles.currentUserCarCallout
                     : styles.otherCallout
                 }
                 onPress={() => hideCallout(index)}
@@ -105,9 +96,7 @@ const Result = () => {
   };
 
   useEffect(() => {
-    setCars(mockResult);
-    currentUserCar(mockResult);
-    itemsRef.current = itemsRef.current.slice(0, mockResult.length);
+    itemsRef.current = itemsRef.current.slice(0, cars.length);
   }, [mockResult]);
 
   return (
@@ -122,26 +111,26 @@ const Result = () => {
           <CarSvg />
         </View>
 
-        {currentCar.driver && (
+        {currentUserCar.driver && (
           <View style={styles.infos}>
             <Text style={styles.driverTitle}>
               Driver:
               {isDriver ? (
                 <Text style={styles.driverName}>You</Text>
               ) : (
-                <Text style={styles.driverName}>{currentCar.driver.name}</Text>
+                <Text style={styles.driverName}>{currentUserCar.driver.name}</Text>
               )}
             </Text>
             <Text style={styles.pickupTime}>
               {isDriver ? (
                 <Text>
                   Be Ready to leave at:{' '}
-                  {currentCar.driver.departureTime.slice(0, -5)}
+                  {currentUserCar.driver.departureTime.slice(0, -5)}
                 </Text>
               ) : (
                 <Text>
                   Arrive at your driver by:{' '}
-                  {currentCar.driver.departureTime.slice(0, -5)}
+                  {currentUserCar.driver.departureTime.slice(0, -5)}
                 </Text>
               )}
             </Text>
@@ -157,11 +146,11 @@ const Result = () => {
         </View>
 
         <View style={styles.mapCntr}>
-          {currentCar.driver && (
+          {currentUserCar.driver && (
             <MapView
               initialRegion={{
-                latitude: currentCar.driver.departureLocation.lat,
-                longitude: currentCar.driver.departureLocation.lng,
+                latitude: currentUserCar.driver.departureLocation.lat,
+                longitude: currentUserCar.driver.departureLocation.lng,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
@@ -186,7 +175,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  currentCarCallout: {
+  currentUserCarCallout: {
     backgroundColor: '#66cccc',
     width: 150,
     padding: 15,
