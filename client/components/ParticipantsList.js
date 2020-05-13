@@ -14,13 +14,8 @@ import * as actions from '../store/actions';
 
 const ParticipantsScreen = () => {
   const route = useRoute();
-  const { trip } = route.params;
+  const { trip, currentUser } = route.params;
   const participants = useSelector(state => state.trips.find(t => t.id === trip.id).participants);
-  const tripAdmin = trip.participants.find(participant => participant.is_admin);
-  const currentUser = useSelector(state => ({
-    id: state.userid,
-    admin: state.userid === tripAdmin.id
-  }));
   const dispatch = useDispatch();
 
   const [ newParticipant, setNewParticipant ] = useState('');
@@ -37,7 +32,7 @@ const ParticipantsScreen = () => {
 
   return (
     <>
-      {currentUser.admin ? (
+      {currentUser.is_admin ? (
         <View style={styles.container}>
           <TextInput
             style={styles.inputStyle}
