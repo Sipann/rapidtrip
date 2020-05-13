@@ -2,23 +2,28 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, Image, StyleSheet } from 'react-native';
 import { Input } from 'react-native-elements';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { useSelector, useDispatch } from 'react-redux';
+import * as actions from '../store/actions';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 
 const ProfilePage = () => {
-  const [tempUserName, setTempUserName] = useState('Brendan'); //TODO: This should be whatever the real username is
-  const [tempEmail, setTempEmail] = useState('mail@me.com'); //TODO: This should be whatever the real username is
-  const [photoUrl, setPhotoUrl] = useState(
-    'https://res.cloudinary.com/rapidtrip/image/upload/v1589305525/qshgjgcmd5dz8xzvtaxa.jpg'
-  ); //TODO: HAVE THIS set as the photo URL
+  const user = useSelector(state => ({
+    username: state.name,
+    email: state.email,
+    picture: state.picture
+  }));
+  const dispatch = useDispatch();
+  const [username, setUsername] = useState(user.username);
+  const [picture, setPicture] = useState(user.picture);
+
   function submitNewinfo () {
-    const newObject = {
-      username: tempUserName,
-      email: tempEmail,
-      image: photoUrl,
-    };
-    console.log(newObject);
+    dispatch(actions.updateUserAsync({
+      name: username,
+      email: user.email,
+      picture: picture,
+    }));
   }
 
   useEffect(() => {
@@ -62,7 +67,7 @@ const ProfilePage = () => {
         .then(async (r) => {
           let data = await r.json();
           console.log(data.secure_url);
-          setPhotoUrl(data.secure_url);
+          setPicture(data.secure_url);
           return data.secure_url;
         })
         .catch((err) => console.log(err));
@@ -76,25 +81,25 @@ const ProfilePage = () => {
           <Text style={styles.smalltitle}>Your Username</Text>
           <Input
             placeholder="Name"
-            value={tempUserName} //THIS SHOULD BE STATE.USERNEM
-            onChangeText={(value) => setTempUserName(value)}
+            value={username}
+            onChangeText={(value) => setUsername(value)}
           />
         </View>
         <View style={styles.group}>
           <Text style={styles.smalltitle}>Your Email</Text>
           <Input
             placeholder="Email"
-            value={tempEmail} //THIS SHOULD BE STATE.USERNEM
-            onChangeText={(value) => setTempEmail(value)}
+            value={user.email}
+            disabled={true}
           />
         </View>
         <View style={styles.group}>
-          <Image source={{ uri: photoUrl }} style={styles.profileImage} />
+          <Image source={{ uri: picture }} style={styles.profileImage} />
         </View>
-        <TouchableOpacity onPress={() => pickImage()} style={styles.uploadButton}>
+        <TouchableOpacity onPress={pickImage} style={styles.uploadButton}>
           <Text style={styles.uploadButtonText}>Upload New Image</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => submitNewinfo()}>
+        <TouchableOpacity onPress={submitNewinfo}>
           <Text style={styles.button}>Confirm!</Text>
         </TouchableOpacity>
       </View>

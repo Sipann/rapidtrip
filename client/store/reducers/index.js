@@ -301,7 +301,7 @@ const reducers = (state = initialState, action) => {
     case actionTypes.UPDATE_USER_SYNC: {
 
       const updatedTrips = state.trips.map(trip => {
-        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+        const tripParticipants = deepCloneParticipants(trip);
         const tripCars = deepCloneCars(trip);
 
         return {
