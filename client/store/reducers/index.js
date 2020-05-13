@@ -13,6 +13,17 @@ const initialState = {
   isLoading: true,
 };
 
+const deepCloneCars = trip => {
+  trip.cars.map(car => {
+    const passengers = car.passengers.map(passenger => ({ ...passenger }));
+    return { ...car, passengers };
+  });
+};
+
+const deepCloneParticipants = trip => {
+  return trip.participants.map(participant => ({ ...participant }));
+};
+
 
 const reducers = (state = initialState, action) => {
 
@@ -39,10 +50,12 @@ const reducers = (state = initialState, action) => {
     // const createTripSync = trip => ({ type: CREATE_TRIP_SYNC, tripCreated: trip });
     case actionTypes.CREATE_TRIP_SYNC: {
       const updatedTrips = state.trips.map(trip => {
-        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+        const tripParticipants = deepCloneParticipants(trip);
+        const tripCars = deepCloneCars(trip);
         return {
           ...trip,
-          participants: tripParticipants
+          participants: tripParticipants,
+          cars: tripCars,
         };
       });
 
@@ -73,10 +86,12 @@ const reducers = (state = initialState, action) => {
     case actionTypes.DELETE_TRIP_SYNC: {
       const updatedTrips = state.trips.map(trip => {
         if (trip.id !== action.tripId) {
-          const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+          const tripParticipants = deepCloneParticipants(trip);
+          const tripCars = deepCloneCars(trip);
           return {
             ...trip,
-            participants: tripParticipants
+            participants: tripParticipants,
+            cars: tripCars,
           };
         }
       });
@@ -106,12 +121,9 @@ const reducers = (state = initialState, action) => {
           });
         }
         else {
-          tripParticipants = trip.participants.map(participant => ({ ...participant }));
+          tripParticipants = deepCloneParticipants(trip);
         }
-        const tripCars = trip.cars.map(car => {
-          const passengers = car.passengers.map(passenger => ({ ...passenger }));
-          return { ...car, passengers };
-        });
+        const tripCars = deepCloneCars(trip);
 
         return {
           title: action.trip.title,
@@ -143,7 +155,7 @@ const reducers = (state = initialState, action) => {
           };
         }
         else {
-          const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+          const tripParticipants = deepCloneParticipants(trip);
           return {
             ...trip,
             participants: tripParticipants
@@ -162,7 +174,7 @@ const reducers = (state = initialState, action) => {
     case actionTypes.REMOVE_USER_FROM_TRIP_SYNC: {
       const updatedTrips = state.trips.map(trip => {
         if (trip.id !== action.payload.tripId) {
-          const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+          const tripParticipants = deepCloneParticipants(trip);
           return {
             ...trip,
             participants: tripParticipants
@@ -181,17 +193,13 @@ const reducers = (state = initialState, action) => {
 
     // const storeUserSync = userData => ({ type: actionTypes.STORE_USER_SYNC, userData });
     case actionTypes.STORE_USER_SYNC: {
-      // console.log('[reducers] with payload', action.userData);   // eslint-disable-line no-console
       if (!action.userData.user) return { ...initialState };
 
       const { email, name, picture } = action.userData.user;
 
       const updatedTrips = state.trips.map(trip => {
-        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
-        const tripCars = trip.cars.map(car => {
-          const passengers = car.passengers.map(passenger => ({ ...passenger }));
-          return { ...car, passengers };
-        });
+        const tripParticipants = deepCloneParticipants(trip);
+        const tripCars = deepCloneCars(trip);
         return {
           ...trip,
           participants: tripParticipants,
@@ -217,15 +225,12 @@ const reducers = (state = initialState, action) => {
 
       const updatedTrips = state.trips.map(trip => {
         let tripCars;
-        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+        const tripParticipants = deepCloneParticipants(trip);
         if (trip.id === action.payload.tripId) {
           tripCars = action.payload.cars;
         }
         else {
-          tripCars = trip.cars.map(car => {
-            const passengers = car.passengers.map(passenger => ({ ...passenger }));
-            return { ...car, passengers };
-          });
+          tripCars = deepCloneCars(trip);
         }
         return {
           ...trip,
@@ -246,11 +251,9 @@ const reducers = (state = initialState, action) => {
     case actionTypes.UPDATE_TRIP_INFO_SYNC: {
 
       const updatedTrips = state.trips.map(trip => {
-        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
-        const tripCars = trip.cars.map(car => {
-          const passengers = car.passengers.map(passenger => ({ ...passenger }));
-          return { ...car, passengers };
-        });
+        const tripParticipants = deepCloneParticipants(trip);
+        const tripCars = deepCloneCars(trip);
+
         if (trip.id === action.trip.tripId) {
           return {
             title: action.trip.title,
@@ -283,10 +286,8 @@ const reducers = (state = initialState, action) => {
 
       const updatedTrips = state.trips.map(trip => {
         const tripParticipants = trip.participants.map(participant => ({ ...participant }));
-        const tripCars = trip.cars.map(car => {
-          const passengers = car.passengers.map(passenger => ({ ...passenger }));
-          return { ...car, passengers };
-        });
+        const tripCars = deepCloneCars(trip);
+
         return {
           ...trip,
           participants: tripParticipants,
