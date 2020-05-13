@@ -200,7 +200,7 @@ const reducers = (state = initialState, action) => {
 
       const { email, name, picture } = action.userData.user;
 
-      const updatedTrips = state.trips.map(trip => {
+      const updatedTrips = action.userData.trips.map(trip => {
         const tripParticipants = deepCloneParticipants(trip);
         const tripCars = deepCloneCars(trip);
         return {
