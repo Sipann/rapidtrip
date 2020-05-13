@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import TripDetails from './screens/TripDetails';
 import ParticipantsScreen from './screens/ParticipantsScreen';
 import TripEdit from './screens/TripEdit';
+import ParticipantResponse from './screens/ParticpantResponse';
 
 import Form from './MVPForm/FormLaunch';
 
@@ -22,7 +23,7 @@ export default function App() {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="TripEdit"
+          initialRouteName="ParticipantsList"
           screenOptions={{
             headerStyle: {
               backgroundColor: Colors.primary,
@@ -39,6 +40,11 @@ export default function App() {
             name="ParticipantsList"
             component={ParticipantsScreen}
             options={{ title: 'Trip Participants' }}
+          />
+          <Stack.Screen
+            name="ParticipantResponse"
+            component={ParticipantResponse}
+            options={{ title: 'Respond to invitation' }}
           />
           <Stack.Screen
             name="TripDetails"
