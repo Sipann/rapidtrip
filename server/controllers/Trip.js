@@ -325,7 +325,12 @@ module.exports.updateParticipantInfo = async ctx => {
 
     // check if there is new departure_location
     if (departure_location) {
-      const destination = await Location.create(departure_location);
+      const { address, latitude, longitude } = departure_location;
+      const destination = await Location.create({
+        address,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude)
+      });
       if (!destination) throw {
         status: 400,
         message: 'Not possible to update participant info: invalid location'
