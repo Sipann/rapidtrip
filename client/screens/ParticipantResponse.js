@@ -6,23 +6,54 @@ import {
   Switch,
   StyleSheet,
   TouchableOpacity,
+  Platform,
 } from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import env from '../config/env.config';
 import PlacesInput from 'react-native-places-input';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actions from '../store/actions';
+import { useRoute } from '@react-navigation/native';
 import Colors from '../constants/colors';
+const moment = require('moment');
 
 const ParticipantResponse = () => {
-  const [time, setTime] = useState(new Date());
+  const route = useRoute();
+  const dispatch = useDispatch();
+  const trip = useSelector(state =>
+    state.trips.find(t => t.id === route.params.tripId)
+  );
+  const participant = trip.participants.find(p =>
+    p.email === route.params.currentUser.email
+  );
+  const [time, setTime] = useState(participant.departure_time ? new Date(participant.departure_time) : new Date());
   const [dateOn, setDateOn] = useState(false);
   const [posLocation, setPosLocation] = useState('');
   const [locationName, setLocationName] = useState('');
   const [driver, setDriver] = useState(false);
-  const [seats, setSeats] = useState('');
+  const [seats, setSeats] = useState('0');
 
-  const onChange = (event, selectedDate) => {
-    setTime(selectedDate);
-    setDateOn(false);
+  const onChange = (event, selectedTime) => {
+    setDateOn(Platform.OS === 'ios');
+    setTime(selectedTime);
+  };
+
+  const updateParticipantInfo = () => {
+    const d = new Date(trip.date);
+    const t = new Date(time);
+    const departure_time = new Date(d.getFullYear(), d.getMonth(), d.getDate(), t.getHours(), t.getMinutes(), 0, 0);
+    const participantInfo = {
+      email: route.params.currentUser.email,
+      departure_time: departure_time.getTime(),
+      departure_location: {
+        address: locationName,
+        latitute: posLocation.lat,
+        longitude: posLocation.lng,
+      },
+      is_driver: driver,
+      seats
+    };
+    dispatch(actions.includeParticipantInfoAsync(route.params.tripId, participantInfo));
   };
 
   return (
@@ -50,7 +81,6 @@ const ParticipantResponse = () => {
             placeHolder={'e.g. 123 Main Street'}
             language={'en-US'}
             onSelect={(place) => {
-              console.log(place);
               setPosLocation(place.result.geometry.location);
               setLocationName(place.result.formatted_address);
             }}
@@ -70,6 +100,19 @@ const ParticipantResponse = () => {
           />
         </View>
       </View>
+
+      <TouchableOpacity style={styles.button}>
+        <View>
+          <Text
+            style={styles.buttonText}
+            onPress={() => setDateOn(true)}
+          >Choose time of departure</Text>
+        </View>
+      </TouchableOpacity>
+      <View>
+        <Text>Time of departure {moment(time).format('HH:mm')}</Text>
+      </View>
+
       <View style={styles.formGroup}>
         <Text style={styles.label}>Are you a driver?</Text>
         <Text style={styles.label}>{driver ? 'Yes' : 'No'}</Text>
@@ -86,15 +129,19 @@ const ParticipantResponse = () => {
         <View>
           <Text style={styles.label}>Number of seats?</Text>
           <TextInput
-            placeholder="0"
-            onchangeText={(location) => setLocation(location)}
+            keyboardType='numeric'
+            // value={seats}
+            onChangeText={(s) => setSeats(s)}
             style={styles.inputStyle}
           />
         </View>
       ) : null}
       <TouchableOpacity style={styles.button}>
         <View>
-          <Text style={styles.buttonText}>Save Trip</Text>
+          <Text
+            style={styles.buttonText}
+            onPress={updateParticipantInfo}
+          >Save Trip</Text>
         </View>
       </TouchableOpacity>
     </View>

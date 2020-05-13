@@ -117,8 +117,18 @@ const reducers = (state = initialState, action) => {
 
         if (trip.id === action.payload.tripId) {
           tripParticipants = trip.participants.map(participant => {
-            if (participant.person_id === action.payload.participantInfo.person_id) {
-              return { ...action.payload.participantInfo };
+            if (participant.id === action.payload.participantInfo.person_id) {
+              return {
+                id: participant.id,
+                name: participant.name,
+                email: participant.email,
+                picture: participant.picture,
+                departure_time: action.payload.participantInfo.departure_time,
+                departure_location_id: action.payload.participantInfo.departure_location.id,
+                is_admin: participant.is_admin,
+                // seats: action.payload.participantInfo.car.seats,
+                is_driver: action.payload.participantInfo.is_driver
+              };
             }
             else return { ...participant };
           });
@@ -129,10 +139,7 @@ const reducers = (state = initialState, action) => {
         const tripCars = deepCloneCars(trip);
 
         return {
-          title: action.trip.title,
-          description: action.trip.description,
-          date: action.trip.date,
-          picture: action.trip.picture,
+          ...trip,
           participants: tripParticipants,
           cars: tripCars,
         };

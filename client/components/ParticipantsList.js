@@ -58,6 +58,8 @@ const ParticipantsScreen = () => {
         renderItem={({ item }) => {
           return (
             <ParticipantItem
+              tripId={trip.id}
+              currentUser={currentUser}
               isCurrentUser={item.id === currentUser.id}
               isAdmin={currentUser.is_admin}
               name={item.name || item.email}
