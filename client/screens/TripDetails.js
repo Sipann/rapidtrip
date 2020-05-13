@@ -52,6 +52,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 20,
     fontSize: 24,
+    color: '#333',
   },
   text: {
     fontSize: 16,
@@ -60,6 +61,7 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: 'bold',
+    color: '#333',
   },
   container: {
     flex: 1,
