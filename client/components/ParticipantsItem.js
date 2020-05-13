@@ -16,7 +16,7 @@ const ParticipantItem = (props) => {
     <Feather
       name="chevron-right"
       size={24}
-      onPress={() => navigation.navigate('Details')}
+      onPress={() => navigation.navigate('ParticipantResponse')}
     />
   ) : (
     <AntDesign name="question" size={24} />
