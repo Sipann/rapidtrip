@@ -1,0 +1,126 @@
+INSTRUCTIONS FOR DISPATCHING ACTIONS FROM A COMPONENT
+
+import { useDispatch } from 'react-redux';
+import * as actions from '../store/actions';
+
+const ComponentName = () => {
+  const dispatch = useDispatch();
+
+  const handlePressEvent = () => {
+    dispatch(actions.<ACTION_NAME>(<ACTION_ARGS>));
+  };
+
+  return (
+    <Button onPress={handlePressEvent} />
+  );
+
+}
+
+__________________________________________________________________
+__________________________________________________________________
+
+
+ACTIONS TO BE DISPATCHED
+
+
+APP_IS_LOADING: Update App Loading State (Auth Flow)
+action: dispatch(appIsLoading(val));
+val argument: boolean
+
+
+AUTHENTICATE (FROM SIGNUP FORM)
+action: dispatch(actions.authenticateAsync('signup', email, password, name))
+email argument: email from the signup form
+password argument: password from the signup form
+
+
+AUTHENTICATE (FROM LOGIN FORM)
+action: dispatch(actions.authenticateAsync('login', email, password))
+email argument: email from the signup form
+password argument: password from the signup form
+
+
+CREATE A NEW TRIP
+action: dispatch(createTripAsync([state]email, newTrip));
+newTrip argument shape:
+{
+  TripDate: eg 2020-05-20T17:44:03.300Z,
+  TripDesc: string,
+  TripAddress: string,
+  TripName: string,
+  TripLoc: { lat: number, lng: number },
+  TripPicture: string (url)
+}
+
+
+DELETE A TRIP
+action: dispatch(actions.deleteTripAsync(tripId))
+tripId argument : props.tripId / props.trip.id
+
+
+DELETE A USER
+action: dispatch(actions.deleteUserAsync([state]email))
+
+
+INCLUDE USER INFO / TRIP
+action: dispatch(actions.includeParticipantInfoAsync(tripId, participantInfo))
+tripId argument: props.tripId / props.trip.id
+participantInfo argument: {
+  email: [state]email
+  departure_time: timestamp,
+  departure_location: {
+    address: string,
+    latitude: number,
+    longitude: number
+  },
+  is_driver: boolean
+}
+
+INCLUDE A USER / TRIP
+action: dispatch(actions.includeUserInTripAsync(tripId, newUserEmail));
+tripId argument: props.tripId / props.trip.id
+userEmail argument: newly added user email
+
+
+REMOVE A USER FROM A TRIP
+action: dispatch(actions.removeUserFromTripAsync(tripId, [state]email));
+tripId argument: props.tripId / props.trip.id
+
+
+UPDATE A TRIP / CAR ALLOCATION                                  //! CHANGE KEYS FROM ID TO EMAILS
+action: dispatch(actions.updateTripCarsAsync(tripId, cars));
+tripId argument: props.tripId / props.trip.id
+cars argument: [
+  [
+    {
+      driver_email: string,
+      passengers_email: [string]
+    }
+  ]
+]
+
+UPDATE A TRIP / INFOS
+action: dispatch(actions.updateTripInfosAsync(tripData));
+tripData argument shape:
+{
+  id: number,
+  title: string,
+  description: string,
+  date: timestamp,
+  destination: {
+    address: string,
+    latitude: number,
+    longitude: number
+  },
+  picture: string
+}
+
+
+UPDATE USER INFO
+action: dispatch(actions.updateUserAsync(userData));
+userData argument shape:
+{
+  email: [state]email,  [required]
+  name: state.name (optional)
+  picture: state.picture (optional)
+}
