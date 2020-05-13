@@ -157,7 +157,7 @@ export default function AddTrip ({ route, navigation }) {
           {location ? (
             <Text style={styles.selectedShow}>{location}</Text>
           ) : (
-            <Text style={styles.selectedShow}>Location not set</Text>
+            <Text style={styles.selectedShow}>Location Not Set</Text>
           )}
           <TouchableOpacity onPress={() => navigation.navigate('ChooseLocal')}>
             <Text style={styles.choosebutton}>Choose Location</Text>
