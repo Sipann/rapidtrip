@@ -150,11 +150,26 @@ const mockOutput = {
             "picture": "",
             "departure_time": null,
             "is_admin": false,
-            "departure_location_id": null,
-            "car_id": null
+            // "departure_location_id": null,
+            "departure_location": {
+              "address": "Paris",
+              "latitude": 48.0000,
+              "longitude": 2.4000
+            },
+            "car_id": 02
           }
         ],
-        "cars": []
+        "cars": [
+          {
+            "id": 02,
+            "seats": 4,
+            "driver_id": "john@mail.com",
+            "passengers": [
+              "john@mail.com",
+              "jane@mail.com"
+            ]
+          }
+        ]
       },
       {
         "id": 4,
