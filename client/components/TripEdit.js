@@ -6,22 +6,21 @@ import {
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
+import { useRoute, useNavigation } from '@react-navigation/native';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actions from '../store/actions';
 import DateTimePicker from '@react-native-community/datetimepicker';
 const moment = require('moment');
-const mockedTrip = {
-  id: 1,
-  title: 'Trip to Portugal',
-  date: new Date(2020, 6, 5),
-  location: 'Lisbon',
-  description:
-    'Lisbon is the capital and the largest city of Portugal, with an estimated population of 505,526 within its administrative limits in an area of 100.05 km2.',
-};
 
 const TripEdit = () => {
-  const [date, setDate] = useState(new Date(mockedTrip.date));
-  // const [title, setTitle] = useState('');
-  // const [description, setDescription] = useState('');
+  const route = useRoute();
+  const navigation = useNavigation();
+  const trip = useSelector(state => state.trips.find(t => t.id === route.params.trip.id));
+  const [date, setDate] = useState(new Date(trip.date));
+  const [title, setTitle] = useState(trip.title);
+  const [description, setDescription] = useState(trip.description);
   const [datePicker, setDatePicker] = useState(false);
+  const dispatch = useDispatch();
 
   let dateToshow = moment(date).format('MMM Do, YYYY');
 
@@ -49,13 +48,23 @@ const TripEdit = () => {
     return null;
   }
 
+  const updateTripInfo = () => {
+    dispatch(actions.updateTripInfosAsync({
+      id: trip.id,
+      title,
+      description,
+      date: (new Date(date)).getTime()
+    }));
+    navigation.goBack();
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.formGroup}>
         <Text style={styles.label}>Title</Text>
         <TextInput
-          defaultValue={mockedTrip.title}
-          onChangeText={(title) => setTitle(title)}
+          value={title}
+          onChangeText={title => setTitle(title)}
           style={styles.inputStyle}
         />
       </View>
@@ -63,8 +72,8 @@ const TripEdit = () => {
         <Text style={styles.label}>Description</Text>
         <TextInput
           style={styles.textArea}
-          defaultValue={mockedTrip.description}
-          onChangeText={(description) => setDescription(description)}
+          value={description}
+          onChangeText={description => setDescription(description)}
           multiline={true}
         />
       </View>
@@ -76,7 +85,10 @@ const TripEdit = () => {
       <DateChooser />
       <TouchableOpacity style={styles.button}>
         <View>
-          <Text style={styles.buttonText}>Save Trip</Text>
+          <Text
+            style={styles.buttonText}
+            onPress={updateTripInfo}
+          >Save Trip</Text>
         </View>
       </TouchableOpacity>
     </View>

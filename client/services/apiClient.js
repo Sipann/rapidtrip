@@ -143,7 +143,7 @@ export default {
   // PUT '/trip/:trip_id/info'
   updateTripInfoInDB: async tripData => {
     try {
-      const endpoint = `trip/${tripData.tripId}/info`;
+      const endpoint = `trip/${tripData.id}/info`;
       const fetchOptions = {
         method: 'PUT',
         body: JSON.stringify(tripData),

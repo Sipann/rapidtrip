@@ -270,12 +270,12 @@ const reducers = (state = initialState, action) => {
         const tripParticipants = deepCloneParticipants(trip);
         const tripCars = deepCloneCars(trip);
 
-        if (trip.id === action.trip.tripId) {
+        if (trip.id === action.trip.id) {
           return {
+            ...trip,
             title: action.trip.title,
             description: action.trip.description,
             date: action.trip.date,
-            picture: action.trip.picture,
             participants: tripParticipants,
             cars: tripCars,
           };

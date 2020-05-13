@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button } from 'react-native';
 import MapView from 'react-native-maps';
 import { useNavigation, useRoute } from '@react-navigation/native';
+import { useSelector } from 'react-redux';
 
 // const trip = {
 //   id: 1,
@@ -15,7 +16,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 const TripDetails = () => {
   const navigation = useNavigation();
   const route = useRoute();
-  const { trip } = route.params;
+  const trip = useSelector(state => state.trips.find(t => t.id === route.params.trip.id));
   
   const markers = [
     {
@@ -45,7 +46,7 @@ const TripDetails = () => {
         <Text style={styles.bold}>Location</Text>: {trip.destination.address}
       </Text>
       <Text style={styles.text}>{trip.description}</Text>
-      <Button  onPress= { ()=> navigation.navigate('TripEdit')} title="Edit Trip" />
+      <Button  onPress= { () => navigation.navigate('TripEdit', { trip })} title="Edit Trip" />
     </View>
   );
 };
