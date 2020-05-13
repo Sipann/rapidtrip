@@ -17,17 +17,22 @@ export default function TripsPage ({ navigation }) {
 
   function Item ({ trip }) {
     return (
-      <TouchableOpacity onPress={() => {
-        navigation.navigate('TripPage', {
-          trip
-        });
-      }} style={styles.item}>
+      <TouchableOpacity
+        onPress={() => {
+          navigation.navigate('TripPage', {
+            trip,
+          });
+        }}
+        style={styles.item}
+      >
         <Text style={styles.tripname}>{trip.title}</Text>
         <Image
           style={styles.photo}
           source={require('../assets/carClipArt.jpg')}
         />
-        <Text style={styles.tripdate}>{moment(trip.date.toUTCString()).format('MMM Do, YYYY')}</Text>
+        <Text style={styles.tripdate}>
+          {moment(trip.date.toUTCString()).format('MMM Do, YYYY')}
+        </Text>
       </TouchableOpacity>
     );
   }
@@ -43,6 +48,13 @@ export default function TripsPage ({ navigation }) {
         <View style={styles.button}>
           <Text style={styles.buttonText}>Create New Trip</Text>
         </View>
+        <View
+          style={{
+            marginTop: 10,
+            borderBottomColor: 'black',
+            borderBottomWidth: 1,
+          }}
+        />
       </TouchableOpacity>
       <View style={styles.buttonGroup}>
         <TouchableOpacity
@@ -88,7 +100,7 @@ const styles = StyleSheet.create({
   buttonText: {
     margin: 10,
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
   },
   list: {
     height: '80%',
@@ -97,16 +109,20 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: 'lightgray',
     padding: 10,
+    width: 350,
+    alignSelf: 'center',
   },
   tripname: {
     fontSize: 30,
   },
   photo: {
     height: 100,
-    width: '100%',
+    width: 300,
     marginTop: 5,
+    alignSelf: 'center',
   },
   welcome: {
+    fontSize: 20,
     margin: 'auto',
     textAlign: 'center',
   },

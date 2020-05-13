@@ -11,7 +11,7 @@ export default function DeleteTrip ({ route, navigation }) {
     //ADMIN ID IS NOT GREAT
     return (
       <View>
-        <Text style = {styles.message}>Are you sure you want to delete this Trip</Text>
+        <Text style = {styles.message}>Are you sure you want to delete this Trip?</Text>
         <View style = {styles.container}>
           <TouchableOpacity>
             <Text style = {styles.runbuttonbad} >Yes</Text>
@@ -42,14 +42,14 @@ const styles = StyleSheet.create({
     marginTop: '50%'
   },
   runbuttongood: {
-    fontSize:50,
+    fontSize:40,
     margin: 40,
     textAlign: 'center',
     backgroundColor: 'blue',
     borderRadius:5
   },
   runbuttonbad: {
-    fontSize:50,
+    fontSize:40,
     margin: 40,
     textAlign: 'center',
     backgroundColor: 'red',

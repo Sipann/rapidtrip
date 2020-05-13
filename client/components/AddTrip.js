@@ -15,7 +15,7 @@ export default function AddTrip ({ route, navigation }) {
   const [tripDate, setTripDate] = useState(new Date());
   const [dateOn, setDateOn] = useState(false);
   const [location, setLocation] = useState('');
-  const [photoUrl, setPhotoUrl] = useState('');
+  const [photoUrl, setPhotoUrl] = useState(null);
   if (route.params) {
     const { posLocation } = route.params;
     finalLocalCords = { posLocation };
@@ -125,15 +125,25 @@ export default function AddTrip ({ route, navigation }) {
         <TouchableOpacity onPress={() => navigation.navigate('ChooseLocal')}>
           <Text style={styles.changeDate}>Choose Location</Text>
         </TouchableOpacity>
+        <Text style={styles.header}>Trip Photo</Text>
+
         <View style={styles.group}>
-          <Image source={{ uri: photoUrl }} style={styles.tripImage} />
+          {photoUrl ? (
+            <Image source={{ uri: photoUrl }} style={styles.tripImage} />
+          ) : (
+            <Text style = {styles.selectedShow}>No Image Yet</Text>
+          )}
         </View>
-        <TouchableOpacity onPress={() => pickImage()} style={styles.uploadButton}>
+        <TouchableOpacity
+          onPress={() => pickImage()}
+          style={styles.uploadButton}
+        >
           <Text style={styles.changeDate}>Upload New Image</Text>
         </TouchableOpacity>
 
         <Button
           title="Create"
+          style= {styles.create}
           onPress={() => {
             if (tripDate && tripName && tripDescription && location) {
               let infoToSend = {
@@ -144,7 +154,7 @@ export default function AddTrip ({ route, navigation }) {
                   lat: finalLocalCords.posLocation.lat,
                   lng: finalLocalCords.posLocation.lng,
                 },
-                TripImg: photoUrl
+                TripImg: photoUrl,
               };
               //TODO: Here is where we want to call create trip and pass it the object made above
               console.log(infoToSend);
@@ -178,8 +188,8 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   tripImage: {
-    height:100,
-    width: 300,
-    alignSelf: 'center'
+    height: 133,
+    width: 400,
+    alignSelf: 'center',
   }
 });

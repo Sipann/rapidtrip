@@ -24,15 +24,15 @@ export default function TripPage ({ route, navigation }) {
     <ScrollView>
       <View style={styles.container}>
         <Text style={styles.textTripName}>{trip.title}</Text>
+        <Text style={styles.textTripDate}>{dateToShow}</Text>
         <Image
           style={styles.photo}
           source={require('../assets/carClipArt.jpg')}
         />
-        <Text style={styles.textTripDate}>{dateToShow}</Text>
         <View style={styles.menu}>
           <View style={styles.menuRow}>
-            {Item('Trip Details', 'road', 'TripList')}
-            {Item('Participants', 'address-book', 'Profile')}
+            {Item('Trip Details', 'road', 'TripDetails')}
+            {Item('Participants', 'address-book', 'ParticipantsList')}
           </View>
           <View style={styles.menuRow}>
             {Item('Car Allocation', 'user-friends', 'CarAllo')}
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
   item: {
     padding: 20,
     margin: 10,
-    width: 130,
-    height: 130,
+    width: 150,
+    height: 150,
     alignItems: 'center',
     justifyContent: 'space-evenly',
     borderRadius: 10,
@@ -73,12 +73,15 @@ const styles = StyleSheet.create({
   textTripDate: {
     flex: 1,
     fontSize: 20,
+    marginBottom: 30
   },
   textItem: {
     fontSize: 16,
     textAlign: 'center',
   },
   photo: {
-    height:300
+    height:133,
+    width: 400,
+    marginBottom: 50,
   }
 });
