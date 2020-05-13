@@ -2,14 +2,17 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
+import { FontAwesome5 } from '@expo/vector-icons';
 
 import LoadingScreen from '../screens/LoadingScreen';
-import Trips from '../screens/TripsScreen';
-import Details from '../screens/DetailsScreen';
-import Settings from '../screens/SettingsScreen';
 import Register from '../screens/RegisterScreen';
 import Login from '../screens/LoginScreen';
+
+import AppScreens from '../navigation/AppScreens';
+import Profile from '../components/ProfilePage';
+
 
 const AuthStack = createStackNavigator();
 const AuthStackScreen = () => (
@@ -25,26 +28,28 @@ const AuthStackScreen = () => (
   </AuthStack.Navigator>
 );
 
-const TripsStack = createStackNavigator();
-const TripsStackScreen = () => (
-  <TripsStack.Navigator initialRouteName="Trips">
-    <TripsStack.Screen name="Trips" component={Trips} />
-    <TripsStack.Screen name="Details" component={Details} />
-  </TripsStack.Navigator>
-);
 
-const SettingsStack = createStackNavigator();
-const SettingsStackScreen = () => (
-  <SettingsStack.Navigator initialRouteName="Settings">
-    <SettingsStack.Screen name="Settings" component={Settings} />
-  </SettingsStack.Navigator>
-);
-
-const AppStack = createStackNavigator();
+const AppStack = createBottomTabNavigator();
 const AppStackScreen = () => (
-  <AppStack.Navigator headerMode="none" initialRouteName="Trips">
-    <AppStack.Screen name="Trips" component={TripsStackScreen} />
-    <AppStack.Screen name="Settings" component={SettingsStackScreen} />
+  <AppStack.Navigator>
+    <AppStack.Screen
+      name="Home"
+      component={AppScreens}
+      options={{
+        tabBarIcon: () => (
+          <FontAwesome5 name={'home'} size={32} color="black" solid />
+        ),
+      }}
+    />
+    <AppStack.Screen
+      name="Profile"
+      component={Profile}
+      options={{
+        tabBarIcon: () => (
+          <FontAwesome5 name={'user-alt'} size={32} color="black" solid />
+        ),
+      }}
+    />
   </AppStack.Navigator>
 );
 
