@@ -4,26 +4,29 @@ import { Input } from 'react-native-elements';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
 import * as actions from '../store/actions';
+import Colors from '../constants/colors';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 
 const ProfilePage = () => {
-  const user = useSelector(state => ({
+  const user = useSelector((state) => ({
     username: state.name,
     email: state.email,
-    picture: state.picture
+    picture: state.picture,
   }));
   const dispatch = useDispatch();
   const [username, setUsername] = useState(user.username);
   const [picture, setPicture] = useState(user.picture);
 
   function submitNewinfo () {
-    dispatch(actions.updateUserAsync({
-      name: username,
-      email: user.email,
-      picture: picture,
-    }));
+    dispatch(
+      actions.updateUserAsync({
+        name: username,
+        email: user.email,
+        picture: picture,
+      })
+    );
   }
 
   useEffect(() => {
@@ -66,7 +69,6 @@ const ProfilePage = () => {
       })
         .then(async (r) => {
           let data = await r.json();
-          console.log(data.secure_url);
           setPicture(data.secure_url);
           return data.secure_url;
         })
@@ -75,32 +77,34 @@ const ProfilePage = () => {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <View>
-        <View style={styles.group}>
-          <Text style={styles.smalltitle}>Your Username</Text>
+        <View style={styles.card}>
+          <Text style={styles.header}>Your Username</Text>
           <Input
+            style={styles.textArea}
             placeholder="Name"
             value={username}
             onChangeText={(value) => setUsername(value)}
           />
         </View>
-        <View style={styles.group}>
-          <Text style={styles.smalltitle}>Your Email</Text>
+        <View style={styles.card}>
+          <Text style={styles.header}>Your Email</Text>
           <Input
+            style={styles.textArea}
             placeholder="Email"
             value={user.email}
             disabled={true}
           />
         </View>
-        <View style={styles.group}>
+        <View >
           <Image source={{ uri: picture }} style={styles.profileImage} />
         </View>
-        <TouchableOpacity onPress={pickImage} style={styles.uploadButton}>
-          <Text style={styles.uploadButtonText}>Upload New Image</Text>
+        <TouchableOpacity onPress={pickImage} style={styles.choosebutton}>
+          <Text style={styles.choosebuttontext}>Upload Image</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={submitNewinfo}>
-          <Text style={styles.button}>Confirm!</Text>
+        <TouchableOpacity onPress={submitNewinfo} style = {styles.create}>
+          <Text style={styles.createText}>Confirm!</Text>
         </TouchableOpacity>
       </View>
     </ScrollView>
@@ -108,32 +112,54 @@ const ProfilePage = () => {
 };
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 40,
-    textAlign: 'center',
-    margin: 40,
+  container: {
+    backgroundColor: Colors.background,
+    flexGrow: 1,
   },
-  smalltitle: {
-    fontSize: 20,
-    margin: 0,
+  card: {
+    backgroundColor: Colors.primary,
+    borderRadius: 20,
+    marginTop: 30,
+    marginLeft: 20,
+    marginRight: 20,
+    padding: 10,
   },
-  group: {
-    marginTop: 20,
+  header: {
+    fontSize: 15,
+    color: 'white',
+    marginLeft: 20,
+  },
+  textArea: {
     margin: 10,
+    marginLeft: 5,
+    fontSize: 15,
   },
-  button: {
-    fontSize: 50,
-    margin: 40,
+  choosebutton: {
     textAlign: 'center',
-    backgroundColor: 'blue',
-    borderRadius: 5,
-  },
-  uploadButton: {
+    fontSize: 20,
+    width: 100,
     alignSelf: 'center',
-    backgroundColor: 'orange',
+    margin: 10,
+    borderRadius: 15,
+    backgroundColor: Colors.accent,
   },
-  uploadButtonText: {
-    fontSize: 40,
+  choosebuttontext: {
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  create: {
+    textAlign: 'center',
+    fontSize: 20,
+    width: 200,
+    alignSelf: 'center',
+    margin: 30,
+    backgroundColor: Colors.danger,
+    borderRadius: 20,
+  },
+  createText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 30,
   },
   profileImage: {
     height: 200,
