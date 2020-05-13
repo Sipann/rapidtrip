@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, Button, StyleSheet, Image } from 'react-native';
+import { View, Text, StyleSheet, Image } from 'react-native';
 import { Input } from 'react-native-elements';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
@@ -8,6 +8,7 @@ import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../store/actions';
+import Colors from '../constants/colors';
 const moment = require('moment');
 
 export default function AddTrip ({ route, navigation }) {
@@ -18,7 +19,10 @@ export default function AddTrip ({ route, navigation }) {
   const [dateOn, setDateOn] = useState(false);
   const [location, setLocation] = useState('');
   const [photoUrl, setPhotoUrl] = useState(null);
-  const user = useSelector(state => ({ id: state.userid, email: state.email }));
+  const user = useSelector((state) => ({
+    id: state.userid,
+    email: state.email,
+  }));
   const dispatch = useDispatch();
 
   if (route.params) {
@@ -90,7 +94,6 @@ export default function AddTrip ({ route, navigation }) {
       })
         .then(async (r) => {
           let data = await r.json();
-          console.log(data.secure_url);
           setPhotoUrl(data.secure_url);
           return data.secure_url;
         })
@@ -123,80 +126,119 @@ export default function AddTrip ({ route, navigation }) {
   }
 
   return (
-    <ScrollView>
+    <ScrollView style={styles.container}>
       <View>
-        <Text style={styles.header}>Trip Name</Text>
-        <Input
-          placeholder="Name"
-          onChangeText={(value) => setTripName(value)}
-        />
-        <Text style={styles.header}>Trip Description</Text>
-        <Input
-          placeholder="Description"
-          onChangeText={(value) => setTripDescription(value)}
-        />
-        <Text style={styles.header}>Trip Date</Text>
-        <Text style={styles.selectedShow}>{dateToshow}</Text>
-        <TouchableOpacity onPress={() => setDateOn(true)}>
-          <Text style={styles.changeDate}>Choose Date</Text>
-        </TouchableOpacity>
-        <DateChooser />
-        <Text style={styles.header}>Trip Date</Text>
-        {location ? (
-          <Text style={styles.selectedShow}>{location}</Text>
-        ) : (
-          <Text style={styles.selectedShow}>Location not set</Text>
-        )}
-        <TouchableOpacity onPress={() => navigation.navigate('ChooseLocal')}>
-          <Text style={styles.changeDate}>Choose Location</Text>
-        </TouchableOpacity>
-        <Text style={styles.header}>Trip Photo</Text>
-
-        <View style={styles.group}>
-          {photoUrl ? (
-            <Image source={{ uri: photoUrl }} style={styles.tripImage} />
-          ) : (
-            <Text style = {styles.selectedShow}>No Image Yet</Text>
-          )}
+        <View style={styles.card}>
+          <Text style={styles.header}>Trip Name*</Text>
+          <Input
+            style={styles.textinput}
+            placeholder="Name"
+            onChangeText={(value) => setTripName(value)}
+          />
         </View>
-        <TouchableOpacity
-          onPress={() => pickImage()}
-          style={styles.uploadButton}
-        >
-          <Text style={styles.changeDate}>Upload New Image</Text>
-        </TouchableOpacity>
+        <View style={styles.card}>
+          <Text style={styles.header}>Trip Description*</Text>
+          <Input
+            style={styles.textinput}
+            placeholder="Description"
+            onChangeText={(value) => setTripDescription(value)}
+          />
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.header}>Trip Date*</Text>
+          <Text style={styles.selectedShow}>{dateToshow}</Text>
+          <TouchableOpacity onPress={() => setDateOn(true)}>
+            <Text style={styles.choosebutton}>Choose Date</Text>
+          </TouchableOpacity>
+          <DateChooser />
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.header}>Trip Location*</Text>
+          {location ? (
+            <Text style={styles.selectedShow}>{location}</Text>
+          ) : (
+            <Text style={styles.selectedShow}>Location Not Set</Text>
+          )}
+          <TouchableOpacity onPress={() => navigation.navigate('ChooseLocal')}>
+            <Text style={styles.choosebutton}>Choose Location</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.card}>
+          <Text style={styles.header}>Trip Photo</Text>
 
-        <Button
-          title="Create"
-          style= {styles.create}
-          onPress={createTrip}
-        ></Button>
+          <View style={styles.group}>
+            {photoUrl ? (
+              <Image source={{ uri: photoUrl }} style={styles.tripImage} />
+            ) : (
+              <Text style={styles.selectedShow}>No Image Yet</Text>
+            )}
+          </View>
+          <TouchableOpacity
+            onPress={() => pickImage()}
+            style={styles.uploadButton}
+          >
+            <Text style={styles.choosebutton}>Upload Image</Text>
+          </TouchableOpacity>
+        </View>
+        <TouchableOpacity onPress={createTrip} style={styles.create}>
+          <Text style={styles.createText}>Create</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
+  card: {
+    backgroundColor: Colors.primary,
+    borderRadius: 20,
+    margin: 20
+  },
+  container: {
+    height: '100%',
+    backgroundColor: Colors.background,
+  },
   header: {
     fontSize: 25,
     margin: 10,
+    color: 'white',
+    marginLeft: 20
   },
   selectedShow: {
     textAlign: 'center',
     fontSize: 25,
     margin: 10,
+    color: 'white',
   },
-  changeDate: {
+  textinput: {
+    color: 'white',
+  },
+  choosebutton: {
     textAlign: 'center',
     fontSize: 20,
-    borderWidth: 1,
     width: 100,
     alignSelf: 'center',
     margin: 10,
+    borderRadius: 15,
+    backgroundColor: Colors.accent,
   },
   tripImage: {
     height: 133,
     width: 400,
     alignSelf: 'center',
-  }
+  },
+  create: {
+    textAlign: 'center',
+    fontSize: 20,
+    width: 200,
+    alignSelf: 'center',
+    margin: 30,
+    backgroundColor: Colors.danger,
+    borderRadius: 20,
+  },
+  createText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 30,
+  },
 });
