@@ -3,17 +3,27 @@ import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { FontAwesome5 } from '@expo/vector-icons';
 import { ScrollView } from 'react-native-gesture-handler';
 // import colorScheme from '../constants/colors';
+import { useSelector } from 'react-redux';
+import { useRoute, useNavigation } from '@react-navigation/native';
 const moment = require('moment');
 
-export default function TripPage ({ route, navigation }) {
+export default function TripPage () {
+  const route = useRoute();
+  const navigation = useNavigation();
   const { trip } = route.params;
+  const tripAdmin = trip.participants.find(participant => participant.is_admin);
+  const currentUser = useSelector(state => ({
+    id: state.userid,
+    email: state.email,
+    is_admin: state.userid === tripAdmin.id
+  }));
   const dateToShow = moment(trip.date).format('MMM Do YYYY');
 
   function Item (name, icon, route) {
     return (
       <TouchableOpacity
         style={styles.item}
-        onPress={() => navigation.navigate(route, { trip })}
+        onPress={() => navigation.navigate(route, { trip, currentUser })}
       >
         <FontAwesome5 name={icon} size={32} color="black" solid />
         <Text style={styles.textItem}>{name}</Text>
