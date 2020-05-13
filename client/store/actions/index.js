@@ -85,21 +85,25 @@ export const authenticateAsync = (mode, email, password, name = '') => {
 
 
 // CREATE TRIP
-const createTripSync = trip => ({ type: CREATE_TRIP_SYNC, tripCreated: trip });
+// const createTripSync = trip => ({ type: CREATE_TRIP_SYNC, tripCreated: trip });
+const createTripSync = trip => {
+  console.log('createTripSync', trip);
+  return { type: actionTypes.CREATE_TRIP_SYNC, tripCreated: trip };
+};
 
-export const createTripAsync = async (userEmail, newTrip) => {
+export const createTripAsync = (userEmail, newTrip) => {
   return async dispatch => {
     try {
       const tripDB = {
         title: newTrip.TripName,
         description: newTrip.TripDesc,
-        date: new Date(newTrip.TripDate),
+        date: new Date(newTrip.TripDate).getTime(),
         destination: {
           address: newTrip.TripAddress,
           latitude: newTrip.TripLoc.lat,
           longitude: newTrip.TripLoc.lng,
         },
-        picture: newTrip.TripPicture,
+        picture: newTrip.TripImg,
       };
       const response = await services.createTripInDB(userEmail, tripDB);
       if (response && response.ok) dispatch(createTripSync(response.body));
@@ -115,7 +119,7 @@ export const createTripAsync = async (userEmail, newTrip) => {
 // DELETE TRIP
 const deleteTripSync = tripId => ({ type: actionTypes.DELETE_TRIP_SYNC, tripId });
 
-export const deleteTripAsync = async tripId => {
+export const deleteTripAsync = tripId => {
   return async dispatch => {
     try {
       const response = await services.deleteTripFromDB(tripId);
@@ -130,7 +134,7 @@ export const deleteTripAsync = async tripId => {
 
 
 // DELETE USER
-export const deleteUserAsync = async userEmail => {
+export const deleteUserAsync = userEmail => {
   return async dispatch => {
     try {
       const response = await services.deleteUserFromDB(userEmail);

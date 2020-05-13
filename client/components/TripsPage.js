@@ -5,15 +5,14 @@ import { useSelector } from 'react-redux';
 const moment = require('moment');
 
 export default function TripsPage ({ navigation }) {
-  //TODO: Here is where we want to access all trips (Get all trip objects)
   const tripList = useSelector(state => state.trips);
   const username = useSelector(state => state.name);
   const upcomingTrips = tripList
-    .filter((trip) => trip.date >= Date.now())
-    .sort((a, b) => a.date - b.date);
+    .filter((trip) => new Date(trip.date) >= Date.now())
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
   const pastTrips = tripList
-    .filter((trip) => trip.date < Date.now())
-    .sort((a, b) => b.date - a.date);
+    .filter((trip) => new Date(trip.date) < Date.now())
+    .sort((a, b) => new Date(b.date) - new Date(a.date));
 
   const [currentList, setCurrentList] = useState(upcomingTrips);
 
@@ -34,7 +33,7 @@ export default function TripsPage ({ navigation }) {
           source={tripPicture}
         />
         <Text style={styles.tripdate}>
-          {moment(trip.date.toUTCString()).format('MMM Do, YYYY')}
+          {moment((new Date(trip.date)).toUTCString()).format('MMM Do, YYYY')}
         </Text>
       </TouchableOpacity>
     );

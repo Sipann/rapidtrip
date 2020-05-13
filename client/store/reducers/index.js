@@ -78,7 +78,10 @@ const reducers = (state = initialState, action) => {
       return {
         ...state,
         error: null,
-        trips: updatedTrips.concat(newTrip),
+        trips: [
+          ...updatedTrips,
+          newTrip
+        ],
       };
     }
 

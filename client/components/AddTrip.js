@@ -6,6 +6,8 @@ import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import * as ImagePicker from 'expo-image-picker';
+import { useDispatch, useSelector } from 'react-redux';
+import * as actions from '../store/actions';
 const moment = require('moment');
 
 export default function AddTrip ({ route, navigation }) {
@@ -16,6 +18,9 @@ export default function AddTrip ({ route, navigation }) {
   const [dateOn, setDateOn] = useState(false);
   const [location, setLocation] = useState('');
   const [photoUrl, setPhotoUrl] = useState(null);
+  const user = useSelector(state => ({ id: state.userid, email: state.email }));
+  const dispatch = useDispatch();
+
   if (route.params) {
     const { posLocation } = route.params;
     finalLocalCords = { posLocation };
@@ -28,6 +33,26 @@ export default function AddTrip ({ route, navigation }) {
   useEffect(() => {
     getPermissionAsync();
   }, []);
+
+  const createTrip = () => {
+    if (tripDate && tripName && tripDescription && location) {
+      let infoToSend = {
+        TripName: tripName,
+        TripDesc: tripDescription,
+        TripDate: tripDate,
+        TripAddress: location,
+        TripLoc: {
+          lat: finalLocalCords.posLocation.lat,
+          lng: finalLocalCords.posLocation.lng,
+        },
+        TripImg: photoUrl,
+      };
+      dispatch(actions.createTripAsync(user.email, infoToSend));
+      navigation.navigate('TripsPage');
+    } else {
+      alert('Missing Some Information');
+    }
+  };
 
   const getPermissionAsync = async () => {
     if (Constants.platform.android || Constants.platform.ios) {
@@ -144,25 +169,7 @@ export default function AddTrip ({ route, navigation }) {
         <Button
           title="Create"
           style= {styles.create}
-          onPress={() => {
-            if (tripDate && tripName && tripDescription && location) {
-              let infoToSend = {
-                TripName: tripName,
-                TripDesc: tripDescription,
-                TripDate: tripDate,
-                TripLoc: {
-                  lat: finalLocalCords.posLocation.lat,
-                  lng: finalLocalCords.posLocation.lng,
-                },
-                TripImg: photoUrl,
-              };
-              //TODO: Here is where we want to call create trip and pass it the object made above
-              console.log(infoToSend);
-              navigation.navigate('TripsPage');
-            } else {
-              alert('Missing Some Information');
-            }
-          }}
+          onPress={createTrip}
         ></Button>
       </View>
     </ScrollView>
