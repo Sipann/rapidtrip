@@ -31,6 +31,11 @@ const FormLaunch = () => {
 
   return (
     <View style={styles.screen}>
+
+      <Header
+        title="MVP Form"
+        style={styles.pageHeader} />
+
       <View style={styles.formContainer}>
         <Button
           accessibilityLabel="Add New User Form"
@@ -96,60 +101,4 @@ const styles = StyleSheet.create({
 
 export default FormLaunch;
 
-let formOutput = [
-  {
-    departureLocation: {
-      lat: 41.388516,
-      lng: 2.179014,
-    },
-    departureTimestamp: 1588932000000,
-    isAdmin: true,
-    isDriver: true,
-    name: 'Brendan-MyPlace',
-    seats: 2,
-  },
-  {
-    departureLocation: {
-      lat: 41.387012,
-      lng: 2.170479,
-    },
-    departureTimestamp: 1588924800000,
-    isAdmin: false,
-    isDriver: false,
-    name: 'Nicole-placaCAT',
-    seats: 0,
-  },
-  {
-    departureLocation: {
-      lat: 41.394909,
-      lng: 2.197982,
-    },
-    departureTimestamp: 1588939200000,
-    isAdmin: false,
-    isDriver: true,
-    name: 'Virginie-Codeworks',
-    seats: 3,
-  },
-  {
-    departureLocation: {
-      lat: 41.403107,
-      lng: 2.173681,
-    },
-    departureTimestamp: 1588935600000,
-    isAdmin: false,
-    isDriver: false,
-    name: 'Anthony-SegrataFamilia',
-    seats: 0,
-  },
-  {
-    departureLocation: {
-      lat: 41.379794,
-      lng: 2.124108,
-    },
-    departureTimestamp: 1588924800000,
-    isAdmin: false,
-    isDriver: false,
-    name: 'Lello-CampNou',
-    seats: 0,
-  },
-];
+

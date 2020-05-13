@@ -21,3 +21,4 @@ env.config.js
 node_modules
 .expo
 DB_Responses
+.env

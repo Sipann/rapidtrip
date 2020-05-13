@@ -13,7 +13,6 @@
     "@react-navigation/native": "^5.2.4",
     "@react-navigation/stack": "^5.2.19",
     "expo": "~37.0.3",
-    "expo-facebook": "~8.1.0",
     "expo-location": "~8.1.0",
     "firebase": "7.9.0",
     "react": "~16.9.0",
@@ -35,7 +34,8 @@
   },
   "devDependencies": {
     "babel-preset-expo": "~8.1.0",
-    "@babel/core": "^7.8.6"
+    "@babel/core": "^7.8.6",
+    "eslint-plugin-react": "^7.19.0"
   },
   "private": true
 }
