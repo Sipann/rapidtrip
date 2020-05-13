@@ -17,13 +17,13 @@ const LoadingScreen = () => {
   useEffect(() => {
     const autoLogin = async () => {
       const userData = await AsyncStorage.getItem('userData');
-      console.log('userData', userData.expirationTime); // eslint-disable-line no-console
+      console.log('userData', userData); // eslint-disable-line no-console
       if (!userData) {
         dispatch(actions.appIsLoading(false));
         return;
       }
       const data = JSON.parse(userData);
-      const { userToken, userid, expirationTime } = data;
+      const { userToken, userid, userEmail, expirationTime } = data;
 
       const tokenHasExpired = new Date(expirationTime) <= new Date();
       console.log('TOKEN HAS EXPIRED', tokenHasExpired); // eslint-disable-line no-console
@@ -32,7 +32,7 @@ const LoadingScreen = () => {
         return;
       }
 
-      dispatch(actions.storeUserAsync(userid));
+      dispatch(actions.storeUserAsync(userEmail));
 
     };
     autoLogin();

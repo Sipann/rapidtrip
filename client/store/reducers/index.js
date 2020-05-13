@@ -9,7 +9,7 @@ const initialState = {
   trips: [],
 
   // app specific
-  error: '',
+  error: null,
   isLoading: true,
 };
 
@@ -18,134 +18,288 @@ const reducers = (state = initialState, action) => {
 
   switch (action.type) {
 
+    // const actionFail = message => ({ type: actionTypes.ACTION_FAIL, message });
+    case actionTypes.ACTION_FAIL: {
+      return {
+        ...state,
+        isLoading: false,
+        error: action.message,
+      };
+    }
+
+    // const appIsLoading = val => ({ type: actionTypes.APP_IS_LOADING, val });
     case actionTypes.APP_IS_LOADING: {
       return {
         ...state,
-        isLoading: action.payload,
+        isLoading: action.val,
       };
     }
 
-    case actionTypes.AUTHENTICATE_FAIL: {
-      return {
-        ...state,
-        error: action.message,
-      };
-    }
 
-    case actionTypes.CREATE_TRIP_FAIL: {
-      return {
-        ...state,
-        error: action.message,
-      };
-    }
-
+    // const createTripSync = trip => ({ type: CREATE_TRIP_SYNC, tripCreated: trip });
     case actionTypes.CREATE_TRIP_SYNC: {
+      const updatedTrips = state.trips.map(trip => {
+        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+        return {
+          ...trip,
+          participants: tripParticipants
+        };
+      });
+
+      const newTrip = {
+        ...action.tripCreated,
+        participants: [
+          {
+            id: state.userid,
+            name: state.name,
+            email: state.email,
+            picture: state.picture,
+            departure_time: null,
+            is_admin: true,
+            departure_location_id: null,
+            car_id: null
+          }
+        ]
+      };
+
       return {
         ...state,
         error: null,
-        trips: [
-          ...state.trips,
-          { ...tripCreated }
-        ],
+        trips: updatedTrips.concat(newTrip),
       };
     }
 
-    case actionTypes.CREATE_USER_FAIL: {
-      return {
-        ...state,
-        error: action.message,
-      };
-    }
-
-    case actionTypes.DELETE_TRIP_FAIL: {
-      return {
-        ...state,
-        error: action.message,
-      };
-    }
-
+    // const deleteTripSync = tripId => ({ type: actionTypes.DELETE_TRIP_SYNC, tripId });
     case actionTypes.DELETE_TRIP_SYNC: {
+      const updatedTrips = state.trips.map(trip => {
+        if (trip.id !== action.tripId) {
+          const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+          return {
+            ...trip,
+            participants: tripParticipants
+          };
+        }
+      });
+
       return {
         ...state,
         error: null,
-        trips: state.trips.filter(trip => trip.tripId !== action.tripId),
+        trips: updatedTrips,
       };
     }
 
-    case actionTypes.DELETE_USER_FAIL: {
+    // const includeParticipantInfoSync = (tripId, participantInfo) => ({
+    //   type: actionTypes.INCLUDE_PARTICIPANT_INFO_SYNC,
+    //   payload: { tripId: tripId, participantInfo: participantInfo }
+    // });
+    case actionTypes.INCLUDE_PARTICIPANT_INFO_SYNC: {
+
+      const updatedTrips = state.trips.map(trip => {
+        let tripParticipants;
+
+        if (trip.id === action.payload.tripId) {
+          tripParticipants = trip.participants.map(participant => {
+            if (participant.person_id === action.payload.participantInfo.person_id) {
+              return { ...action.payload.participantInfo };
+            }
+            else return { ...participant };
+          });
+        }
+        else {
+          tripParticipants = trip.participants.map(participant => ({ ...participant }));
+        }
+        const tripCars = trip.cars.map(car => {
+          const passengers = car.passengers.map(passenger => ({ ...passenger }));
+          return { ...car, passengers };
+        });
+
+        return {
+          title: action.trip.title,
+          description: action.trip.description,
+          date: action.trip.date,
+          picture: action.trip.picture,
+          participants: tripParticipants,
+          cars: tripCars,
+        };
+
+      });
+
       return {
         ...state,
-        error: action.message,
+        trips: updatedTrips,
       };
     }
 
-    case actionTypes.REMOVE_USER_FROM_TRIP_FAIL: {
+    // const includeUserInTripSync = (tripId, participantsList) => ({
+    //  type: actionTypes.INCLUDE_USER_IN_TRIP_SYNC,
+    //  payload: { tripId: tripId, participantsList: [...participantsList] }
+    // });
+    case actionTypes.INCLUDE_USER_IN_TRIP_SYNC: {
+      const updatedTrips = state.trips.map(trip => {
+        if (trip.id === action.payload.tripId) {
+          return {
+            ...trip,
+            participants: action.payload.participantsList
+          };
+        }
+        else {
+          const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+          return {
+            ...trip,
+            participants: tripParticipants
+          };
+        }
+      });
+
       return {
         ...state,
-        error: action.message,
+        error: null,
+        trips: updatedTrips,
       };
     }
 
-    //! TO BE CHECKED
+    // const removeUserFromTripSync = tripId => ({ type: actionTypes.REMOVE_USER_FROM_TRIP_SYNC, tripId });
     case actionTypes.REMOVE_USER_FROM_TRIP_SYNC: {
+      const updatedTrips = state.trips.map(trip => {
+        if (trip.id !== action.payload.tripId) {
+          const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+          return {
+            ...trip,
+            participants: tripParticipants
+          };
+        }
+      });
+
       return {
         ...state,
         error: null,
+        trips: updatedTrips,
       };
     }
 
-    case actionTypes.STORE_USER_FAIL: {
-      return {
-        ...state,
-        error: action.message,
-        isLoading: false,
-      };
-    }
 
-    //! TO BE CHECKED
+
+    // const storeUserSync = userData => ({ type: actionTypes.STORE_USER_SYNC, userData });
     case actionTypes.STORE_USER_SYNC: {
-      console.log('[reducers] with payload', action.user);   // eslint-disable-line no-console
+      // console.log('[reducers] with payload', action.userData);   // eslint-disable-line no-console
+      if (!action.userData.user) return { ...initialState };
+
+      const { email, name, picture } = action.userData.user;
+
+      const updatedTrips = state.trips.map(trip => {
+        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+        const tripCars = trip.cars.map(car => {
+          const passengers = car.passengers.map(passenger => ({ ...passenger }));
+          return { ...car, passengers };
+        });
+        return {
+          ...trip,
+          participants: tripParticipants,
+          cars: tripCars,
+        };
+      });
+
       return {
         ...state,
         error: null,
         isLoading: false,
-        userid: action.user.userid,
-      };
-      // email: action.user.email,
-      //   name: action.user.name,
-      //     picture: action.user.picture,
-      //       trips: [...action.user.trips],
-    }
-
-    case actionTypes.UPDATE_TRIP_FAIL: {
-      return {
-        ...state,
-        error: action.message,
+        userid: action.userData.user.id,
+        email,
+        name,
+        picture,
+        trips: updatedTrips,
       };
     }
 
-    //! TO BE CHECKED
-    case actionTypes.UPDATE_TRIP_SYNC: {
+
+    // const updateTripCarsSync = (tripId, cars) => ({ type: actionTypes.UPDATE_TRIP_CARS_SYNC, payload: { tripId, cars } });
+    case actionTypes.UPDATE_TRIP_CARS_SYNC: {
+
+      const updatedTrips = state.trips.map(trip => {
+        let tripCars;
+        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+        if (trip.id === action.payload.tripId) {
+          tripCars = action.payload.cars;
+        }
+        else {
+          tripCars = trip.cars.map(car => {
+            const passengers = car.passengers.map(passenger => ({ ...passenger }));
+            return { ...car, passengers };
+          });
+        }
+        return {
+          ...trip,
+          participants: tripParticipants,
+          cars: tripCars,
+        };
+      });
+
       return {
         ...state,
         error: null,
-        isLoading: false,
-
+        trips: updatedTrips,
       };
     }
 
-    case actionTypes.UPDATE_USER_FAIL: {
+
+    // const updateTripInfosSync = trip => ({ type: actionTypes.UPDATE_TRIP_INFO_SYNC, trip });
+    case actionTypes.UPDATE_TRIP_INFO_SYNC: {
+
+      const updatedTrips = state.trips.map(trip => {
+        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+        const tripCars = trip.cars.map(car => {
+          const passengers = car.passengers.map(passenger => ({ ...passenger }));
+          return { ...car, passengers };
+        });
+        if (trip.id === action.trip.tripId) {
+          return {
+            title: action.trip.title,
+            description: action.trip.description,
+            date: action.trip.date,
+            picture: action.trip.picture,
+            participants: tripParticipants,
+            cars: tripCars,
+          };
+        }
+        else {
+          return {
+            ...trip,
+            participants: tripParticipants,
+            cars: tripCars,
+          };
+        }
+      });
+
       return {
         ...state,
-        error: action.message,
+        error: null,
+        trips: updatedTrips,
       };
     }
 
-    //! TO BE CHECKED
+
+    // const updateUserSync = userData => ({ type: actionTypes.UPDATE_USER_SYNC, userData });
     case actionTypes.UPDATE_USER_SYNC: {
+
+      const updatedTrips = state.trips.map(trip => {
+        const tripParticipants = trip.participants.map(participant => ({ ...participant }));
+        const tripCars = trip.cars.map(car => {
+          const passengers = car.passengers.map(passenger => ({ ...passenger }));
+          return { ...car, passengers };
+        });
+        return {
+          ...trip,
+          participants: tripParticipants,
+          cars: tripCars,
+        };
+      });
+
       return {
         ...state,
         error: null,
+        name: action.userData.name,
+        picture: action.userData.picture,
+        trips: updatedTrips,
       };
     }
 

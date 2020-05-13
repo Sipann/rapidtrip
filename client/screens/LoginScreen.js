@@ -22,13 +22,14 @@ const Login = () => {
   const navigation = useNavigation();
 
   const handleLogin = () => {
-    dispatch(actions.authenticateAsync(email, password, 'login'));
+    dispatch(actions.authenticateAsync('login', email, password));
   };
 
 
   return (
+
     <View style={styles.container}>
-      <Text style={styles.greeting}>{'Hello again. \n Welcome back.'}</Text>
+      <Text style={styles.greeting}>Welcome back!</Text>
 
       <View style={styles.errorMessage}>
         {errorMessage && (<Text style={styles.error}>{errorMessage}</Text>)}
@@ -70,6 +71,7 @@ const Login = () => {
         </Text>
       </TouchableOpacity>
     </View>
+
   );
 };
 

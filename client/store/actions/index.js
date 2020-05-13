@@ -8,14 +8,15 @@ import services from '../../services/apiClient';
 
 // UTILITIES
 
-const saveUserLogData = async (userid, userToken, expirationTime) => {
+const saveUserLogData = async (userEmail, userid, userToken, expirationTime) => {
   try {
     await AsyncStorage.setItem(
       'userData',
       JSON.stringify({
         expirationTime: expirationTime,
-        userToken: userToken,
+        userEmail: userEmail,
         userid: userid,
+        userToken: userToken,
       }));
   } catch (error) {
     console.log('[saveUserLogData] - Could not save User Log Data');  // eslint-disable-line no-console
@@ -33,21 +34,17 @@ const removeUserLogData = async () => {
 
 
 
-
 // ACTION CREATORS
+
+const actionFail = message => ({ type: actionTypes.ACTION_FAIL, message });
 
 
 // APP_IS_LOADING
-
-export const appIsLoading = val => ({ type: actionTypes.APP_IS_LOADING, payload: val });
+export const appIsLoading = val => ({ type: actionTypes.APP_IS_LOADING, val });
 
 
 // AUTHENTICATE
-
-
-const authenticateFail = message => ({ type: actionTypes.AUTHENTICATE_FAIL, message });
-
-export const authenticateAsync = (email, password, mode) => {
+export const authenticateAsync = (mode, email, password, name = '') => {
   return async dispatch => {
     try {
       let userCredentials;
@@ -61,188 +58,227 @@ export const authenticateAsync = (email, password, mode) => {
       const expirationTime = new Date(expiresAt);
 
       if (mode === 'signup') {
-        const newUser = { email, password, userid };
-        dispatch(createUserAsync(newUser));
+        const newUser = { id: userid, name, email };
+        const response = await services.createUserInDB(newUser);
+        if (response && response.ok) dispatch(storeUserSync(response.body));
+        else if (response && !response.ok) dispatch(actionFail(response.error));
+        else throw new Error('create User in DB error');
+        saveUserLogData(email, userid, userToken, expirationTime);
       }
-      else { dispatch(storeUserAsync(userid)); }
 
-      saveUserLogData(userid, userToken, expirationTime);
+      else {
+        const response = await services.fetchUserFromDB(email);
+        if (response && response.ok) dispatch(storeUserSync(response.body));
+        else if (response && !response.ok) dispatch(actionFail(response.error));
+        else throw new Error('fetch User from DB error');
+        saveUserLogData(email, userid, userToken, expirationTime);
+      }
+
 
     } catch (error) {
-      dispatch(authenticateFail('Authentication failed.'));
+      if (error.message === 'create User in DB error') dispatch(actionFail('Could not create user in DB'));
+      else if (error.message === 'fetch User from DB error') dispatch(actionFail('Could not fetch user data from'));
+      else dispatch(actionFail('Authentication failed.'));
     }
   };
 };
 
 
 // CREATE TRIP
+const createTripSync = trip => ({ type: CREATE_TRIP_SYNC, tripCreated: trip });
 
-const createTripFail = message => ({ type: actionTypes.CREATE_TRIP_FAIL, message });
-
-const createTripSync = trip => ({ type: CREATE_TRIP_SYNC, tripCreated: { ...trip } });
-
-// "TripDate": 2020 - 05 - 20T17: 44: 03.300Z,
-// "TripDesc": "It's gonna be fun",
-// "TripName": "This is theTrip",
-// "TripLoc": Object {
-//   "lat": 48.3114648,
-//     "lng": 11.9188758,
-//   },
-export const createTripAsync = async newTrip => {
+export const createTripAsync = async (userEmail, newTrip) => {
   return async dispatch => {
     try {
-      const response = await services.createTripInDB(newTrip);
-      // if (response && response.ok) dispatch(createTripSync(response.body));
-      if (response && response.ok) dispatch(createTripSync(newTrip));
-      else if (response && !response.ok) dispatch(createTripFail(response.error));
+      const tripDB = {
+        title: newTrip.TripName,
+        description: newTrip.TripDesc,
+        date: new Date(newTrip.TripDate),
+        destination: {
+          address: newTrip.TripAddress,
+          latitude: newTrip.TripLoc.lat,
+          longitude: newTrip.TripLoc.lng,
+        },
+        picture: newTrip.TripPicture,
+      };
+      const response = await services.createTripInDB(userEmail, tripDB);
+      if (response && response.ok) dispatch(createTripSync(response.body));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
       else throw new Error('createTripAsync error');
     } catch (error) {
-      dispatch(createTripFail('Could not create trip'));
-    }
-  };
-};
-
-
-// CREATE USER
-
-const createUserFail = message => ({ type: actionTypes.CREATE_USER_FAIL, message });
-
-export const createUserAsync = async newUser => {
-  return async dispatch => {
-    try {
-      dispatch(storeUserSync({ userid: newUser.userid }));
-      // const response = await services.createUserInDB(newUser);
-      // if (response && response.ok) dispatch(storeUserSync, response.body);
-      // else if (response && !response.ok) dispatch(createUserFail(response.error));
-      // else throw new Error('createUserAsync error');
-    } catch (error) {
-      dispatch(createUserFail('Could not create user'));
+      dispatch(actionFail('Could not create trip'));
     }
   };
 };
 
 
 // DELETE TRIP
+const deleteTripSync = tripId => ({ type: actionTypes.DELETE_TRIP_SYNC, tripId });
 
-const deleteTripFail = message => ({ type: actionTypes.DELETE_TRIP_FAIL, message });
-
-const deleteTripSync = trip => ({ type: actionTypes.DELETE_TRIP_SYNC, tripId: trip.tripId });
-
-export const deleteTripAsync = async (tripId) => {
+export const deleteTripAsync = async tripId => {
   return async dispatch => {
     try {
       const response = await services.deleteTripFromDB(tripId);
-      // if (response && response.ok) dispatch(deleteTripSync(response.body));
       if (response && response.ok) dispatch(deleteTripSync(tripId));
-      if (response && !response.ok) dispatch(deleteTripFail(response.error));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
       else throw new Error('deleteTripAsync error');
     } catch (error) {
-      dispatch(deleteTripFail('Could not delete Trip'));
+      dispatch(actionFail('Could not delete Trip'));
     }
   };
 };
 
 
 // DELETE USER
-
-const deleteUserFail = message => ({ type: actionTypes.DELETE_USER_FAIL, message });
-
-export const deleteUserAsync = async userid => {
+export const deleteUserAsync = async userEmail => {
   return async dispatch => {
     try {
-      const response = await services.deleteUserFromDB(userid);
+      const response = await services.deleteUserFromDB(userEmail);
       if (response && response.ok) {
         await removeUserLogData();
         const currentUser = firebase.auth().currentUser;
         await currentUser.delete();
       }
-      if (response && !response.ok) dispatch(deleteUserFail(response.body));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
       else throw new Error('deleteUserAsync error');
     } catch (error) {
-      dispatch(deleteUserFail('Could not delete the user'));
+      dispatch(actionFail('Could not delete the user'));
     }
   };
 };
 
+// INCLUDE PARTICIPANT INFO
+const includeParticipantInfoSync = (tripId, participantInfo) => ({
+  type: actionTypes.INCLUDE_PARTICIPANT_INFO_SYNC,
+  payload: { tripId: tripId, participantInfo: participantInfo }
+});
 
-// REMOVE USER FROM TRIP
-
-const removeUserFromTripFail = message => ({ type: actionTypes.REMOVE_USER_FROM_TRIP_FAIL, message });
-
-const removeUserFromTripSync = payload => ({ type: actionTypes.REMOVE_USER_FROM_TRIP_SYNC, payload });
-
-export const removeUserFromTripAsync = (userid, tripId) => {
+export const includeParticipantInfoAsync = (tripId, participantInfo) => {
   return async dispatch => {
     try {
-      const response = await services.removeUserFromTripInDB(userid, tripId);
-      if (response && response.ok) dispatch(removeUserFromTripSync(tripId));
-      if (response && !response.ok) dispatch(removeUserFromTripFail(response.error));
-      else throw new Error('removeUserFromTripAsync error');
+      const response = await services.includeParticipantInfo(tripId, participantInfo);
+      if (response && response.ok) dispatch(includeParticipantInfoSync(tripId, response.body));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
+      else throw new Error('includeParticipantInfo error');
     } catch (error) {
-      dispatch(removeUserFromTripFail());
+      dispatch(actionFail('Could not include participant info'));
     }
   };
 };
 
+
+// INCLUDE USER IN TRIP
+const includeUserInTripSync = (tripId, participantsList) => ({
+  type: actionTypes.INCLUDE_USER_IN_TRIP_SYNC,
+  payload: { tripId: tripId, participantsList: participantsList }
+});
+
+export const includeUserInTripAsync = (tripId, newUserEmail) => {
+  return async dispatch => {
+    try {
+      const response = await services.includeUserInTripInDB(tripId, newUserEmail);
+      if (response && response.ok) dispatch(includeUserInTripSync(tripId, response.body));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
+      else throw new Error('includeUserInTripAsync error');
+    } catch (error) {
+      dispatch(actionFail('Could not include user in trip'));
+    }
+  };
+};
+
+// LOG OUT
+export const logoutUser = () => {
+  return async dispatch => {
+    try {
+      await removeUserLogData();
+      await firebase.auth().signOut();
+      dispatch(storeUserSync({}));
+    } catch (error) {
+      dispatch(actionFail('Could not log out'));
+    }
+  };
+};
+
+// REMOVE USER FROM TRIP
+const removeUserFromTripSync = tripId => ({ type: actionTypes.REMOVE_USER_FROM_TRIP_SYNC, tripId });
+
+export const removeUserFromTripAsync = (tripId, userEmail) => {
+  return async dispatch => {
+    try {
+      const response = await services.removeUserFromTripInDB(tripId, userEmail);
+      if (response && response.ok) dispatch(removeUserFromTripSync(tripId));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
+      else throw new Error('removeUserFromTripAsync error');
+    } catch (error) {
+      dispatch(actionFail('Could not remove User from Trip'));
+    }
+  };
+};
 
 
 // STORE USER
+const storeUserSync = userData => ({ type: actionTypes.STORE_USER_SYNC, userData });
 
-const storeUserFail = message => ({ type: actionTypes.STORE_USER_FAIL, message });
-
-const storeUserSync = user => ({ type: actionTypes.STORE_USER_SYNC, user: { ...user } });
-
-export const storeUserAsync = userid => {
+export const storeUserAsync = userEmail => {
   return async dispatch => {
     try {
-      console.log('[storeUserAsync]');  // eslint-disable-line no-console
-      dispatch(storeUserSync({ userid: userid }));
-      // const response = await services.fetchUserFromDB(userid);
-      // if (response && response.ok) dispatch(storeUserSync(response.body));
-      // else if (response && !response.ok) dispatch(storeUserFail(response.error));
-      // else throw new Error('storeUserAsync error');
+      const response = await services.fetchUserFromDB(userEmail);
+      if (response && response.ok) dispatch(storeUserSync(response.body));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
+      else throw new Error('storeUserAsync error');
     } catch (error) {
-      dispatch(storeUserFail('Could not fetch your data'));
+      dispatch(actionFail('Could not fetch your data'));
     }
   };
 };
 
 
-// UPDATE TRIP
+// UPDATE TRIP / CAR ALLOCATIONS
+const updateTripCarsSync = (tripId, cars) => ({ type: actionTypes.UPDATE_TRIP_CARS_SYNC, payload: { tripId, cars } });
 
-const updateTripFail = message => ({ type: actionTypes.UPDATE_TRIP_FAIL, message });
-
-const updateTripSync = trip => ({ type: actionTypes.UPDATE_TRIP_SYNC, payload: { ...trip } });
-
-export const updateTripAsync = trip => {
+export const updateTripCarsAsync = (tripId, cars) => {
   return async dispatch => {
     try {
-      const response = await services.updateTripInDB(trip);
-      if (response && response.ok) dispatch(updateTripSync(response.body));
-      else if (response && !response.ok) dispatch(updateTripFail(response.error));
+      const response = await services.updateTripCarsInDB(tripId, cars);
+      if (response && response.ok) dispatch(updateTripCarsSync(tripId, cars));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
+      else throw new Error('updateTripCarsAsync error');
+    } catch (error) {
+      dispatch(actionFail('Could not update trip car allocation'));
+    }
+  };
+};
+
+
+// UPDATE TRIP / INFOS
+const updateTripInfosSync = trip => ({ type: actionTypes.UPDATE_TRIP_INFO_SYNC, trip });
+
+export const updateTripInfosAsync = trip => {
+  return async dispatch => {
+    try {
+      const response = await services.updateTripInfoInDB(trip);
+      if (response && response.ok) dispatch(updateTripInfosSync(response.body));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
       else throw new Error('updateTripAsync error');
     } catch (error) {
-      dispatch(updateTripFail('Could not update trip details'));
+      dispatch(actionFail('Could not update trip details'));
     }
   };
 };
 
 
 // UPDATE USER
+const updateUserSync = userData => ({ type: actionTypes.UPDATE_USER_SYNC, userData });
 
-const updateUserFail = message => ({ type: actionTypes.UPDATE_USER_FAIL, message });
-
-const updateUserSync = user => ({ type: actionTypes.UPDATE_USER_SYNC, payload: { ...user } });
-
-export const updateUserAsync = user => {
+export const updateUserAsync = userData => {
   return async dispatch => {
     try {
-      const response = await services.updateUserInDB(user);
+      const response = await services.updateUserInDB(userData);
       if (response && response.ok) dispatch(updateUserSync(response.body));
-      if (response && !response.ok) dispatch(updateUserFail(response.error));
+      else if (response && !response.ok) dispatch(actionFail(response.error));
       else throw new Error('updateUserAsync error');
     } catch (error) {
-      dispatch(updateUserFail('Could not update your details'));
+      dispatch(actionFail('Could not update your details'));
     }
   };
 };

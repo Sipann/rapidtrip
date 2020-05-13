@@ -23,11 +23,12 @@ const Register = () => {
   const navigation = useNavigation();
 
   const handleSignUp = () => {
-    dispatch(actions.authenticateAsync(email, password, 'signup'));
+    dispatch(actions.authenticateAsync('signup', email, password, name));
   };
 
 
   return (
+
     <View style={styles.container}>
       <Text style={styles.greeting}>Hello! Signup to get started.</Text>
 
@@ -77,6 +78,7 @@ const Register = () => {
         </Text>
       </TouchableOpacity>
     </View>
+
   );
 };
 
