@@ -14,7 +14,7 @@ const initialState = {
 };
 
 const deepCloneCars = trip => {
-  trip.cars.map(car => {
+  return trip.cars.map(car => {
     const passengers = car.passengers.map(passenger => ({ ...passenger }));
     return { ...car, passengers };
   });
@@ -87,8 +87,9 @@ const reducers = (state = initialState, action) => {
 
     // const deleteTripSync = tripId => ({ type: actionTypes.DELETE_TRIP_SYNC, tripId });
     case actionTypes.DELETE_TRIP_SYNC: {
-      const updatedTrips = state.trips.map(trip => {
-        if (trip.id !== action.tripId) {
+      const updatedTrips = state.trips
+        .filter(trip => trip.id != action.tripId)
+        .map(trip => {
           const tripParticipants = deepCloneParticipants(trip);
           const tripCars = deepCloneCars(trip);
           return {
@@ -96,8 +97,7 @@ const reducers = (state = initialState, action) => {
             participants: tripParticipants,
             cars: tripCars,
           };
-        }
-      });
+        });
 
       return {
         ...state,

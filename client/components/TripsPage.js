@@ -2,19 +2,24 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';
+import { useNavigation } from '@react-navigation/native';
 const moment = require('moment');
 
-export default function TripsPage ({ navigation }) {
-  const tripList = useSelector(state => state.trips);
+export default function TripsPage () {
+  const navigation = useNavigation();
   const username = useSelector(state => state.name);
-  const upcomingTrips = tripList
-    .filter((trip) => new Date(trip.date) >= Date.now())
-    .sort((a, b) => new Date(a.date) - new Date(b.date));
-  const pastTrips = tripList
-    .filter((trip) => new Date(trip.date) < Date.now())
-    .sort((a, b) => new Date(b.date) - new Date(a.date));
+  const upcomingTrips = useSelector(state => {
+    return state.trips
+      .filter((trip) => new Date(trip.date) >= Date.now())
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+  });
+  const pastTrips = useSelector(state => {
+    return state.trips
+      .filter((trip) => new Date(trip.date) < Date.now())
+      .sort((a, b) => new Date(b.date) - new Date(a.date));
+  });
 
-  const [currentList, setCurrentList] = useState(upcomingTrips);
+  const [showUpcoming, setShowUpcoming] = useState(true);
 
   function Item ({ trip }) {
     const tripPicture = trip.picture ? { uri: trip.picture } : require('../assets/carClipArt.jpg');
@@ -61,7 +66,7 @@ export default function TripsPage ({ navigation }) {
       <View style={styles.buttonGroup}>
         <TouchableOpacity
           onPress={() => {
-            setCurrentList(upcomingTrips);
+            setShowUpcoming(true);
           }}
         >
           <View style={styles.button}>
@@ -70,7 +75,7 @@ export default function TripsPage ({ navigation }) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setCurrentList(pastTrips);
+            setShowUpcoming(false);
           }}
         >
           <View style={styles.button}>
@@ -79,9 +84,15 @@ export default function TripsPage ({ navigation }) {
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.list}>
-        {currentList.map((trip) => (
-          <Item key={trip.id} trip={trip} />
-        ))}
+        {
+          showUpcoming
+            ? upcomingTrips.map((trip) => (
+              <Item key={trip.id} trip={trip} />
+            ))
+            : pastTrips.map((trip) => (
+              <Item key={trip.id} trip={trip} />
+            ))
+        }
       </ScrollView>
     </View>
   );

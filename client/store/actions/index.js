@@ -85,11 +85,7 @@ export const authenticateAsync = (mode, email, password, name = '') => {
 
 
 // CREATE TRIP
-// const createTripSync = trip => ({ type: CREATE_TRIP_SYNC, tripCreated: trip });
-const createTripSync = trip => {
-  console.log('createTripSync', trip);
-  return { type: actionTypes.CREATE_TRIP_SYNC, tripCreated: trip };
-};
+const createTripSync = trip => ({ type: actionTypes.CREATE_TRIP_SYNC, tripCreated: trip });
 
 export const createTripAsync = (userEmail, newTrip) => {
   return async dispatch => {
