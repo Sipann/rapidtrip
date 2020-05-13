@@ -37,7 +37,7 @@ const ParticipantsScreen = () => {
               style={{ justifyContent: 'center' }}
               name="md-add"
               size={32}
-              color="black"
+              color="#333"
             />
           </TouchableOpacity>
         </View>

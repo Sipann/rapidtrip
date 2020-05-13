@@ -23,7 +23,7 @@ export default function App() {
     <View style={styles.container}>
       <NavigationContainer>
         <Stack.Navigator
-          initialRouteName="TripDetails"
+          initialRouteName="ParticipantsScreen"
           screenOptions={{
             headerStyle: {
               backgroundColor: Colors.primary,
