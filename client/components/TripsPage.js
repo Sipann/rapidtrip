@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image } from 'react-native';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
+import { useSelector } from 'react-redux';
 const moment = require('moment');
 
 export default function TripsPage ({ navigation }) {
   //TODO: Here is where we want to access all trips (Get all trip objects)
-  const tripList = mockedTrips;
+  const tripList = useSelector(state => state.trips);
+  const username = useSelector(state => state.name);
   const upcomingTrips = tripList
     .filter((trip) => trip.date >= Date.now())
     .sort((a, b) => a.date - b.date);
@@ -16,6 +18,7 @@ export default function TripsPage ({ navigation }) {
   const [currentList, setCurrentList] = useState(upcomingTrips);
 
   function Item ({ trip }) {
+    const tripPicture = trip.picture ? { uri: trip.picture } : require('../assets/carClipArt.jpg');
     return (
       <TouchableOpacity
         onPress={() => {
@@ -28,7 +31,7 @@ export default function TripsPage ({ navigation }) {
         <Text style={styles.tripname}>{trip.title}</Text>
         <Image
           style={styles.photo}
-          source={require('../assets/carClipArt.jpg')}
+          source={tripPicture}
         />
         <Text style={styles.tripdate}>
           {moment(trip.date.toUTCString()).format('MMM Do, YYYY')}
@@ -39,7 +42,7 @@ export default function TripsPage ({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.welcome}>Welcome USERNAME!</Text>
+      <Text style={styles.welcome}>Welcome {username}!</Text>
       <TouchableOpacity
         onPress={() => {
           navigation.navigate('AddTrip');
@@ -127,61 +130,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-
-const mockedTrips = [
-  {
-    id: 1,
-    title: 'London Roadtrip',
-    date: new Date(2014, 6, 5),
-  },
-  {
-    id: 2,
-    title: 'Amsterdam Weekend',
-    date: new Date(2013, 12, 7),
-  },
-  {
-    id: 11,
-    title: 'Amsterdam Weekend Pt2',
-    date: new Date(2013, 12, 7),
-  },
-  {
-    id: 3,
-    title: 'Weekend at Munich',
-    date: new Date(2016, 11, 7),
-  },
-  {
-    id: 4,
-    title: 'Camping Weekend',
-    date: new Date(2016, 12, 8),
-  },
-  {
-    id: 5,
-    title: 'Trip to Rome',
-    date: new Date(2017, 2, 8),
-  },
-  {
-    id: 6,
-    title: 'Trip to Barcelona',
-    date: new Date(2020, 5, 10),
-  },
-  {
-    id: 7,
-    title: 'Trip to Chamonix',
-    date: new Date(2020, 5, 11),
-  },
-  {
-    id: 8,
-    title: 'Trip to Andora',
-    date: new Date(2020, 5, 15),
-  },
-  {
-    id: 9,
-    title: 'Trip to Milan',
-    date: new Date(2020, 5, 20),
-  },
-  {
-    id: 10,
-    title: 'Trip to Rome',
-    date: new Date(2020, 7, 20),
-  },
-];
