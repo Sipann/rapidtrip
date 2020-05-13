@@ -7,7 +7,7 @@ const DB_HOST = process.env.DB_HOST;
 
 const sequelize = new Sequelize(DB_DBNAME, DB_USERNAME, DB_PASSWORD, {
   host: DB_HOST,
-  dialect: 'postgres'
+  dialect: 'postgres',
 });
 
 sequelize
@@ -16,7 +16,7 @@ sequelize
     //eslint-disable-next-line no-console
     console.log('Connection to DB has been established successfully.');
   })
-  .catch(err => {
+  .catch((err) => {
     //eslint-disable-next-line no-console
     console.error('Unable to connect to the database:', err);
   });
