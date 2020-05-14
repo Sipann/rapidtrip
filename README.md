@@ -7,4 +7,4 @@ This app was developed as part of a Thesis Project for a software engineer bootc
 The client is implemented in React Native for IOS and Android and the server is based on Node.js with Koa.
 
 ## Homepage
-![](./readme-images/03-homepage.png  | width=200)
+![](readme-images/03-homepage.png  | width=200)
