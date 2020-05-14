@@ -10,28 +10,32 @@ const ParticipantItem = (props) => {
   const navigation = useNavigation();
   const icon = props.coming ? (
     <Feather name="check" size={24} />
-  ) : props.hasAnswered ? (
-    <AntDesign name="close" size={24} color={Colors.primary} />
   ) : props.isCurrentUser ? (
     <Feather
       name="chevron-right"
       size={24}
       onPress={() => navigation.navigate('ParticipantResponse', { tripId: props.tripId, currentUser: props.currentUser })}
     />
-  ) : (
-    <AntDesign name="question" size={24} />
-  );
+  ) : null;
   return (
     <View style={styles.row}>
-      <View>
-        {props.isCurrentUser ? <AntDesign name="exclamation" /> : null}
-        <Text style={styles.text}>{props.name}</Text>
-      </View>
-      <View>
-        <Text style={styles.icon}>{icon}</Text>
-      </View>
+      <TouchableOpacity style={styles.clickable}
+        onPress={() => 
+          props.isCurrentUser
+          && navigation.navigate('ParticipantResponse', {
+            tripId: props.tripId,
+            currentUser: props.currentUser })}
+      >
+        <View style={styles.item} >
+          {props.isCurrentUser ? <AntDesign name="exclamation" size={24} /> : null}
+          <Text style={styles.text}>{props.name}</Text>
+        </View>
+        <View>
+          <Text style={styles.icon}>{icon}</Text>
+        </View>
+      </TouchableOpacity>
       {props.isAdmin ? (
-        <TouchableOpacity>
+        <TouchableOpacity style={styles.trashButton}>
           <View>
             <Ionicons
               name="ios-trash"
@@ -48,17 +52,30 @@ const ParticipantItem = (props) => {
 
 const styles = StyleSheet.create({
   row: {
-    flex: 1,
-    paddingVertical: 25,
-    paddingHorizontal: 25,
+    flexGrow: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
     borderBottomColor: 'white',
   },
+  clickable: {
+    flexGrow: 1,
+    paddingVertical: 25,
+    paddingHorizontal: 25,
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  trashButton: {
+    paddingVertical: 25,
+    paddingHorizontal: 25
+  },
   text: {
     fontSize: 18,
     marginLeft: 20,
+    width: 220
+  },
+  item: {
+    flexDirection: 'row'
   },
   icon: {
     color: Colors.secondary,
