@@ -13,21 +13,21 @@ import Login from '../screens/LoginScreen';
 import AppScreens from '../navigation/AppScreens';
 import Profile from '../components/ProfilePage';
 
-
 const AuthStack = createStackNavigator();
 const AuthStackScreen = () => (
   <AuthStack.Navigator initialRouteName="Login">
     <AuthStack.Screen
       name="Register"
       component={Register}
-      options={{ title: 'Register' }} />
+      options={{ title: 'Register' }}
+    />
     <AuthStack.Screen
       name="Login"
       component={Login}
-      options={{ title: 'Sign In' }} />
+      options={{ title: 'Sign In' }}
+    />
   </AuthStack.Navigator>
 );
-
 
 const AppStack = createBottomTabNavigator();
 const AppStackScreen = () => (
@@ -56,16 +56,17 @@ const AppStackScreen = () => (
 const RootStack = createStackNavigator();
 const RootStackScreen = ({ userid }) => (
   <RootStack.Navigator headerMode="none">
-    {userid
-      ? (<RootStack.Screen name="App" component={AppStackScreen} />)
-      : (<RootStack.Screen name="Auth" component={AuthStackScreen} />)}
+    {userid ? (
+      <RootStack.Screen name="App" component={AppStackScreen} />
+    ) : (
+      <RootStack.Screen name="Auth" component={AuthStackScreen} />
+    )}
   </RootStack.Navigator>
 );
 
 const RootNavigation = () => {
-
-  const isLoading = useSelector(state => state.isLoading);
-  const userid = useSelector(state => state.userid);
+  const isLoading = useSelector((state) => state.isLoading);
+  const userid = useSelector((state) => state.userid);
 
   if (isLoading) {
     return <LoadingScreen />;
