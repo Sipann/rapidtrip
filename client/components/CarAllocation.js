@@ -65,8 +65,12 @@ const Result = () => {
         return (
           <View>
             <Text style={styles.message}>Ready to determine!</Text>
-            <TouchableOpacity>
+            {/* <TouchableOpacity>
               <Text onPress = {() => runAlgo()} style={styles.runbutton}>Who is Going Where?</Text>
+            </TouchableOpacity> */}
+            
+            <TouchableOpacity onPress = {() => runAlgo()} style={styles.create}>
+              <Text style={styles.createText}>Who is Going Where?</Text>
             </TouchableOpacity>
           </View>
         );
@@ -138,9 +142,9 @@ const Result = () => {
           backgroundColor: '#fff',
         }}
       >
-        <View style={styles.imgCntr}>
+        {/* <View style={styles.imgCntr}>
           <CarSvg />
-        </View>
+        </View> */}
 
         {driver && (
           <View style={styles.infos}>
@@ -206,6 +210,22 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  create: {
+    textAlign: 'center',
+    fontSize: 18,
+    width: '90%',
+    height: 50,
+    alignSelf: 'center',
+    marginTop: 15,
+    justifyContent: 'center',
+    backgroundColor: '#E9446A',
+    borderRadius: 3,
+  },
+  createText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 18,
   },
   calloutText: {
     textAlign: 'right',

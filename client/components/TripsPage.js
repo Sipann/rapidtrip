@@ -68,7 +68,7 @@ export default function TripsPage() {
             setShowUpcoming(true);
           }}
         >
-          <View style={styles.button}>
+          <View style={styles.button2}>
             <Text style={styles.buttonText}>Upcoming</Text>
           </View>
         </TouchableOpacity>
@@ -77,7 +77,7 @@ export default function TripsPage() {
             setShowUpcoming(false);
           }}
         >
-          <View style={styles.button}>
+          <View style={styles.button2}>
             <Text style={styles.buttonText}>Past Trips</Text>
           </View>
         </TouchableOpacity>
@@ -107,6 +107,15 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     borderRadius: 3,
   },
+  button2: {
+    backgroundColor: '#999',
+    width: '90%',
+    height: 50,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: 10,
+    borderRadius: 3,
+  },
   buttonText: {
     margin: 10,
     color: '#fff',
@@ -118,7 +127,7 @@ const styles = StyleSheet.create({
   },
   item: {
     margin: 20,
-    backgroundColor: Colors.primary,
+    // backgroundColor: Colors.primary,
     padding: 10,
     width: '80%',
     alignSelf: 'center',
@@ -126,10 +135,10 @@ const styles = StyleSheet.create({
   },
   tripname: {
     fontSize: 25,
-    color: 'white',
+    // color: 'white',
   },
   tripdate: {
-    color: 'white',
+    // color: 'white',
     fontSize: 15,
     textAlign: 'right',
     marginRight: 5,

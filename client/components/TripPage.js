@@ -25,7 +25,7 @@ export default function TripPage () {
         style={styles.item}
         onPress={() => navigation.navigate(route, { trip, currentUser })}
       >
-        <FontAwesome5 name={icon} size={32} color="white" solid />
+        <FontAwesome5 name={icon} size={32} color="black" solid />
         <Text style={styles.textItem}>{name}</Text>
       </TouchableOpacity>
     );
@@ -61,29 +61,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginTop: 0,
-    backgroundColor: Colors.background,
+    // backgroundColor: Colors.background,
   },
   page: {
     alignItems: 'center',
   },
   card: {
     backgroundColor: Colors.secondary,
-    margin: 10,
+    margin: 5,
   },
   menu: {
     flex: 2,
     flexDirection: 'row',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    backgroundColor: Colors.accent,
-    padding: 20,
+    // backgroundColor: Colors.accent,
+    padding: 0,
     borderRadius: 10,
   },
   item: {
     padding: 20,
     margin: 10,
-    width: 150,
-    height: 150,
+    width: 130,
+    height: 130,
     alignItems: 'center',
     justifyContent: 'space-evenly',
     borderRadius: 10,
@@ -92,21 +92,21 @@ const styles = StyleSheet.create({
   textTripName: {
     flex: 1,
     fontSize: 30,
-    color: 'white',
+    // color: 'white',
   },
   textTripDate: {
-    color: 'white',
+    // color: 'white',
     flex: 1,
     fontSize: 20,
-    marginBottom: 30,
+    marginBottom: 10,
   },
   textItem: {
     fontSize: 16,
     textAlign: 'center',
-    color: 'white',
+    // color: 'white',
   },
   photo: {
-    height: 133,
+    height: 120,
     width: 350,
     margin: 20,
   },

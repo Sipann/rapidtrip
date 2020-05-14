@@ -27,8 +27,11 @@ const ParticipantItem = (props) => {
             currentUser: props.currentUser })}
       >
         <View style={styles.item} >
-          {props.isCurrentUser ? <AntDesign name="exclamation" size={24} /> : null}
-          <Text style={styles.text}>{props.name}</Text>
+          {/* {props.isCurrentUser ? <AntDesign name="exclamation" size={24} /> : null} */}
+          {props.isCurrentUser  
+            ? <Text style={styles.textMe}>{props.name + ' (me)'}</Text>
+            : <Text style={styles.text}>{props.name}</Text>
+          }
         </View>
         <View>
           <Text style={styles.icon}>{icon}</Text>
@@ -49,7 +52,7 @@ const ParticipantItem = (props) => {
     </View>
   );
 };
-
+// rgba(233,68,106,0.2)
 const styles = StyleSheet.create({
   row: {
     flexGrow: 1,
@@ -72,6 +75,12 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 18,
     marginLeft: 20,
+    width: 220
+  },
+  textMe: {
+    fontSize: 18,
+    marginLeft: 20,
+    fontWeight: 'bold',
     width: 220
   },
   item: {
