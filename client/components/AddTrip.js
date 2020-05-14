@@ -11,7 +11,7 @@ import * as actions from '../store/actions';
 import Colors from '../constants/colors';
 const moment = require('moment');
 
-export default function AddTrip ({ route, navigation }) {
+export default function AddTrip({ route, navigation }) {
   let finalLocalCords;
   const [tripName, setTripName] = useState('');
   const [tripDescription, setTripDescription] = useState('');
@@ -101,7 +101,7 @@ export default function AddTrip ({ route, navigation }) {
     }
   };
 
-  function DateChooser () {
+  function DateChooser() {
     if (dateOn) {
       return (
         <DateTimePicker
@@ -147,8 +147,11 @@ export default function AddTrip ({ route, navigation }) {
         <View style={styles.card}>
           <Text style={styles.header}>Trip Date*</Text>
           <Text style={styles.selectedShow}>{dateToshow}</Text>
-          <TouchableOpacity onPress={() => setDateOn(true)}>
-            <Text style={styles.choosebutton}>Choose Date</Text>
+          <TouchableOpacity
+            style={styles.choosebutton}
+            onPress={() => setDateOn(true)}
+          >
+            <Text style={styles.buttonText}>Choose Date</Text>
           </TouchableOpacity>
           <DateChooser />
         </View>
@@ -159,8 +162,11 @@ export default function AddTrip ({ route, navigation }) {
           ) : (
             <Text style={styles.selectedShow}>Location Not Set</Text>
           )}
-          <TouchableOpacity onPress={() => navigation.navigate('ChooseLocal')}>
-            <Text style={styles.choosebutton}>Choose Location</Text>
+          <TouchableOpacity
+            style={styles.choosebutton}
+            onPress={() => navigation.navigate('ChooseLocal')}
+          >
+            <Text style={styles.buttonText}>Choose Location</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.card}>
@@ -174,10 +180,10 @@ export default function AddTrip ({ route, navigation }) {
             )}
           </View>
           <TouchableOpacity
+            style={styles.choosebutton}
             onPress={() => pickImage()}
-            style={styles.uploadButton}
           >
-            <Text style={styles.choosebutton}>Upload Image</Text>
+            <Text style={styles.buttonText}>Upload Image</Text>
           </TouchableOpacity>
         </View>
         <TouchableOpacity onPress={createTrip} style={styles.create}>
@@ -189,38 +195,39 @@ export default function AddTrip ({ route, navigation }) {
 }
 
 const styles = StyleSheet.create({
-  card: {
-    backgroundColor: Colors.primary,
-    borderRadius: 20,
-    margin: 20
-  },
   container: {
     height: '100%',
-    backgroundColor: Colors.background,
+    marginTop: 30,
+    marginVertical: 10,
+    marginHorizontal: 10,
   },
   header: {
-    fontSize: 25,
-    margin: 10,
-    color: 'white',
-    marginLeft: 20
+    fontSize: 16,
+    color: '#333',
   },
   selectedShow: {
     textAlign: 'center',
-    fontSize: 25,
+    fontSize: 14,
     margin: 10,
-    color: 'white',
+    color: '#333',
   },
   textinput: {
     color: 'white',
   },
   choosebutton: {
-    textAlign: 'center',
-    fontSize: 20,
-    width: 100,
+    fontSize: 16,
+    width: '90%',
+    height: 50,
+    justifyContent: 'center',
     alignSelf: 'center',
-    margin: 10,
-    borderRadius: 15,
-    backgroundColor: Colors.accent,
+    alignItems: 'center',
+    borderRadius: 3,
+    backgroundColor: '#999',
+    marginBottom: 15,
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: '500',
   },
   tripImage: {
     height: 133,
@@ -229,16 +236,19 @@ const styles = StyleSheet.create({
   },
   create: {
     textAlign: 'center',
-    fontSize: 20,
-    width: 200,
+    fontSize: 16,
+    width: '90%',
+    height: 50,
     alignSelf: 'center',
+    justifyContent: 'center',
     margin: 30,
-    backgroundColor: Colors.danger,
-    borderRadius: 20,
+    backgroundColor: '#E9446A',
+    borderRadius: 3,
   },
   createText: {
     textAlign: 'center',
     color: 'white',
-    fontSize: 30,
+    fontSize: 16,
+    fontWeight: '500',
   },
 });
