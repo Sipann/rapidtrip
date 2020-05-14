@@ -29,6 +29,10 @@ const ProfilePage = () => {
     );
   }
 
+  function logout () {
+    dispatch(actions.logoutUser());
+  }
+
   useEffect(() => {
     getPermissionAsync();
   }, []);
@@ -106,6 +110,9 @@ const ProfilePage = () => {
         <TouchableOpacity onPress={submitNewinfo} style = {styles.create}>
           <Text style={styles.createText}>Confirm!</Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={logout} style = {styles.logout}>
+          <Text style={styles.logoutText}>Logout</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );
@@ -157,6 +164,20 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   createText: {
+    textAlign: 'center',
+    color: 'white',
+    fontSize: 30,
+  },
+  logout: {
+    textAlign: 'center',
+    fontSize: 20,
+    width: 200,
+    alignSelf: 'center',
+    margin: 30,
+    backgroundColor: Colors.danger,
+    borderRadius: 20,
+  },
+  logoutText: {
     textAlign: 'center',
     color: 'white',
     fontSize: 30,
