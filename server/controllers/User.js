@@ -34,7 +34,13 @@ module.exports.getUser = async ctx => {
       {include: [
         { model: Location, as: 'destination' },
         { model: User, as: 'participants' },
-        { model: Car, as: 'cars' }
+        { model: Car, as: 'cars', attributes: ['seats'],
+          include: [{
+            model: Participant,
+            as: 'passengers',
+            attributes: ['person_id', 'is_driver']
+          }]
+        }
       ]}
     );
 
@@ -45,8 +51,11 @@ module.exports.getUser = async ctx => {
       const newParticipants = [];
       for (let p of participants) {
         const departure_location = await p.Participant.getDepartureLocation();
+        const car = await p.Participant.getCar();
         p = p.toJSON();
+        p.car = {seats: 0};
         if (departure_location) p.departure_location = departure_location.toJSON();
+        if (car) p.car = car.toJSON();
         newParticipants.push(p);
       }
       const formattedTrip = trip.toJSON();
