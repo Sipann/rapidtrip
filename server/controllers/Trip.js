@@ -81,10 +81,23 @@ module.exports.removeUser = async ctx => {
       status: 500,
       message: 'Not possible to retrieve participants list'
     };
+    
+    // include departure location and car allocation info
+    // and parse response
+    const newParticipants = [];
+    for (let p of updatedParticipants) {
+      const departure_location = await p.Participant.getDepartureLocation();
+      const car = await p.Participant.getCar();
+      p = p.toJSON();
+      p.car = {seats: 0};
+      if (departure_location) p.departure_location = departure_location.toJSON();
+      if (car) p.car = car.toJSON();
+      newParticipants.push(p);
+    }
 
     // populate response object
     res.ok = true;
-    res.body = parseParticipants(updatedParticipants.map(participant => participant.toJSON()));
+    res.body = parseParticipants(newParticipants);
     // set response status
     ctx.status = 200;
   } catch (error) {
@@ -131,10 +144,23 @@ module.exports.includeUser = async ctx => {
       status: 500,
       message: 'Not possible to retrieve participants list'
     };
+    
+    // include departure location and car allocation info
+    // and parse response
+    const newParticipants = [];
+    for (let p of participants) {
+      const departure_location = await p.Participant.getDepartureLocation();
+      const car = await p.Participant.getCar();
+      p = p.toJSON();
+      p.car = {seats: 0};
+      if (departure_location) p.departure_location = departure_location.toJSON();
+      if (car) p.car = car.toJSON();
+      newParticipants.push(p);
+    }
 
     // populate response object
     res.ok = true;
-    res.body = parseParticipants(participants.map(participant => participant.toJSON()));
+    res.body = parseParticipants(newParticipants);
     // set response status
     ctx.status = 200;
   } catch (error) {
@@ -302,7 +328,8 @@ module.exports.updateParticipantInfo = async ctx => {
   const {
     departure_time,
     departure_location,
-    is_driver
+    is_driver,
+    seats
   } = ctx.request.body;
 
   try {
@@ -325,12 +352,27 @@ module.exports.updateParticipantInfo = async ctx => {
 
     // check if there is new departure_location
     if (departure_location) {
-      const destination = await Location.create(departure_location);
+      const { address, latitude, longitude } = departure_location;
+      const destination = await Location.create({
+        address,
+        latitude: parseFloat(latitude),
+        longitude: parseFloat(longitude)
+      });
       if (!destination) throw {
         status: 400,
         message: 'Not possible to update participant info: invalid location'
       };
       await participant.setDepartureLocation(destination);
+    }
+
+    // check if participant is driver
+    if (is_driver && seats > 0) {
+      const newCar = await Car.create({ seats, driver_id: participant.person_id });
+      if (!newCar) throw {
+        status: 400,
+        message: 'Not possible to update participant info: invalid car seats information'
+      };
+      await participant.setCar(newCar);
     }
     
     // format Participant data for response

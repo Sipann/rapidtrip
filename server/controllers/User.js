@@ -3,6 +3,7 @@ const User = db.models.Person;
 const Location = db.models.Location;
 const Trip = db.models.Trip;
 const Car = db.models.Car;
+const Participant = db.models.Participant;
 const { parseParticipants } = require('./utils');
 
 module.exports.getUser = async ctx => {
@@ -33,18 +34,34 @@ module.exports.getUser = async ctx => {
       {include: [
         { model: Location, as: 'destination' },
         { model: User, as: 'participants' },
-        { model: Car, as: 'cars' }
+        { model: Car, as: 'cars', attributes: ['seats'],
+          include: [{
+            model: Participant,
+            as: 'passengers',
+            attributes: ['person_id', 'is_driver']
+          }]
+        }
       ]}
     );
 
-    // parse response object
-    if (trips.length > 0) {
-      res.body.trips = await trips.map(trip => {
-        const formattedTrip = trip.toJSON();
-        delete formattedTrip.Participant;
-        formattedTrip.participants = parseParticipants(formattedTrip.participants);
-        return formattedTrip;
-      });
+    // get all Locations for each participant
+    // and parse response object
+    for (let trip of trips) {
+      const participants = trip.participants;
+      const newParticipants = [];
+      for (let p of participants) {
+        const departure_location = await p.Participant.getDepartureLocation();
+        const car = await p.Participant.getCar();
+        p = p.toJSON();
+        p.car = {seats: 0};
+        if (departure_location) p.departure_location = departure_location.toJSON();
+        if (car) p.car = car.toJSON();
+        newParticipants.push(p);
+      }
+      const formattedTrip = trip.toJSON();
+      delete formattedTrip.Participant;
+      formattedTrip.participants = parseParticipants(newParticipants);
+      res.body.trips.push(formattedTrip);
     }
   } catch (error) {
     // populate response object
