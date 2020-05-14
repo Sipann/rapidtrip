@@ -19,7 +19,7 @@ const ProfilePage = () => {
   const [username, setUsername] = useState(user.username);
   const [picture, setPicture] = useState(user.picture);
 
-  function submitNewinfo() {
+  function submitNewinfo () {
     dispatch(
       actions.updateUserAsync({
         name: username,
@@ -29,7 +29,7 @@ const ProfilePage = () => {
     );
   }
 
-  function logout() {
+  function logout () {
     dispatch(actions.logoutUser());
   }
 
@@ -84,7 +84,7 @@ const ProfilePage = () => {
     <ScrollView style={styles.container}>
       <View>
         <View style={styles.card}>
-          <Text style={styles.header}>Your Username</Text>
+          <Text style={styles.header}>Username</Text>
           <Input
             style={styles.textArea}
             value={username}
@@ -92,19 +92,18 @@ const ProfilePage = () => {
           />
         </View>
         <View style={styles.card}>
-          <Text style={styles.header}>Your Email</Text>
+          <Text style={styles.header}>Email</Text>
           <Input style={styles.textArea} value={user.email} disabled={true} />
         </View>
-        <View>
-          <Image source={{ uri: picture }} style={styles.profileImage} />
+        <View style={styles.uploadImage}>
+          <TouchableOpacity onPress={pickImage}>
+            <Image source={{ uri: picture }} style={styles.profileImage} />
+          </TouchableOpacity>
         </View>
-        <TouchableOpacity onPress={pickImage} style={styles.choosebutton}>
-          <Text style={styles.choosebuttontext}>Upload Image</Text>
-        </TouchableOpacity>
         <TouchableOpacity onPress={submitNewinfo} style={styles.create}>
-          <Text style={styles.createText}>Confirm!</Text>
+          <Text style={styles.createText}>Save</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={logout} style={styles.logout}>
+        <TouchableOpacity onPress={logout} style={styles.choosebutton}>
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
@@ -116,15 +115,15 @@ const styles = StyleSheet.create({
   container: {
     // backgroundColor: Colors.background,
     flexGrow: 1,
-    marginTop: 25,
+    marginTop: 40,
   },
   card: {
     //backgroundColor: Colors.primary,
     borderRadius: 20,
-    marginTop: 30,
+    marginTop: 0,
     marginLeft: 20,
     marginRight: 20,
-    padding: 10,
+    padding: 10
   },
   header: {
     fontSize: 16,
@@ -185,6 +184,10 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: 'white',
     fontSize: 18,
+  },
+  uploadImage: {
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   profileImage: {
     height: 200,
