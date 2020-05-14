@@ -13,12 +13,13 @@ import env from '../config/env.config';
 import PlacesInput from 'react-native-places-input';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../store/actions';
-import { useRoute } from '@react-navigation/native';
+import { useRoute, useNavigation } from '@react-navigation/native';
 import Colors from '../constants/colors';
 const moment = require('moment');
 
 const ParticipantResponse = () => {
   const route = useRoute();
+  const navigation = useNavigation();
   const dispatch = useDispatch();
   const trip = useSelector(state =>
     state.trips.find(t => t.id === route.params.tripId)
@@ -47,13 +48,14 @@ const ParticipantResponse = () => {
       departure_time: departure_time.getTime(),
       departure_location: {
         address: locationName,
-        latitue: posLocation.lat,
+        latitude: posLocation.lat,
         longitude: posLocation.lng
       },
       is_driver: driver,
       seats
     };
     dispatch(actions.includeParticipantInfoAsync(route.params.tripId, participantInfo));
+    navigation.goBack();
   };
 
   return (
