@@ -114,19 +114,23 @@ const reducers = (state = initialState, action) => {
 
       const updatedTrips = state.trips.map(trip => {
         let tripParticipants;
-
+        
         if (trip.id === action.payload.tripId) {
           tripParticipants = trip.participants.map(participant => {
-            if (participant.id === action.payload.participantInfo.person_id) {
+            if (participant.email === action.payload.participantInfo.person_id) {
               return {
                 id: participant.id,
                 name: participant.name,
                 email: participant.email,
                 picture: participant.picture,
                 departure_time: action.payload.participantInfo.departure_time,
-                departure_location_id: action.payload.participantInfo.departure_location.id,
+                departure_location: {
+                  address: action.payload.participantInfo.departure_location.address,
+                  lat: action.payload.participantInfo.departure_location.latitude,
+                  lng: action.payload.participantInfo.departure_location.longitude
+                },
                 is_admin: participant.is_admin,
-                // seats: action.payload.participantInfo.car.seats,
+                seats: action.payload.participantInfo.seats,
                 is_driver: action.payload.participantInfo.is_driver
               };
             }
@@ -144,7 +148,7 @@ const reducers = (state = initialState, action) => {
           cars: tripCars,
         };
 
-      });
+      });      
 
       return {
         ...state,
