@@ -240,7 +240,7 @@ module.exports.updateCars = async ctx => {
   // store trip_id passed as parameter
   const tripId = ctx.params.trip_id;
   // store trip object passed in body
-  const { cars } = ctx.request.body;
+  const cars = ctx.request.body;
 
   // start a transaction
   const t = await db.transaction();
