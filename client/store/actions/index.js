@@ -233,7 +233,7 @@ export const runAlgoAsync = (algoInput, tripId) => {
       const response = await algoInputParser(algoInput);
       const response2 = await Algo(response);
       const response3 = await algoDbParser(response2);
-      const response4 = await services.updateTripCarsInDB(tripId, response3);
+      const response4 = await services.updateCarAllocation(tripId, response3);
       if (response4 && response4.ok) dispatch(storeAlgoResultsSync(tripId, response4.body));
       else if (response4 && !response4.ok) dispatch(actionFail(response4.error));
       else throw new Error('updateTripCarsAsync error');

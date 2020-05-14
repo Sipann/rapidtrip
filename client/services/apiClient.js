@@ -126,9 +126,9 @@ export default {
   },
 
   // PUT '/trip/:trip_id/cars'
-  updateCarAllocation: async (trip, cars) => {
+  updateCarAllocation: async (id, cars) => {
     try {
-      const endpoint = `trip/${trip.tripId}/cars`;
+      const endpoint = `trip/${id}/cars`;
       const fetchOptions = {
         method: 'PUT',
         body: JSON.stringify(cars),

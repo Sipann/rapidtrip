@@ -57,7 +57,7 @@
 //   },
 // ];
 
-import { getCommuteTime } from '../services/GoogleAPI';
+import getCommuteTime from '../services/GoogleAPI';
 
 async function formToAlgo (input) {
   //let input = formOutput;   //To test uncomment this line and the mockdata above. and remove input as an parameter of the function
@@ -65,7 +65,6 @@ async function formToAlgo (input) {
   let intoAlgoWithDrivers = addDriver(input, intoAlgo);
   let intoAlgoWithPassengers = await addPassengers(input, intoAlgoWithDrivers);
   let finalIntoAlog = addPriority(intoAlgoWithPassengers);
-  console.log(finalIntoAlog);
   return finalIntoAlog;
 }
 

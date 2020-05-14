@@ -11,53 +11,56 @@ import MapView, { Callout, Marker } from 'react-native-maps';
 import CarSvg from './CarSvg';
 import { mockResult } from './mockResults';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../store/actions';
 import { useRoute } from '@react-navigation/native';
+const moment = require('moment');
 
 const Result = () => {
   const dispatch = useDispatch();
   const route = useRoute();
   const { trip, currentUser } = route.params;
-  const cars = trip.cars;
+  let cars = useSelector(state => state.trips.find(t => t.id === trip.id).cars);
+  const participants = useSelector(state => state.trips.find(t => t.id === trip.id).participants);
 
   const runAlgo = () => {
     const algoInput = trip.participants.map(p => ({
-      departureLocation: {...p.departure_location},
-      departureTimestamp: p.departure_time,
-      is_driver: p.is_driver,
-      is_admin: p.is_admin,
-      email: p.email,
+      departureLocation: {
+        lat: p.departure_location.latitude,
+        lng: p.departure_location.longitude
+      },
+      departureTimestamp: (new Date(p.departure_time)).getTime(),
+      isDriver: p.is_driver,
+      isAdmin: p.is_admin,
+      name: p.email,
       seats: p.seats
-    }));
+    }));    
     dispatch(actions.runAlgoAsync(algoInput, trip.id));
   };
 
-
+  cars = cars.map(car => {
+    const email = car.passengers.find((p) => p.is_driver).person_id;
+    const { address, latitude, longitude } = participants.find(p => p.email === email).departure_location;
+    const departureTime = participants.find(p => p.email === email).departure_time;
+    return {...car, departureLocation: { address, latitude, longitude }, departureTime, driverId: email};
+  });
   const currentUserCar =
+    cars &&
     cars.length &&
     cars.find((car) =>
       car.passengers.some((p) => p.person_id === currentUser.email)
     );
-  const driver = currentUserCar.passengers.find((p) => p.is_driver);
-  // const userDepartureTime = driver.departure_time;
-  // const driverDepartureLocation  = driver.departure_location;
-  // const otherCars =
-  //   cars.length &&
-  //   cars.filter((car) =>
-  //     car.passengers.every((p) => p.person_id !== currentUser.email)
-  //   );
-  const isCurrentUserDriver = driver.person_id === currentUser.email;
+  const driver = cars.length && currentUserCar.passengers.find((p) => p.is_driver);
+  const isCurrentUserDriver = cars.length && driver.person_id === currentUser.email;
   const itemsRef = useRef([]);
 
   const algoHasRun = !!cars.length;
   const readyToRun = trip.participants.every(
-    (p) => !!p.departure_time && !!p.departure_location_id
+    (p) => !!p.departure_time && !!p.departure_location
   );
 
   if (algoHasRun === false) {
     if (currentUser.is_admin) {
-      //!THIS IS A GUESS AS TO THE SHAPE
       if (readyToRun) {
         return (
           <View>
@@ -85,13 +88,11 @@ const Result = () => {
             <Marker
               key={index}
               coordinate={{
-                latitude: car.passenger.find((p) => !!p.is_driver)
-                  .departureLocation.lat,
-                longitude: car.passenger.find((p) => !!p.is_driver)
-                  .departureLocation.lng,
+                latitude: car.departureLocation.latitude,
+                longitude: car.departureLocation.longitude,
               }}
               pinColor={
-                car.passenger.find((p) => !!p.is_driver).person_id ===
+                car.passengers.find((p) => !!p.is_driver).person_id ===
                 driver.person_id
                   ? 'rgba(102, 204, 204, 1)'
                   : 'rgba(255, 0, 0, 0.4)'
@@ -100,8 +101,7 @@ const Result = () => {
             >
               <Callout
                 style={
-                  car.passenger.find((p) => !!p.is_driver).person_id ===
-                  driver.id
+                  car.driverId === driver.person_id
                     ? styles.currentUserCarCallout
                     : styles.otherCallout
                 }
@@ -109,7 +109,7 @@ const Result = () => {
               >
                 <View>
                   <Text>
-                    {car.passenger.find((p) => !!p.is_driver).person_id}{' '}
+                    {car.driverId}{' '}
                     (driver)
                   </Text>
                   {car.passengers
@@ -155,16 +155,16 @@ const Result = () => {
             <Text style={styles.pickupTime}>
               {isCurrentUserDriver ? (
                 <Text>
-                  Be Ready to leave at: {driver.departureTime.slice(0, -5)}
+                  Be Ready to leave at: {moment(currentUserCar.departureTime).format('HH:mm')}
                 </Text>
               ) : (
                 <Text>
-                  Arrive at your driver by: {driver.departureTime.slice(0, -5)}
+                  Arrive at your driver by: {moment(currentUserCar.departureTime).format('HH:mm')}
                 </Text>
               )}
             </Text>
             <Text style={styles.pickupAddress}>
-              {driver.departure_location.address}
+              {currentUserCar.departureLocation.address}
             </Text>
           </View>
         )}
@@ -173,8 +173,8 @@ const Result = () => {
           {driver && (
             <MapView
               initialRegion={{
-                latitude: driver.departure_location.lat,
-                longitude: driver.departure_location.lng,
+                latitude: currentUserCar.departureLocation.latitude,
+                longitude: currentUserCar.departureLocation.longitude,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
