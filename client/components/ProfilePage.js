@@ -19,7 +19,7 @@ const ProfilePage = () => {
   const [username, setUsername] = useState(user.username);
   const [picture, setPicture] = useState(user.picture);
 
-  function submitNewinfo () {
+  function submitNewinfo() {
     dispatch(
       actions.updateUserAsync({
         name: username,
@@ -29,7 +29,7 @@ const ProfilePage = () => {
     );
   }
 
-  function logout () {
+  function logout() {
     dispatch(actions.logoutUser());
   }
 
@@ -87,30 +87,24 @@ const ProfilePage = () => {
           <Text style={styles.header}>Your Username</Text>
           <Input
             style={styles.textArea}
-            placeholder="Name"
             value={username}
             onChangeText={(value) => setUsername(value)}
           />
         </View>
         <View style={styles.card}>
           <Text style={styles.header}>Your Email</Text>
-          <Input
-            style={styles.textArea}
-            placeholder="Email"
-            value={user.email}
-            disabled={true}
-          />
+          <Input style={styles.textArea} value={user.email} disabled={true} />
         </View>
-        <View >
+        <View>
           <Image source={{ uri: picture }} style={styles.profileImage} />
         </View>
         <TouchableOpacity onPress={pickImage} style={styles.choosebutton}>
           <Text style={styles.choosebuttontext}>Upload Image</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={submitNewinfo} style = {styles.create}>
+        <TouchableOpacity onPress={submitNewinfo} style={styles.create}>
           <Text style={styles.createText}>Confirm!</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={logout} style = {styles.logout}>
+        <TouchableOpacity onPress={logout} style={styles.logout}>
           <Text style={styles.logoutText}>Logout</Text>
         </TouchableOpacity>
       </View>
@@ -120,11 +114,12 @@ const ProfilePage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.background,
+    // backgroundColor: Colors.background,
     flexGrow: 1,
+    marginTop: 25,
   },
   card: {
-    backgroundColor: Colors.primary,
+    //backgroundColor: Colors.primary,
     borderRadius: 20,
     marginTop: 30,
     marginLeft: 20,
@@ -132,55 +127,64 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   header: {
-    fontSize: 15,
-    color: 'white',
-    marginLeft: 20,
+    fontSize: 16,
+    color: '#333',
   },
   textArea: {
+    borderBottomWidth: StyleSheet.hairlineWidth,
     margin: 10,
     marginLeft: 5,
-    fontSize: 15,
+    fontSize: 16,
   },
   choosebutton: {
     textAlign: 'center',
-    fontSize: 20,
-    width: 100,
+    fontSize: 18,
+    fontWeight: '500',
+    width: '90%',
+    height: 50,
     alignSelf: 'center',
-    margin: 10,
-    borderRadius: 15,
-    backgroundColor: Colors.accent,
+    justifyContent: 'center',
+    marginTop: 15,
+    borderRadius: 3,
+    backgroundColor: '#999',
   },
   choosebuttontext: {
-    fontSize: 20,
+    fontSize: 18,
+    fontWeight: '500',
+    color: 'white',
     textAlign: 'center',
   },
   create: {
     textAlign: 'center',
-    fontSize: 20,
-    width: 200,
+    fontSize: 18,
+    width: '90%',
+    height: 50,
     alignSelf: 'center',
-    margin: 30,
-    backgroundColor: Colors.danger,
-    borderRadius: 20,
+    marginTop: 15,
+    justifyContent: 'center',
+    backgroundColor: '#E9446A',
+    borderRadius: 3,
   },
   createText: {
     textAlign: 'center',
     color: 'white',
-    fontSize: 30,
+    fontSize: 18,
   },
   logout: {
     textAlign: 'center',
-    fontSize: 20,
-    width: 200,
+    fontSize: 18,
+    width: '90%',
+    height: 50,
+    marginTop: 15,
     alignSelf: 'center',
-    margin: 30,
-    backgroundColor: Colors.danger,
-    borderRadius: 20,
+    justifyContent: 'center',
+    backgroundColor: '#E9446A',
+    borderRadius: 3,
   },
   logoutText: {
     textAlign: 'center',
     color: 'white',
-    fontSize: 30,
+    fontSize: 18,
   },
   profileImage: {
     height: 200,

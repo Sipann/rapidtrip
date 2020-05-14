@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import Colors from '../constants/colors';
 const moment = require('moment');
 
-export default function TripsPage () {
+export default function TripsPage() {
   const navigation = useNavigation();
   const username = useSelector((state) => state.name);
   let upcomingTrips = useSelector((state) => {
@@ -22,7 +22,7 @@ export default function TripsPage () {
 
   const [showUpcoming, setShowUpcoming] = useState(true);
 
-  function Item ({ trip }) {
+  function Item({ trip }) {
     const tripPicture = trip.picture
       ? { uri: trip.picture }
       : require('../assets/carClipArt.jpg');
@@ -59,8 +59,6 @@ export default function TripsPage () {
       <View
         style={{
           marginTop: 10,
-          borderBottomColor: 'white',
-          borderBottomWidth: 1,
         }}
       />
       <Text style={styles.yourTrips}>Your Trips</Text>
@@ -71,7 +69,7 @@ export default function TripsPage () {
           }}
         >
           <View style={styles.button}>
-            <Text style={styles.buttonText}>UPCOMING</Text>
+            <Text style={styles.buttonText}>Upcoming</Text>
           </View>
         </TouchableOpacity>
         <TouchableOpacity
@@ -80,7 +78,7 @@ export default function TripsPage () {
           }}
         >
           <View style={styles.button}>
-            <Text style={styles.buttonText}>PAST TRIPS</Text>
+            <Text style={styles.buttonText}>Past Trips</Text>
           </View>
         </TouchableOpacity>
       </View>
@@ -95,23 +93,24 @@ export default function TripsPage () {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: Colors.background,
     flexGrow: 1,
+    marginTop: 30,
     height: '100%',
   },
-  buttonGroup: {
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    margin: 20,
-  },
+
   button: {
-    backgroundColor: Colors.accent,
-    margin: 5,
-    borderRadius: 10,
+    backgroundColor: '#E9446A',
+    width: '90%',
+    height: 50,
+    justifyContent: 'center',
+    alignSelf: 'center',
+    marginBottom: 10,
+    borderRadius: 3,
   },
   buttonText: {
     margin: 10,
-    color: 'black',
+    color: '#fff',
+    fontWeight: '500',
     textAlign: 'center',
   },
   list: {
@@ -142,15 +141,16 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   welcome: {
-    fontSize: 30,
-    margin: 'auto',
+    fontSize: 18,
+    marginBottom: 15,
     textAlign: 'center',
-    color: 'white',
+    color: '#333',
   },
   yourTrips: {
-    color: 'white',
+    color: '#333',
     textAlign: 'center',
-    fontSize: 20,
-    marginTop: 5,
+    marginBottom: 10,
+    marginTop: 25,
+    fontSize: 18,
   },
 });

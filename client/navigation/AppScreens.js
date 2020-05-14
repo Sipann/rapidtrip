@@ -14,7 +14,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
-export default function AppScreens () {
+export default function AppScreens() {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator initialRouteName="TripsPage">
