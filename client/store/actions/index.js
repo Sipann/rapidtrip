@@ -61,7 +61,7 @@ export const authenticateAsync = (mode, email, password, name = '') => {
       const expirationTime = new Date(expiresAt);
 
       if (mode === 'signup') {
-        const newUser = { id: userid, name, email };
+        const newUser = { id: userid, name, email, picture: 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png' };
         const response = await services.createUserInDB(newUser);
         if (response && response.ok) dispatch(storeUserSync(response.body));
         else if (response && !response.ok) dispatch(actionFail(response.error));
