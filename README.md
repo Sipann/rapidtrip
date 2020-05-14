@@ -52,6 +52,6 @@ This procedure describes how to launch the application in a development or testi
 
 ## Contributors
 - [Nicole Carrion Cogo](https://github.com/nicolecogo)
-- [Brendan Garvey]()
+- [Brendan Garvey](https://github.com/Brendan-G5)
 - [Anthony Candaele]()
 - [Virginie Auguste](https://github.com/Sipann)
