@@ -139,16 +139,19 @@ const styles = StyleSheet.create({
   choosebutton: {
     textAlign: 'center',
     fontSize: 18,
+    fontWeight: '500',
     width: '90%',
     height: 50,
     alignSelf: 'center',
     justifyContent: 'center',
     marginTop: 15,
     borderRadius: 3,
-    backgroundColor: Colors.accent,
+    backgroundColor: '#999',
   },
   choosebuttontext: {
     fontSize: 18,
+    fontWeight: '500',
+    color: 'white',
     textAlign: 'center',
   },
   create: {
