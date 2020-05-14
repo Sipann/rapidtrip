@@ -1,6 +1,5 @@
 import React, { useEffect, useRef } from 'react';
 import {
-  Button,
   Dimensions,
   SafeAreaView,
   ScrollView,
@@ -12,20 +11,49 @@ import MapView, { Callout, Marker } from 'react-native-maps';
 import CarSvg from './CarSvg';
 import { mockResult } from './mockResults';
 import { TouchableOpacity } from 'react-native-gesture-handler';
-import { useSelector, useDispatch } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import * as actions from '../store/actions';
 import { useRoute } from '@react-navigation/native';
 
 const Result = () => {
+  const dispatch = useDispatch();
   const route = useRoute();
   const { trip, currentUser } = route.params;
-  const cars = useSelector(state => state.trips.find(t => t.id === trip.id).cars);
-  const currentUserCar = cars.length && cars.find(car => car.passengers.includes(currentUser.email));
-  const isDriver = cars.length ? currentUserCar.driver_id === currentUser.id : false;
+  const cars = trip.cars;
+
+  const runAlgo = () => {
+    const algoInput = trip.participants.map(p => ({
+      departureLocation: {...p.departure_location},
+      departureTimestamp: p.departure_time,
+      is_driver: p.is_driver,
+      is_admin: p.is_admin,
+      email: p.email,
+      seats: p.seats
+    }));
+    dispatch(actions.runAlgoAsync(algoInput, trip.id));
+  };
+
+
+  const currentUserCar =
+    cars.length &&
+    cars.find((car) =>
+      car.passengers.some((p) => p.person_id === currentUser.email)
+    );
+  const driver = currentUserCar.passengers.find((p) => p.is_driver);
+  // const userDepartureTime = driver.departure_time;
+  // const driverDepartureLocation  = driver.departure_location;
+  // const otherCars =
+  //   cars.length &&
+  //   cars.filter((car) =>
+  //     car.passengers.every((p) => p.person_id !== currentUser.email)
+  //   );
+  const isCurrentUserDriver = driver.person_id === currentUser.email;
   const itemsRef = useRef([]);
 
   const algoHasRun = !!cars.length;
-  const readyToRun = trip.participants.every(p => !!p.departure_time && !!p.departure_location_id);
+  const readyToRun = trip.participants.every(
+    (p) => !!p.departure_time && !!p.departure_location_id
+  );
 
   if (algoHasRun === false) {
     if (currentUser.is_admin) {
@@ -35,14 +63,12 @@ const Result = () => {
           <View>
             <Text style={styles.message}>Ready to determine!</Text>
             <TouchableOpacity>
-              <Text style={styles.runbutton}>Who is Going Where?</Text>
+              <Text onPress = {() => runAlgo()} style={styles.runbutton}>Who is Going Where?</Text>
             </TouchableOpacity>
           </View>
         );
       }
-      return (
-        <Text style={styles.message}>Waiting for more answers</Text>
-      );
+      return <Text style={styles.message}>Waiting for more answers</Text>;
     }
     return <Text style={styles.message}>Check back later!</Text>;
   }
@@ -59,11 +85,14 @@ const Result = () => {
             <Marker
               key={index}
               coordinate={{
-                latitude: car.driver.departureLocation.lat,
-                longitude: car.driver.departureLocation.lng,
+                latitude: car.passenger.find((p) => !!p.is_driver)
+                  .departureLocation.lat,
+                longitude: car.passenger.find((p) => !!p.is_driver)
+                  .departureLocation.lng,
               }}
               pinColor={
-                car.driver.id === currentUserCar.driver.id
+                car.passenger.find((p) => !!p.is_driver).person_id ===
+                driver.person_id
                   ? 'rgba(102, 204, 204, 1)'
                   : 'rgba(255, 0, 0, 0.4)'
               }
@@ -71,17 +100,23 @@ const Result = () => {
             >
               <Callout
                 style={
-                  car.driver.id === currentUserCar.driver.id
+                  car.passenger.find((p) => !!p.is_driver).person_id ===
+                  driver.id
                     ? styles.currentUserCarCallout
                     : styles.otherCallout
                 }
                 onPress={() => hideCallout(index)}
               >
                 <View>
-                  <Text>{car.driver.name} (driver)</Text>
-                  {car.passengers.map((p) => {
-                    return <Text key={p.id}>{p.name}</Text>;
-                  })}
+                  <Text>
+                    {car.passenger.find((p) => !!p.is_driver).person_id}{' '}
+                    (driver)
+                  </Text>
+                  {car.passengers
+                    .filter((p) => !p.is_driver)
+                    .map((p) => {
+                      return <Text key={p.id}>{p.person_id}</Text>;
+                    })}
                 </View>
               </Callout>
             </Marker>
@@ -89,10 +124,6 @@ const Result = () => {
         })}
       </View>
     );
-  };
-
-  const showDirections = () => {
-    console.log('TODO, show directions');
   };
 
   useEffect(() => {
@@ -111,46 +142,39 @@ const Result = () => {
           <CarSvg />
         </View>
 
-        {currentUserCar.driver && (
+        {driver && (
           <View style={styles.infos}>
             <Text style={styles.driverTitle}>
               Driver:
-              {isDriver ? (
+              {isCurrentUserDriver ? (
                 <Text style={styles.driverName}>You</Text>
               ) : (
-                <Text style={styles.driverName}>{currentUserCar.driver.name}</Text>
+                <Text style={styles.driverName}>{driver.person_id}</Text>
               )}
             </Text>
             <Text style={styles.pickupTime}>
-              {isDriver ? (
+              {isCurrentUserDriver ? (
                 <Text>
-                  Be Ready to leave at:{' '}
-                  {currentUserCar.driver.departureTime.slice(0, -5)}
+                  Be Ready to leave at: {driver.departureTime.slice(0, -5)}
                 </Text>
               ) : (
                 <Text>
-                  Arrive at your driver by:{' '}
-                  {currentUserCar.driver.departureTime.slice(0, -5)}
+                  Arrive at your driver by: {driver.departureTime.slice(0, -5)}
                 </Text>
               )}
             </Text>
             <Text style={styles.pickupAddress}>
-              Location: Place de L&apos;Etoile - Paris
+              {driver.departure_location.address}
             </Text>
           </View>
         )}
 
-        <View style={styles.actions}>
-          <Text>How do I get there?</Text>
-          <Button onPress={showDirections} title="Navigate Me" />
-        </View>
-
         <View style={styles.mapCntr}>
-          {currentUserCar.driver && (
+          {driver && (
             <MapView
               initialRegion={{
-                latitude: currentUserCar.driver.departureLocation.lat,
-                longitude: currentUserCar.driver.departureLocation.lng,
+                latitude: driver.departure_location.lat,
+                longitude: driver.departure_location.lng,
                 latitudeDelta: 0.0922,
                 longitudeDelta: 0.0421,
               }}
@@ -242,15 +266,15 @@ const styles = StyleSheet.create({
   message: {
     textAlign: 'center',
     fontSize: 30,
-    marginTop: '50%'
+    marginTop: '50%',
   },
   runbutton: {
-    fontSize:20,
+    fontSize: 20,
     margin: 40,
     textAlign: 'center',
     backgroundColor: 'blue',
-    borderRadius: 20
-  }
+    borderRadius: 20,
+  },
 });
 
 export default Result;

@@ -47,8 +47,8 @@ const ParticipantResponse = () => {
       departure_time: departure_time.getTime(),
       departure_location: {
         address: locationName,
-        latitute: posLocation.lat,
-        longitude: posLocation.lng,
+        latitue: posLocation.lat,
+        longitude: posLocation.lng
       },
       is_driver: driver,
       seats

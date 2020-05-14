@@ -212,6 +212,35 @@ const reducers = (state = initialState, action) => {
       };
     }
 
+    // const storeAlgoResultsSync = (tripId, cars) => ({
+    //   type: actionTypes.STORE_ALGO_RESULTS,
+    //   payload: { tripId: tripId, cars: cars }
+    // });
+    case actionTypes.STORE_ALGO_RESULTS: {
+
+      const updatedTrips = state.trips.map(trip => {
+        let tripCars;
+        const tripParticipants = deepCloneParticipants(trip);
+        if (trip.id === action.payload.tripId) {
+          tripCars = action.payload.cars;
+        }
+        else {
+          tripCars = deepCloneCars(trip);
+        }
+        return {
+          ...trip,
+          participants: tripParticipants,
+          cars: tripCars,
+        };
+      });
+
+      return {
+        ...state,
+        error: null,
+        trips: updatedTrips,
+      };
+
+    }
 
 
     // const storeUserSync = userData => ({ type: actionTypes.STORE_USER_SYNC, userData });

@@ -4,6 +4,9 @@ import * as firebase from 'firebase';
 import * as actionTypes from './actionTypes';
 
 import services from '../../services/apiClient';
+import algoInputParser from '../../utils/algoInputParser';
+import algoDbParser from '../../utils/algoDbParser';
+import Algo from '../../services/Algorithm/Algorithm';
 
 
 // UTILITIES
@@ -214,6 +217,28 @@ export const removeUserFromTripAsync = (tripId, userEmail) => {
       else throw new Error('removeUserFromTripAsync error');
     } catch (error) {
       dispatch(actionFail('Could not remove User from Trip'));
+    }
+  };
+};
+
+// RUN ALGO
+const storeAlgoResultsSync = (tripId, cars) => ({
+  type: actionTypes.STORE_ALGO_RESULTS,
+  payload: { tripId: tripId, cars: cars }
+});
+
+export const runAlgoAsync = (algoInput, tripId) => {
+  return async (dispatch) => {
+    try {
+      const response = await algoInputParser(algoInput);
+      const response2 = await Algo(response);
+      const response3 = await algoDbParser(response2);
+      const response4 = await services.updateTripCarsInDB(tripId, response3);
+      if (response4 && response4.ok) dispatch(storeAlgoResultsSync(tripId, response4.body));
+      else if (response4 && !response4.ok) dispatch(actionFail(response4.error));
+      else throw new Error('updateTripCarsAsync error');
+    } catch (error) {
+      dispatch(actionFail('Could not run the Algo'));
     }
   };
 };
