@@ -53,9 +53,11 @@ This procedure describes how to launch the application in a development or testi
    <img src="readme-images/05-participants.png" width="300"/>
 
 4) The user who created the group is the only one allowed to run the algo. As long as it has not been run, the other members must wait for the car allocation.
+
    <img src="readme-images/07-car-allocation.png" width="300"/>
 
 5) When all participants of a group have provided their departure time and location, the user who created the trip can run the algorithm. All users can then check the results on the Car Allocation page.
+
    <img src="readme-images/08-car-allocation-result.png" width="300"/>
 
 ## Contributors
