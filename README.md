@@ -44,6 +44,7 @@ This procedure describes how to launch the application in a development or testi
    <img src="readme-images/01-signup.png" width="300"/>
 
 2. The User can check which trips he is a member of.
+
    <img src="readme-images/03-homepage.png" width="300"/>
    <img src="readme-images/09-profile.png" width="300"/>
 
