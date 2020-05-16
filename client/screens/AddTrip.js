@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 16,
-    color: '#333',
+    color: Colors.secondary,
   },
   selectedShow: {
     textAlign: 'center',
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     alignItems: 'center',
     borderRadius: 3,
-    backgroundColor: '#999',
+    backgroundColor: Colors.background,
     marginBottom: 15,
   },
   buttonText: {
@@ -242,7 +242,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     margin: 30,
-    backgroundColor: '#E9446A',
+    backgroundColor: Colors.primary,
     borderRadius: 3,
   },
   createText: {

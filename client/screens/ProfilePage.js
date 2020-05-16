@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, StyleSheet } from 'react-native';
+import { Text, View, Image, StyleSheet, ColorPropType } from 'react-native';
 import { Input } from 'react-native-elements';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
@@ -113,12 +113,10 @@ const ProfilePage = () => {
 
 const styles = StyleSheet.create({
   container: {
-    // backgroundColor: Colors.background,
     flexGrow: 1,
     marginTop: 40,
   },
   card: {
-    //backgroundColor: Colors.primary,
     borderRadius: 20,
     marginTop: 0,
     marginLeft: 20,
@@ -127,7 +125,7 @@ const styles = StyleSheet.create({
   },
   header: {
     fontSize: 16,
-    color: '#333',
+    color: Colors.secondary,
   },
   textArea: {
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -145,7 +143,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 15,
     borderRadius: 3,
-    backgroundColor: '#999',
+    backgroundColor: Colors.background,
   },
   choosebuttontext: {
     fontSize: 18,
@@ -161,7 +159,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 15,
     justifyContent: 'center',
-    backgroundColor: '#E9446A',
+    backgroundColor: Colors.primary,
     borderRadius: 3,
   },
   createText: {
@@ -177,7 +175,7 @@ const styles = StyleSheet.create({
     marginTop: 15,
     alignSelf: 'center',
     justifyContent: 'center',
-    backgroundColor: '#E9446A',
+    backgroundColor: Colors.primary,
     borderRadius: 3,
   },
   logoutText: {
