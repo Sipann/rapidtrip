@@ -11,7 +11,7 @@ import Register from '../screens/RegisterScreen';
 import Login from '../screens/LoginScreen';
 
 import AppScreens from '../navigation/AppScreens';
-import Profile from '../components/ProfilePage';
+import Profile from '../screens/ProfilePage';
 
 const AuthStack = createStackNavigator();
 const AuthStackScreen = () => (

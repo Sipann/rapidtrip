@@ -8,8 +8,6 @@ import {
   View,
 } from 'react-native';
 import MapView, { Callout, Marker } from 'react-native-maps';
-import CarSvg from './CarSvg';
-import { mockResult } from './mockResults';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../store/actions';
@@ -132,7 +130,7 @@ const Result = () => {
 
   useEffect(() => {
     itemsRef.current = itemsRef.current.slice(0, cars.length);
-  }, [mockResult]);
+  }, []);
 
   return (
     <SafeAreaView>

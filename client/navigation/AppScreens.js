@@ -1,20 +1,20 @@
 import React from 'react';
-import TripsPage from '../components/TripsPage';
-import AddTrip from '../components/AddTrip';
-import TripPage from '../components/TripPage';
-import CarAllocation from '../components/CarAllocation';
-import ChooseLocation from '../components/ChooseLocation';
-import DeleteTrip from '../components/DeleteTrip';
-import TripDetails from '../components/TripDetails';
-import TripEdit from '../components/TripEdit';
-import ParticipantsList from '../components/ParticipantsList';
+import TripsPage from '../screens/TripsPage';
+import AddTrip from '../screens/AddTrip';
+import TripPage from '../screens/TripPage';
+import CarAllocation from '../screens/CarAllocation';
+import ChooseLocation from '../screens/ChooseLocation';
+import DeleteTrip from '../screens/DeleteTrip';
+import TripDetails from '../screens/TripDetails';
+import TripEdit from '../screens/TripEdit';
+import ParticipantsList from '../screens/ParticipantsList';
 import ParticipantResponse from '../screens/ParticipantResponse';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
 const Stack = createStackNavigator();
 
-export default function AppScreens() {
+export default function AppScreens () {
   return (
     <NavigationContainer independent={true}>
       <Stack.Navigator initialRouteName="TripsPage">
