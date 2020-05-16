@@ -6,7 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import Colors from '../constants/colors';
 const moment = require('moment');
 
-export default function TripsPage() {
+export default function TripsPage () {
   const navigation = useNavigation();
   const username = useSelector((state) => state.name);
   let upcomingTrips = useSelector((state) => {
@@ -22,7 +22,7 @@ export default function TripsPage() {
 
   const [showUpcoming, setShowUpcoming] = useState(true);
 
-  function Item({ trip }) {
+  function Item ({ trip }) {
     const tripPicture = trip.picture
       ? { uri: trip.picture }
       : require('../assets/carClipArt.jpg');

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, Image, StyleSheet, ColorPropType } from 'react-native';
+import { Text, View, Image, StyleSheet } from 'react-native';
 import { Input } from 'react-native-elements';
 import { TouchableOpacity, ScrollView } from 'react-native-gesture-handler';
 import { useSelector, useDispatch } from 'react-redux';
@@ -54,6 +54,7 @@ const ProfilePage = () => {
     });
 
     if (!result.cancelled) {
+      //TODO move to services file
       let base64Img = `data:image/jpg;base64,${result.base64}`;
 
       //Add your cloud name
@@ -76,7 +77,9 @@ const ProfilePage = () => {
           setPicture(data.secure_url);
           return data.secure_url;
         })
-        .catch((err) => console.log(err));
+        .catch((err) =>
+          console.log(err) //eslint-disable-line no-console
+        );
     }
   };
 
