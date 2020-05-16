@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
   },
 
   button: {
-    backgroundColor: '#E9446A',
+    backgroundColor: Colors.primary,
     width: '90%',
     height: 50,
     justifyContent: 'center',
@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   button2: {
-    backgroundColor: '#999',
+    backgroundColor: Colors.background,
     width: '90%',
     height: 50,
     justifyContent: 'center',
@@ -127,18 +127,15 @@ const styles = StyleSheet.create({
   },
   item: {
     margin: 20,
-    // backgroundColor: Colors.primary,
     padding: 10,
     width: '80%',
     alignSelf: 'center',
     borderRadius: 30,
   },
   tripname: {
-    fontSize: 25,
-    // color: 'white',
+    fontSize: 25
   },
   tripdate: {
-    // color: 'white',
     fontSize: 15,
     textAlign: 'right',
     marginRight: 5,
@@ -153,10 +150,10 @@ const styles = StyleSheet.create({
     fontSize: 18,
     marginBottom: 15,
     textAlign: 'center',
-    color: '#333',
+    color: Colors.secondary,
   },
   yourTrips: {
-    color: '#333',
+    color: Colors.secondary,
     textAlign: 'center',
     marginBottom: 10,
     marginTop: 25,

@@ -173,7 +173,7 @@ const styles = StyleSheet.create({
     borderBottomColor: '#ccc',
     paddingVertical: 15,
     paddingHorizontal: 15,
-    color: '#333',
+    color: Colors.secondary,
   },
   button: {
     marginTop: 25,
@@ -187,7 +187,7 @@ const styles = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: '#333',
+    color: Colors.secondary,
   },
 });
 

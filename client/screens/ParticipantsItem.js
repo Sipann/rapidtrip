@@ -43,7 +43,7 @@ const ParticipantItem = (props) => {
             <Ionicons
               name="ios-trash"
               size={24}
-              color="#333" 
+              color={Colors.secondary} 
               onPress={props.removeParticipant}
             />
           </View>

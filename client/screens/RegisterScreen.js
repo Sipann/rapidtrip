@@ -10,6 +10,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import * as actions from '../store/actions';
+import { Colors } from '../constants/colors';
 
 
 const Register = () => {
@@ -74,7 +75,7 @@ const Register = () => {
         onPress={() => navigation.navigate('Login')}>
         <Text style={{ color: '#414951', fontSize: 13 }}>
           Already have an account?
-          <Text style={{ fontWeight: '500', color: '#E9446A' }}>  Login</Text>
+          <Text style={{ fontWeight: '500', color: Colors.primary }}>  Login</Text>
         </Text>
       </TouchableOpacity>
     </View>
@@ -102,7 +103,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 30,
   },
   error: {
-    color: '#E9446A',
+    color: Colors.primary,
     fontSize: 13,
     fontWeight: '600',
     textAlign: 'center',
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginHorizontal: 30,
-    backgroundColor: '#E9446A',
+    backgroundColor: Colors.primary,
     borderRadius: 4,
     height: 52,
     alignItems: 'center',

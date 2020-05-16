@@ -209,7 +209,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 14,
     margin: 10,
-    color: '#333',
+    color: Colors.secondary,
   },
   textinput: {
     color: 'white',

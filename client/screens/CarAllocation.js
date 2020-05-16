@@ -12,6 +12,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../store/actions';
 import { useRoute } from '@react-navigation/native';
+import { Colors } from '../constants/colors';
 const moment = require('moment');
 
 const Result = () => {
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginTop: 15,
     justifyContent: 'center',
-    backgroundColor: '#E9446A',
+    backgroundColor: Colors.primary,
     borderRadius: 3,
   },
   createText: {
@@ -290,7 +291,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     margin: 40,
     textAlign: 'center',
-    backgroundColor: 'blue',
+    backgroundColor: Colors.primary,
     borderRadius: 20,
   },
 });
