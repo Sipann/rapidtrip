@@ -11,7 +11,7 @@ import * as actions from '../store/actions';
 import Colors from '../constants/colors';
 const moment = require('moment');
 
-export default function AddTrip({ route, navigation }) {
+export default function AddTrip ({ route, navigation }) {
   let finalLocalCords;
   const [tripName, setTripName] = useState('');
   const [tripDescription, setTripDescription] = useState('');
@@ -75,6 +75,7 @@ export default function AddTrip({ route, navigation }) {
     });
 
     if (!result.cancelled) {
+      //TODO move to a services file
       let base64Img = `data:image/jpg;base64,${result.base64}`;
 
       //Add your cloud name
@@ -97,11 +98,13 @@ export default function AddTrip({ route, navigation }) {
           setPhotoUrl(data.secure_url);
           return data.secure_url;
         })
-        .catch((err) => console.log(err));
+        .catch((err) =>
+          console.log(err) //eslint-disable-line no-console
+        );
     }
   };
 
-  function DateChooser() {
+  function DateChooser () {
     if (dateOn) {
       return (
         <DateTimePicker
