@@ -10,7 +10,7 @@ import {
 import { useNavigation } from '@react-navigation/native';
 
 import * as actions from '../store/actions';
-import { Colors } from '../constants/colors';
+import Colors from '../constants/colors';
 
 
 const Register = () => {

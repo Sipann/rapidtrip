@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import * as actions from '../store/actions';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Colors from '../constants/colors';
 
 const LoadingScreen = () => {
 

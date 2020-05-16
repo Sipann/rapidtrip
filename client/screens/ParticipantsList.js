@@ -11,7 +11,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useSelector, useDispatch } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import * as actions from '../store/actions';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import Colors from '../constants/colors';
 
 const ParticipantsScreen = () => {
   const route = useRoute();
@@ -49,7 +49,6 @@ const ParticipantsScreen = () => {
               name="md-add"
               size={32}
               color={Colors.secondary}
-              onPress={addParticipant}
             />
           </TouchableOpacity>
         </View>

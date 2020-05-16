@@ -12,7 +12,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useDispatch, useSelector } from 'react-redux';
 import * as actions from '../store/actions';
 import { useRoute } from '@react-navigation/native';
-import { Colors } from '../constants/colors';
+import Colors from '../constants/colors';
 const moment = require('moment');
 
 const Result = () => {
